@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="time_interval_values">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>6</item>
+		<item>12</item>
+	</string-array>
+	<string-array name="time_interval_texts">
+		<item>1 month</item>
+		<item>2 months</item>
+		<item>3 months</item>
+		<item>half a year</item>
+		<item>year</item>
+	</string-array>
+	
+</resources>
