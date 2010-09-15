@@ -103,7 +103,7 @@ public class Birthday extends Activity {
 			}
 			
 			((TextView)v.findViewById(R.id.name)).setText(contact.getDisplayName());
-			((TextView)v.findViewById(R.id.age)).setText(String.valueOf(contact.getAge()));
+			((TextView)v.findViewById(R.id.age)).setText(String.valueOf((contact.getAge() == null) ? "--" : contact.getAge()));
 			((TextView)v.findViewById(R.id.date)).setText(MessageFormat.format(ctx.getString(R.string.date_of_birthday), contact.getbDay()));
 			((TextView)v.findViewById(R.id.days)).setText(String.valueOf(contact.getDaysToBirthday()));
 			

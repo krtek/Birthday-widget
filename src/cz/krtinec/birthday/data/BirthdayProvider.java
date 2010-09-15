@@ -7,9 +7,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import org.acra.ErrorReporter;
+
+import cz.krtinec.birthday.CrashReporting;
 import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.dto.DateIntegrity;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -17,13 +22,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.Log;
 
 public class BirthdayProvider {
-
-	private static final DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final DateFormat SHORT_FORMAT = new SimpleDateFormat("MM-dd");
-	public static final Calendar TODAY = Calendar.getInstance();
+	
+	private static final DateFormat SHORT_FORMAT = new SimpleDateFormat("MMdd");
+    public static final Calendar TODAY = Calendar.getInstance();
+    
+    private static final DateFormat DB_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	private static final DateFormat DB_SHORT_FORMAT = new SimpleDateFormat("--MM-dd");
+	private static final DateFormat DB_NO_DASH_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	
+	private static final String EVENT_SQL_PART = "substr(replace(" + Event.START_DATE + ", '-', ''),-4)";
 	
 	
 	/**
@@ -41,8 +52,8 @@ public class BirthdayProvider {
 		Log.i("BirthdayProvider", "Searching till " + endOfSearch.getTime());
 		List<BContact> contacts;
 		if (endOfSearch.get(Calendar.YEAR) - TODAY.get(Calendar.YEAR) > 0) {
-			contacts = upcomingBirthday(ctx, today, "12-31", false);
-			contacts.addAll(upcomingBirthday(ctx, "01-01", SHORT_FORMAT.format(endOfSearch.getTime()), true));
+			contacts = upcomingBirthday(ctx, today, "1231", false);
+			contacts.addAll(upcomingBirthday(ctx, "0101", SHORT_FORMAT.format(endOfSearch.getTime()), true));
 		} else {
 			contacts = upcomingBirthday(ctx, today, SHORT_FORMAT.format(endOfSearch.getTime()), false);
 		}
@@ -68,25 +79,43 @@ public class BirthdayProvider {
   	       projection, 
   	       ContactsContract.Data.MIMETYPE + "= ? AND " + 
   	       ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + 
-  	       " AND substr(" + ContactsContract.CommonDataKinds.Event.START_DATE + ",6) >= ?" + 
-  	       " AND substr(" + ContactsContract.CommonDataKinds.Event.START_DATE + ",6) <= ?" ,
-  	       new String[] {ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE, fromDate, toDate}, 
-  	       "substr("+ ContactsContract.CommonDataKinds.Event.START_DATE +",6)");
+  	       " AND " + EVENT_SQL_PART  + " >= ?" + 
+  	       " AND " + EVENT_SQL_PART + " <= ?" ,
+  	       new String[] {Event.CONTENT_ITEM_TYPE, fromDate, toDate}, EVENT_SQL_PART);
   	  List<BContact> result = new ArrayList<BContact>();
   	  int i=0;
   	  while (c!= null && c.moveToNext()) {
   		  try {
-			result.add(new BContact(c.getString(0), c.getLong(1), FORMAT.parse(c.getString(2)), c.getString(3), c.getString(4), nextYear));
-		} catch (ParseException e) {
-			throw new RuntimeException("Cannot parse: " + c.getString(2), e);
-		}
-  		  i++;
+  			  ParseResult parseResult = tryParseBDay(c.getString(2));
+  			  result.add(new BContact(c.getString(0), c.getLong(1),parseResult.date, c.getString(3), c.getString(4), nextYear, parseResult.integrity));
+  			  i++;
+  		  } catch (ParseException e) {
+  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+  			  ErrorReporter.getInstance().handleSilentException(e);
+  		  }
   	  }
   	  c.close();
   	  return result;
   }
     
-    public static Uri getPhoto(Context ctx, long contactId, String lookupKey) {
+    private static ParseResult tryParseBDay(String string) throws ParseException {
+    	ParseResult result = new ParseResult();
+    	if (string.startsWith("--")) {
+    		result.integrity = DateIntegrity.WITHOUT_YEAR;
+    		result.date = DB_SHORT_FORMAT.parse(string);
+    	} else if (string.indexOf('-') == -1) {
+    		result.integrity = DateIntegrity.FULL;
+    		result.date = DB_NO_DASH_FORMAT.parse(string);    		
+    	} else {
+    		result.integrity = DateIntegrity.FULL;
+    		result.date = DB_FORMAT.parse(string);    		    		
+    	}
+    	
+    	return result;
+	}
+
+
+	public static Uri getPhoto(Context ctx, long contactId, String lookupKey) {
     	//Uri uri = Uri.withAppendedPath(Contacts.CONTENT_LOOKUP_URI, lookupKey);
     	Uri uri = ContactsContract.Contacts.getLookupUri(contactId, lookupKey);
     	uri = ContactsContract.Contacts.lookupContact(ctx.getContentResolver(), uri);
@@ -114,6 +143,11 @@ public class BirthdayProvider {
             cursor.close();
         }
         return null;
+    }
+    
+    static class ParseResult {
+    	Date date;
+    	DateIntegrity integrity;     	
     }
     
 }
