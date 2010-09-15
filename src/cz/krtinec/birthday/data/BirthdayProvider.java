@@ -114,35 +114,9 @@ public class BirthdayProvider {
     	return result;
 	}
 
-
-	public static Uri getPhoto(Context ctx, long contactId, String lookupKey) {
-    	//Uri uri = Uri.withAppendedPath(Contacts.CONTENT_LOOKUP_URI, lookupKey);
-    	Uri uri = ContactsContract.Contacts.getLookupUri(contactId, lookupKey);
-    	uri = ContactsContract.Contacts.lookupContact(ctx.getContentResolver(), uri);
-//    	ContactsContract.Contacts.CONTENT_LOOKUP_URI;
-    	uri = Uri.withAppendedPath(uri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-    	return uri;
-    }  
-    
     public static InputStream openPhoto(Context ctx, long contactId) {
-        Uri contactUri = ContentUris.withAppendedId(Contacts.CONTENT_URI, contactId);
-        Uri photoUri = Uri.withAppendedPath(contactUri, Contacts.Photo.CONTENT_DIRECTORY);
-        Cursor cursor = ctx.getContentResolver().query(photoUri,
-             new String[] {ContactsContract.CommonDataKinds.Photo.PHOTO}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        try {
-            if (cursor.moveToFirst()) {
-                byte[] data = cursor.getBlob(0);
-                if (data != null) {
-                    return new ByteArrayInputStream(data);
-                }
-            }
-        } finally {
-            cursor.close();
-        }
-        return null;
+    	Uri contactUri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contactId));
+		return Contacts.openContactPhotoInputStream(ctx.getContentResolver(), contactUri);
     }
     
     static class ParseResult {
