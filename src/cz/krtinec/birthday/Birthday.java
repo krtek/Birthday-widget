@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
 
+import com.admob.android.ads.AdManager;
+
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.BContact;
 import cz.krtinec.birthday.ui.BirthdayPreference;
@@ -32,6 +34,8 @@ public class Birthday extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        AdManager.setTestDevices( new String[] { "F57D9A6828124CD742993F5653A6AC3C" } );
+
     }
         
     
@@ -97,7 +101,7 @@ public class Birthday extends Activity {
 			View v;
 			if (convertView == null) {
 				LayoutInflater vi = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = vi.inflate(R.layout.row3, null);			
+				v = vi.inflate(R.layout.row, null);			
 			} else {
 				v = convertView;
 			}
