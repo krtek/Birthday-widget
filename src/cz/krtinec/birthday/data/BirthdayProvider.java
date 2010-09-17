@@ -94,7 +94,9 @@ public class BirthdayProvider {
   			  ErrorReporter.getInstance().handleSilentException(e);
   		  }
   	  }
-  	  c.close();
+  	  if (c != null) {
+  		  c.close();
+  	  }
   	  return result;
   }
     
