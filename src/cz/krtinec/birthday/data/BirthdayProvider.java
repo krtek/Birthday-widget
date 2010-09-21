@@ -83,12 +83,10 @@ public class BirthdayProvider {
   	       " AND " + EVENT_SQL_PART + " <= ?" ,
   	       new String[] {Event.CONTENT_ITEM_TYPE, fromDate, toDate}, EVENT_SQL_PART);
   	  List<BContact> result = new ArrayList<BContact>();
-  	  int i=0;
   	  while (c!= null && c.moveToNext()) {
   		  try {
   			  ParseResult parseResult = tryParseBDay(c.getString(2));
-  			  result.add(new BContact(c.getString(0), c.getLong(1),parseResult.date, c.getString(3), c.getString(4), nextYear, parseResult.integrity));
-  			  i++;
+  			  result.add(new BContact(c.getString(0), c.getLong(1),parseResult.date, c.getString(3), c.getString(4), nextYear, parseResult.integrity));  		
   		  } catch (ParseException e) {
   			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
   			  ErrorReporter.getInstance().handleSilentException(e);
