@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="cz.krtinec.birthday"
-      android:versionCode="5"
-      android:versionName="1.0.4">
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="CrashReporting">  
+      android:versionCode="7"
+      android:versionName="1.1.0">
+    <application android:icon="@drawable/icon" android:label="@string/app_name"  android:name="CrashReporting">    
         <activity android:name=".Birthday"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".BirthdayDebug"
+                  android:label="@string/debug_menu">
         </activity>
 		      <!-- Broadcast Receiver that will process AppWidget updates -->
         <receiver android:name=".BirthdayWidget" android:label="@string/widget_name">

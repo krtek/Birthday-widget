@@ -9,6 +9,7 @@
     
     <!-- Preferences -->
     <string name="preferences_menu">Preferences</string>
+    <string name="debug_menu">Debug</string>
     <string name="pref_ahead_title">Show next</string>
     <string name="pref_ahead_summary">Show birthdays for next</string>
 </resources>

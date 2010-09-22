@@ -14,7 +14,9 @@ import org.acra.ErrorReporter;
 
 import cz.krtinec.birthday.CrashReporting;
 import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.dto.BContactDebug;
 import cz.krtinec.birthday.dto.DateIntegrity;
+import cz.krtinec.birthday.dto.ParseResult;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -35,6 +37,7 @@ public class BirthdayProvider {
 	private static final DateFormat DB_NO_DASH_FORMAT = new SimpleDateFormat("yyyyMMdd");
 	
 	private static final String EVENT_SQL_PART = "substr(replace(" + Event.START_DATE + ", '-', ''),-4)";
+
 	
 	
 	/**
@@ -44,6 +47,9 @@ public class BirthdayProvider {
 	 * @return
 	 */
 	public static List<BContact> upcomingBirthday(Context ctx, int showMonths) {
+		//init
+		DB_NO_DASH_FORMAT.setLenient(false);
+		
 		Log.i("BirthdayProvider", "Show months: " + showMonths);
 		String today = SHORT_FORMAT.format(TODAY.getTime());
 		Calendar endOfSearch = (Calendar) TODAY.clone();
@@ -59,6 +65,34 @@ public class BirthdayProvider {
 		}
 		
 		return contacts;
+	}
+	
+	public static List<BContactDebug> allBirthday(Context ctx) {
+	  	  Uri dataUri = ContactsContract.Data.CONTENT_URI;
+	  	  
+	  	  String[] projection = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
+	  			  	ContactsContract.CommonDataKinds.Event.CONTACT_ID,
+	  			  	ContactsContract.CommonDataKinds.Event.START_DATE,
+	  			  	ContactsContract.Contacts.LOOKUP_KEY,
+	  			  	ContactsContract.Contacts.PHOTO_ID
+	  			  	};
+	  	  
+	  	  
+	  	  Cursor c = ctx.getContentResolver().query(
+	  	       dataUri,
+	  	       projection, 
+	  	       ContactsContract.Data.MIMETYPE + "= ? AND " + 
+	  	       Event.TYPE + "=" + Event.TYPE_BIRTHDAY, new String[]{Event.CONTENT_ITEM_TYPE}, 
+	  	       ContactsContract.Contacts.DISPLAY_NAME); 
+	  	  
+	  	List<BContactDebug> result = new ArrayList<BContactDebug>();
+	  	while (c!= null && c.moveToNext()) {
+	  		result.add(new BContactDebug(c.getString(0), c.getLong(1),c.getString(2), c.getString(3), c.getString(4)));
+	  	}
+	  	if (c != null) {
+	  		c.close();
+	  	}
+	  	return result;
 	}
 	
 	
@@ -98,7 +132,7 @@ public class BirthdayProvider {
   	  return result;
   }
     
-    private static ParseResult tryParseBDay(String string) throws ParseException {
+    public static ParseResult tryParseBDay(String string) throws ParseException {
     	ParseResult result = new ParseResult();
     	if (string.startsWith("--")) {
     		result.integrity = DateIntegrity.WITHOUT_YEAR;
@@ -117,11 +151,6 @@ public class BirthdayProvider {
     public static InputStream openPhoto(Context ctx, long contactId) {
     	Uri contactUri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contactId));
 		return Contacts.openContactPhotoInputStream(ctx.getContentResolver(), contactUri);
-    }
-    
-    static class ParseResult {
-    	Date date;
-    	DateIntegrity integrity;     	
     }
     
 }

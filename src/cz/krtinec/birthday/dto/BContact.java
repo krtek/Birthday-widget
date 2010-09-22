@@ -8,26 +8,19 @@ import java.util.GregorianCalendar;
 
 import static cz.krtinec.birthday.data.BirthdayProvider.TODAY;
 
-public final class BContact {
+public final class BContact extends BContactParent {
 	
 	
 	static Calendar tempCalendar = new GregorianCalendar();
-	private String displayName;
-	private long id; 
 	private Date bDay;
 	private Integer age;
 	private Integer daysToBirthday;
-	private String lookupKey;
-	private String photoId;
 	private DateIntegrity integrity;
 	
 	
 	public BContact(String displayName, long id, Date bDay, String lookupKey, String photoId, boolean nextYear, DateIntegrity integrity) {
-		this.displayName = displayName;
-		this.id = id;
-		this.bDay = bDay;
-		this.lookupKey = lookupKey;
-		this.photoId = photoId;
+		super(displayName, id, lookupKey, photoId);		
+		this.bDay = bDay;		
 		this.integrity = integrity;
 		
 		tempCalendar.setTime(bDay);
@@ -45,15 +38,6 @@ public final class BContact {
 	}
 
 
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-
 	public Date getbDay() {
 		return bDay;
 	}
@@ -66,13 +50,6 @@ public final class BContact {
 		return daysToBirthday;
 	}
 	
-	public String getLookupKey() {
-		return lookupKey;
-	}
-	
-	public String getPhotoId() {
-		return photoId;
-	}
 	
 	@Override
 	public String toString() {

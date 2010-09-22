@@ -8,6 +8,7 @@ import com.admob.android.ads.AdManager;
 
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.ui.AdapterParent;
 import cz.krtinec.birthday.ui.BirthdayPreference;
 
 import android.app.Activity;
@@ -27,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Birthday extends Activity {
+	private static final int DEBUG_MENU = 0;
 	private static final int PREFS_MENU = 1;
 	
     /** Called when the activity is first created. */
@@ -44,7 +46,7 @@ public class Birthday extends Activity {
 	protected void onResume() {		
 		super.onResume();
 		 ListView list = (ListView) findViewById(R.id.list1);
-		 int monthsAhead = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("show_ahead.interval", "1"));
+		 int monthsAhead = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("show_ahead.interval", "12"));
 	        List<BContact> listOfContacts = BirthdayProvider.upcomingBirthday(
 	        		this, monthsAhead);       
 	        list.setAdapter(new BirthdayAdapter(listOfContacts, this));    
@@ -54,7 +56,7 @@ public class Birthday extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//menu.add(Menu.NONE, RELOAD_MENU, 0, R.string.reload).setIcon(R.drawable.ic_menu_refresh);
+		menu.add(Menu.NONE, DEBUG_MENU, 0, R.string.debug_menu).setIcon(android.R.drawable.ic_menu_edit);
 		menu.add(Menu.NONE, PREFS_MENU, 1, R.string.preferences_menu).setIcon(android.R.drawable.ic_menu_preferences);		
 		return true;
 	}
@@ -62,38 +64,26 @@ public class Birthday extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case PREFS_MENU: {
-			Intent settingsActivity = new Intent(getBaseContext(), BirthdayPreference.class);			
-			startActivity(settingsActivity);
-			return true;
-		}}
+			case PREFS_MENU: {
+				Intent settingsActivity = new Intent(getBaseContext(), BirthdayPreference.class);			
+				startActivity(settingsActivity);
+				return true;
+			}
+			case DEBUG_MENU: {
+				Intent debugIntent = new Intent(getBaseContext(), BirthdayDebug.class);
+				startActivity(debugIntent);
+				return true;
+			}
+		}
 		return false;
 		
 	}
 	
-    static class BirthdayAdapter extends BaseAdapter {
-    	private List<BContact> list;
-    	private Context ctx;
+    static class BirthdayAdapter extends AdapterParent<BContact> {
     	
     	public BirthdayAdapter(List<BContact> list, Context ctx) {
-    		this.list = list;
-    		this.ctx = ctx;
+    		super(list,ctx);
     	}
-
-		@Override
-		public int getCount() {
-			return list.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return list.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return list.get(position).hashCode();
-		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
