@@ -19,7 +19,7 @@ public class BContactDebug extends BContactParent {
 	
 	public DateIntegrity getIntegrity() {
 		try {
-			ParseResult result = BirthdayProvider.tryParseBDay(this.bDay);
+			ParseResult result = BirthdayProvider.getInstance().tryParseBDay(this.bDay);
 			return result.integrity;
 		} catch (ParseException e) {
 			return DateIntegrity.NONE;

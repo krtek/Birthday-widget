@@ -47,8 +47,7 @@ public class Birthday extends Activity {
 		super.onResume();
 		 ListView list = (ListView) findViewById(R.id.list1);
 		 int monthsAhead = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("show_ahead.interval", "12"));
-	        List<BContact> listOfContacts = BirthdayProvider.upcomingBirthday(
-	        		this, monthsAhead);       
+	        List<BContact> listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(this);       
 	        list.setAdapter(new BirthdayAdapter(listOfContacts, this));    
 	}
 

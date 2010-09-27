@@ -43,7 +43,7 @@ public class BirthdayWidget extends AppWidgetProvider {
 			}
 
 			private void updateViews(RemoteViews views) {
-				List<BContact> list = BirthdayProvider.upcomingBirthday(this, 6);
+				List<BContact> list = BirthdayProvider.getInstance().upcomingBirthday(this);
 				if (list.size() > 0) {
 					BContact contact = list.get(0);
 					views.setTextViewText(R.id.first_name, contact.getDisplayName());
