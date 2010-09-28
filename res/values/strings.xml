@@ -4,12 +4,15 @@
     <string name="widget_name">Birthday Widget</string>
     <string name="empty"></string>
     <string name="no_name_found">No birthday found.</string>
-    <string name="crash_toast_text">Ooops. Birthday has crashed, we are working hard on fixing this!</string>
-    <string name="date_of_birthday">{0, date, medium}</string>
+    <string name="crash_toast_text">Ooops. Birthday has crashed, we are working hard on fixing this!</string>    
     
     <!-- Preferences -->
-    <string name="preferences_menu">Preferences</string>
-    <string name="debug_menu">Debug</string>
-    <string name="pref_ahead_title">Show next</string>
-    <string name="pref_ahead_summary">Show birthdays for next</string>
+    <string name="preferences_menu">Preferences</string>    
+    <string name="date_format_title">Date format</string>
+    <string name="date_format_summary">Set display date format</string>
+    
+    <!-- Debug view -->
+    <string name="debug_menu">Debug view</string>
+    <string name="debug_raw">Raw data: {0}</string>
+    <string name="debug_parsed">Parsed as: {0}</string>
 </resources>

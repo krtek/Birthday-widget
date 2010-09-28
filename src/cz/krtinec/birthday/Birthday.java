@@ -45,8 +45,7 @@ public class Birthday extends Activity {
 	@Override
 	protected void onResume() {		
 		super.onResume();
-		 ListView list = (ListView) findViewById(R.id.list1);
-		 int monthsAhead = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("show_ahead.interval", "12"));
+		 ListView list = (ListView) findViewById(R.id.list1);		 
 	        List<BContact> listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(this);       
 	        list.setAdapter(new BirthdayAdapter(listOfContacts, this));    
 	}
@@ -97,7 +96,7 @@ public class Birthday extends Activity {
 			
 			((TextView)v.findViewById(R.id.name)).setText(contact.getDisplayName());
 			((TextView)v.findViewById(R.id.age)).setText(String.valueOf((contact.getAge() == null) ? "--" : contact.getAge()));
-			((TextView)v.findViewById(R.id.date)).setText(MessageFormat.format(ctx.getString(R.string.date_of_birthday), contact.getbDay()));
+			((TextView)v.findViewById(R.id.date)).setText(contact.getDisplayDate(ctx));
 			((TextView)v.findViewById(R.id.days)).setText(String.valueOf(contact.getDaysToBirthday()));
 			
 			//set photo

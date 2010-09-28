@@ -85,7 +85,7 @@ public class BirthdayProvider {
 	
 	
 	
-	public static List<BContactDebug> allBirthday(Context ctx) {
+	public List<BContactDebug> allBirthday(Context ctx) {
 	  	  Uri dataUri = ContactsContract.Data.CONTENT_URI;
 	  	  
 	  	  String[] projection = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
@@ -103,14 +103,21 @@ public class BirthdayProvider {
 	  	       Event.TYPE + "=" + Event.TYPE_BIRTHDAY, new String[]{Event.CONTENT_ITEM_TYPE}, 
 	  	       ContactsContract.Contacts.DISPLAY_NAME); 
 	  	  
-	  	List<BContactDebug> result = new ArrayList<BContactDebug>();
+	  	Set<BContactDebug> result = new TreeSet<BContactDebug>();
 	  	while (c!= null && c.moveToNext()) {
-	  		result.add(new BContactDebug(c.getString(0), c.getLong(1),c.getString(2), c.getString(3), c.getString(4)));
+	  		ParseResult parseResult;
+			try {
+				parseResult = tryParseBDay(c.getString(2));
+				result.add(new BContactDebug(c.getString(0), c.getLong(1),parseResult.date, c.getString(2) , c.getString(3), c.getString(4), parseResult.integrity));
+			} catch (ParseException e) {
+				result.add(new BContactDebug(c.getString(0), c.getLong(1), null, c.getString(2) , c.getString(3), c.getString(4), DateIntegrity.NONE));
+			}
+	  		
 	  	}
 	  	if (c != null) {
 	  		c.close();
 	  	}
-	  	return result;
+	  	return new ArrayList<BContactDebug>(result);
 	}
 
     

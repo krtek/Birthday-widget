@@ -22,7 +22,8 @@
 		android:orientation="vertical"
 		android:layout_column="1"> 
 		<TextView android:text="name" android:id="@+id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="20dip" android:padding="5dip"></TextView>
-		<TextView android:text="date" android:id="@+id/date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12dip" android:padding="5dip"></TextView>
+		<TextView android:text="dateAsString" android:id="@+id/dateAsString" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12dip" android:padding="5dip"></TextView>
+		<TextView android:text="dateParsed" android:id="@+id/dateParsed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12dip" android:padding="5dip"></TextView>		
 	</LinearLayout>
 		
 		<ImageView 

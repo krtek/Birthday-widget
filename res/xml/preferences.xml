@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 <ListPreference 	 
-	android:entryValues="@array/time_interval_values" 
-	android:entries="@array/time_interval_texts" 
+	android:entryValues="@array/format_texts_index" 
+	android:entries="@array/format_texts" 
 	android:dialogIcon="@drawable/icon" 
-	android:dialogTitle="@string/pref_ahead_title" 
-	android:title="@string/pref_ahead_title" 
-	android:summary="@string/pref_ahead_summary" 
-	android:key="show_ahead.interval" 
+	android:dialogTitle="@string/date_format_title" 
+	android:title="@string/date_format_title" 
+	android:summary="@string/date_format_summary" 
+	android:key="date_format" 
 	android:persistent="true" 
 	android:defaultValue="1">
 	</ListPreference>

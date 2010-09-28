@@ -38,7 +38,7 @@ public class BirthdayDebug extends Activity {
 	protected void onResume() {		
 		super.onResume();
 		 ListView list = (ListView) findViewById(R.id.debug_list);		 
-	        List<BContactDebug> listOfContacts = BirthdayProvider.allBirthday(this);
+	        List<BContactDebug> listOfContacts = BirthdayProvider.getInstance().allBirthday(this);
 	        list.setAdapter(new BirthdayDebugAdapter(listOfContacts, this));    
 	}
 	
@@ -58,10 +58,12 @@ public class BirthdayDebug extends Activity {
 				v = convertView;
 			}
 			
-			((TextView)v.findViewById(R.id.name)).setText(contact.getDisplayName());			
-			((TextView)v.findViewById(R.id.date)).setText(contact.getbDay());	
+			((TextView)v.findViewById(R.id.name)).setText(contact.getDisplayName());				
+			((TextView)v.findViewById(R.id.dateParsed)).setText(MessageFormat.format(ctx.getString(R.string.debug_parsed), contact.getDisplayDate(ctx)));
 			
+			((TextView)v.findViewById(R.id.dateAsString)).setText(MessageFormat.format(ctx.getString(R.string.debug_raw), contact.getbDayString()));				
 			ImageView check = (ImageView)v.findViewById(R.id.check);
+			
 			switch (contact.getIntegrity()) {
 				case FULL: {
 					check.setImageResource(R.drawable.accept);

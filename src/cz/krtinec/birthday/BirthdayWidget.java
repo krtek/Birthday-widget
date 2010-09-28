@@ -47,14 +47,14 @@ public class BirthdayWidget extends AppWidgetProvider {
 				if (list.size() > 0) {
 					BContact contact = list.get(0);
 					views.setTextViewText(R.id.first_name, contact.getDisplayName());
-					views.setTextViewText(R.id.first_date, DateFormat.getDateInstance().format(contact.getbDay()));
+					views.setTextViewText(R.id.first_date, contact.getDisplayDate(this));
 				} else {
 					views.setTextViewText(R.id.first_name, getText(R.string.no_name_found));				
 				}
 				if (list.size() > 1) {
 					BContact contact = list.get(1);
 					views.setTextViewText(R.id.second_name, contact.getDisplayName());
-					views.setTextViewText(R.id.second_date, DateFormat.getDateInstance().format(contact.getbDay()));					
+					views.setTextViewText(R.id.second_date, contact.getDisplayDate(this));					
 				} else {
 					views.setTextViewText(R.id.second_name, getText(R.string.no_name_found));
 				}
