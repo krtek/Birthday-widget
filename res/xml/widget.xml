@@ -19,4 +19,5 @@
     android:minHeight="72dip"
     android:updatePeriodMillis="3600000"
     android:initialLayout="@layout/widget"
+    android:configure="cz.krtinec.birthday.ui.BirthdayPreference" 
     />

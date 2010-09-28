@@ -13,7 +13,7 @@
         </activity>
         <activity android:name=".BirthdayDebug"
                   android:label="@string/debug_menu">
-        </activity>
+        </activity>        
 		      <!-- Broadcast Receiver that will process AppWidget updates -->
         <receiver android:name=".BirthdayWidget" android:label="@string/widget_name">
             <intent-filter>
@@ -23,7 +23,12 @@
         </receiver>
         
         <!-- Preferences -->
-        <activity android:name=".ui.BirthdayPreference" android:label="@string/preferences_menu"></activity>
+        <activity android:name=".ui.BirthdayPreference" android:label="@string/preferences_menu">
+        	<intent-filter>
+        		<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+    		</intent-filter>        	
+        </activity>
+        
         <!-- Service to perform web API queries -->        
         <service android:name=".BirthdayWidget$UpdateService" />
         
