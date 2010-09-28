@@ -32,7 +32,7 @@ public final class BContact extends BContactParent implements Comparable<BContac
 		
 		if (DateIntegrity.FULL == this.integrity) {
 			age = TODAY.get(Calendar.YEAR) - tempCalendar.get(Calendar.YEAR);	
-			age = nextYear ? age : age + 1;
+			age = nextYear ? age + 1: age;
 		} else {
 			age = null;
 		}
