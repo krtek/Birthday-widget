@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import cz.krtinec.birthday.DateFormatter;
 import cz.krtinec.birthday.R;
 
 import android.content.Context;
@@ -118,15 +119,7 @@ public class BContact implements Comparable<BContact> {
 	}
 	
 	public String getDisplayDate(Context ctx) {
-		if (this.bDay == null) {
-			return "--";
-		}
-		int fIndex = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(ctx).getString("date_format", "1"));
-		String format = integrity == DateIntegrity.FULL ? 
-			ctx.getResources().getStringArray(R.array.long_format_values)[fIndex] :
-				ctx.getResources().getStringArray(R.array.short_format_values)[fIndex];
-			
-		return new SimpleDateFormat(format).format(this.bDay);
+		return DateFormatter.getInstance(ctx).format(this.bDay, this.integrity);
 	}
 
 }

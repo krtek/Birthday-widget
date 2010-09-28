@@ -36,7 +36,7 @@ public class Birthday extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        AdManager.setTestDevices( new String[] { "F57D9A6828124CD742993F5653A6AC3C" } );
+        AdManager.setTestDevices( new String[] { "F57D9A6828124CD742993F5653A6AC3C", AdManager.TEST_EMULATOR} );
 
     }
         

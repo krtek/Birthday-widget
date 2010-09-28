@@ -1,5 +1,6 @@
 package cz.krtinec.birthday.ui;
 
+import cz.krtinec.birthday.DateFormatter;
 import cz.krtinec.birthday.R;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -13,6 +14,7 @@ public class BirthdayPreference extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);			
+		DateFormatter.reset();
 		addPreferencesFromResource(R.xml.preferences);
 		setResult(RESULT_CANCELED);
 		 Intent intent = getIntent();
