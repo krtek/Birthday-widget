@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.View;
+import android.widget.Button;
 
 public class BirthdayPreference extends PreferenceActivity {
 	int widgetId;
@@ -22,21 +23,22 @@ public class BirthdayPreference extends PreferenceActivity {
 	        }
 		
 		setContentView(R.layout.prefs_layout);
-		findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (widgetId ==  AppWidgetManager.INVALID_APPWIDGET_ID) {
-					//called from application
-					setResult(RESULT_OK);
-				} else {
+		if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+		
+			findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 					setResult(RESULT_OK, resultValue);
+					finish();
 				}
-				finish();
-			}
-		});
+			});
+		} else {
+			//called from application
+			findViewById(R.id.save_button).setVisibility(Button.GONE);
+		}
 		
 	}
 
