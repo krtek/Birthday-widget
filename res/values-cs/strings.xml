@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+	<!-- Buttons -->
+	<string name="save">Uložit</string>
+	<string name="ok">Ok</string>
+	
+
+    <string name="app_name">Birthday</string>
+    <string name="widget_name">Birthday Widget</string>
+    <string name="empty"></string>
+    <string name="no_name_found">Nenašel jsem narozeniny.</string>
+    <string name="crash_toast_text">Ooops. Narozeniny spadly - pracujeme na opravě.</string>    
+    
+    <!-- Preferences -->
+    <string name="preferences_menu">Nastavení</string>    
+    <string name="date_format_title">Formát data</string>
+    <string name="date_format_summary">Nastavit formát data</string>
+    
+    <!-- Debug view -->
+    <string name="debug_menu">Debug zobrazení</string>
+    <string name="debug_raw">Čistá data: {0}</string>
+    <string name="debug_parsed">Přečteno jako: {0}</string>
+    
+    <!-- Help view -->
+    <string name="help_menu">Pomoc</string>
+    <string name="help_string">\nV případě problémů použijte Menu -> Debug zobrazení\n\n
+	Nebo mrkněte na FAQ na www.krtinec.cz/Home/bdwidget \n\n
+	Kontakt: lukas.marek@gmail.com\n\n	
+    A nezapomeňte se podívat na twitter.com/BDWidget \n</string>
+    <string name="help_title">Narozeniny Help</string>
+</resources>
