@@ -6,7 +6,8 @@
 	
 
     <string name="app_name">Birthday</string>
-    <string name="widget_name">Birthday Widget</string>
+    <string name="widget_name2x1">Birthday Widget 2x1</string>
+    <string name="widget_name4x1">Birthday Widget 4x1</string>
     <string name="empty"></string>
         <string name="loading">Loading birthdays from contacts</string>
     <string name="no_name_found">No birthday found.</string>
