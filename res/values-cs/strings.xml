@@ -28,4 +28,7 @@
 	Kontakt: lukas.marek@gmail.com\n\n	
     A nezapomeňte se podívat na twitter.com/BDWidget \n</string>
     <string name="help_title">Narozeniny Help</string>
+    <string name="no_data_found">Nejsou nastavené narozeniny u kontaktů.\nNastavte je přes Google Contacts.</string>
+    
+    <string name="loading">Nahrávám narozeniny z kontaktů</string>
 </resources>

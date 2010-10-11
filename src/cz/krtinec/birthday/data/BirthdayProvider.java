@@ -35,6 +35,9 @@ public class BirthdayProvider {
 		patterns.add(new DatePattern("\\d{8}$", "yyyyMMdd", DateIntegrity.FULL));
 		patterns.add(new DatePattern("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}:\\d{1,2}.*", 
 				"yyyy-MM-dd'T'hh:mm:ss", DateIntegrity.FULL));
+		//20080220T000000
+		patterns.add(new DatePattern("\\d{8}T\\d{6}", 
+				"yyyyMMdd'T'hhmmss", DateIntegrity.FULL));
 		
 	}
 	

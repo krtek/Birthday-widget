@@ -14,10 +14,11 @@
       app:secondaryTextColor="#CCCCCC"
       app:keywords="Birthday, present, gift"
     />
-<ListView android:id="@+id/list1" 
-  	android:layout_width="wrap_content" 
-  	android:layout_height="fill_parent"
-  	android:layout_above="@id/ad"
+	<ListView android:id="@+id/list" 
+	  	android:layout_width="wrap_content" 
+	  	android:layout_height="fill_parent"
+	  	android:layout_weight="1"
+	  	android:layout_above="@id/ad"  	  	
   	 /> 
  
 </RelativeLayout>

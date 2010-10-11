@@ -12,10 +12,12 @@ import android.widget.BaseAdapter;
 public abstract class AdapterParent<T extends BContact> extends BaseAdapter {
 	protected List<T> list;
 	protected Context ctx;
+	protected PhotoLoader loader;
 	
-	public AdapterParent(List<T> list, Context ctx) {
+	public AdapterParent(List<T> list, Context ctx, PhotoLoader loader) {
 		this.list = list;
 		this.ctx = ctx;
+		this.loader = loader;
 	}
 	
 	@Override

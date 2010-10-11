@@ -12,11 +12,13 @@ import cz.krtinec.birthday.dto.BContact;
 import cz.krtinec.birthday.dto.BContactDebug;
 import cz.krtinec.birthday.dto.DateIntegrity;
 import cz.krtinec.birthday.ui.AdapterParent;
+import cz.krtinec.birthday.ui.PhotoLoader;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class BirthdayDebug extends Activity {
+	private PhotoLoader loader;
 	   /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,14 +40,25 @@ public class BirthdayDebug extends Activity {
 	@Override
 	protected void onResume() {		
 		super.onResume();
-		 ListView list = (ListView) findViewById(R.id.debug_list);		 
+		 ListView list = (ListView) findViewById(R.id.debug_list);		 	        
+			loader = new PhotoLoader(new Handler(), this);
+			Thread thread = new Thread(loader);
+			thread.setPriority(Thread.MIN_PRIORITY);
+			thread.start();
 	        List<BContactDebug> listOfContacts = BirthdayProvider.getInstance().allBirthday(this);
-	        list.setAdapter(new BirthdayDebugAdapter(listOfContacts, this));    
+	        list.setAdapter(new BirthdayDebugAdapter(listOfContacts, this, loader));    
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		loader.shutdown();
+//		Debug.stopMethodTracing();		
 	}
 	
     static class BirthdayDebugAdapter extends AdapterParent<BContactDebug> {
-    	public BirthdayDebugAdapter(List<BContactDebug> list, Context ctx) {
-    		super(list, ctx);
+    	public BirthdayDebugAdapter(List<BContactDebug> list, Context ctx, PhotoLoader loader) {
+    		super(list, ctx, loader);
     	}
 
 		@Override
@@ -78,17 +92,11 @@ public class BirthdayDebug extends Activity {
 					break;										
 				}
 			}
+			final ImageView imageView = (ImageView)v.findViewById(R.id.bicon);
+			imageView.setImageResource(R.drawable.icon);			
+			loader.addPhotoToLoad((ImageView)v.findViewById(R.id.bicon), contact.getId());
 			
-			
-			//set photo
-			InputStream photoStream;
-			if (contact.getPhotoId() != null && 
-					(photoStream = BirthdayProvider.openPhoto(ctx, contact.getId())) != null) {
-				Drawable d = Drawable.createFromStream(photoStream, "src");
-				((ImageView)v.findViewById(R.id.bicon)).setImageDrawable(d);
-			} else {
-				((ImageView)v.findViewById(R.id.bicon)).setImageResource(R.drawable.icon);
-			}
+
 			
 			return v;
 
