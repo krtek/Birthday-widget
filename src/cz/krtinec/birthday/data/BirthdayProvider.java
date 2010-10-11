@@ -122,6 +122,9 @@ public class BirthdayProvider {
 
     
     public ParseResult tryParseBDay(String string) throws ParseException {
+    	if (string == null) {
+    		throw new ParseException("Cannot parse: <null>", 0);
+    	}
     	for (DatePattern pat: patterns) {
     		if (string.matches(pat.pattern)) {
     			return new ParseResult(pat.format.parse(string), pat.integrity);
