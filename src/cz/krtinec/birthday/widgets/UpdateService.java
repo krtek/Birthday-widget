@@ -39,7 +39,7 @@ public abstract class UpdateService extends Service {
 	}
 	
 	
-	void replaceIconWithPhoto(RemoteViews views, BContact contact, int viewId) {
+	protected void replaceIconWithPhoto(RemoteViews views, BContact contact, int viewId) {
 		InputStream is = BirthdayProvider.openPhoto(this, contact.getId());
 		if (is != null) {
 			Bitmap bitmap = BitmapFactory.decodeStream(is);
