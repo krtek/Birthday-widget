@@ -50,6 +50,8 @@ public abstract class UpdateService extends Service {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else {
+			views.setImageViewResource(viewId, R.drawable.icon);
 		}
 	}
 }
