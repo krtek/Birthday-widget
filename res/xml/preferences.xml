@@ -10,5 +10,13 @@
 	android:key="date_format" 
 	android:persistent="true" 
 	android:defaultValue="1">
-	</ListPreference>
+</ListPreference>
+
+<EditTextPreference android:title="@string/template_title" 
+	android:key="template" 
+	android:summary="@string/template_summary"
+	android:persistent="true" 
+	android:defaultValue="@string/congrats_pattern">
+	
+</EditTextPreference>
 </PreferenceScreen>

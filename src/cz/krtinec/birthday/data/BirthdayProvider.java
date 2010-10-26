@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.Log;
@@ -55,7 +56,7 @@ public class BirthdayProvider {
 	  			  	ContactsContract.CommonDataKinds.Event.CONTACT_ID,
 	  			  	ContactsContract.CommonDataKinds.Event.START_DATE,
 	  			  	ContactsContract.Contacts.LOOKUP_KEY,
-	  			  	ContactsContract.Contacts.PHOTO_ID
+	  			  	ContactsContract.Contacts.PHOTO_ID	  			  		  			  	  			  
 	  			  	};
 	  	  
 	  	  
@@ -148,7 +149,48 @@ public class BirthdayProvider {
     	Uri contactUri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contactId));
 		return Contacts.openContactPhotoInputStream(ctx.getContentResolver(), contactUri);
     }
+    
+    public static String getPhoneNumber(Context ctx, long id) {
+        Cursor cursor = ctx.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{
+        			ContactsContract.CommonDataKinds.Phone.NUMBER},
+        			ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + id 
+        				+ " AND " + ContactsContract.CommonDataKinds.Phone.TYPE 
+        				+ "=" + ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE
+        				,null, null);
+          
         
+        try {
+            if (cursor.moveToFirst()) {
+                 return cursor.getString(0);
+            } else {
+            	return null;
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+        
+    public static String getEmail(Context ctx, long id) {
+        Cursor cursor = ctx.getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                new String[]{
+        			ContactsContract.CommonDataKinds.Email.DATA},
+        			ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + id        				
+        				,null, null);
+          
+        
+        try {
+            if (cursor.moveToFirst()) {
+                 return cursor.getString(0);
+            } else {
+            	return null;
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+
+    
     class DatePattern {
     	String pattern;
     	SimpleDateFormat format;

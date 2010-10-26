@@ -1,6 +1,5 @@
 package cz.krtinec.birthday;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.admob.android.ads.AdManager;
@@ -19,30 +18,36 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class Birthday extends Activity {
-	private static final String VERSION_TEXT = "version";
+	private static final String VERSION_KEY = "version";
+	public static final String TEMPLATE_KEY = "template";
+	
 	private static final int DEBUG_MENU = 0;
 	private static final int PREFS_MENU = 1;
 	private static final int HELP_MENU = 2;
 	private PhotoLoader loader;
 	private ProgressDialog dialog;
 	private Handler handler;
-	
+	private List<BContact> listOfContacts;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,17 +58,16 @@ public class Birthday extends Activity {
         try {
 			int version = this.getPackageManager().getPackageInfo("cz.krtinec.birthday", 0).versionCode;
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-			if (version != prefs.getInt(VERSION_TEXT, 1)) {
+			if (version != prefs.getInt(VERSION_KEY, 1)) {
 				AlertDialog dialog = createHelpDialog(this);
 				dialog.show();
 				Editor editor = prefs.edit();
-				editor.putInt(VERSION_TEXT, version);
+				editor.putInt(VERSION_KEY, version);
 				editor.commit();				
 			}
 		} catch (NameNotFoundException e) {
 			//obviosly this is always installed
 		}
-
     }
     
 	@Override
@@ -96,7 +100,41 @@ public class Birthday extends Activity {
 		new Thread(new StartupThread(this)).start();		
 	}
 
+	
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) { 
+		menu.setHeaderTitle(R.string.context_menu_header);
+		
+		BContact item = listOfContacts.get(((AdapterContextMenuInfo) menuInfo).position);
+		MenuItem callItem = menu.add(R.string.context_menu_call).setEnabled(false);
+		MenuItem smstItem = menu.add(R.string.context_menu_text).setEnabled(false);		
+		MenuItem emailItem = menu.add(R.string.context_menu_email).setEnabled(false);		
+		String phone = BirthdayProvider.getPhoneNumber(this, item.getId());
+		if (phone != null) {
+			smstItem.setEnabled(true);
+			Intent smsIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" + phone ) );
+			smsIntent.putExtra( "sms_body", Utils.getCongrats(this, item.getDisplayName()));
+			smstItem.setIntent(smsIntent);
+			callItem.setEnabled(true);
+			Intent callIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "tel:" + phone ) );
+			callItem.setIntent(callIntent);
+		}
+		String email = BirthdayProvider.getEmail(this, item.getId());
+		if (email != null) {			
+			emailItem.setEnabled(true);	
+			String subject = getString(R.string.congrats_subject);
+			String body = Utils.getCongrats(this, item.getDisplayName());
+			Intent mailer = new Intent(Intent.ACTION_SEND);
+			mailer.setType("text/plain");
+			mailer.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+			mailer.putExtra(Intent.EXTRA_SUBJECT, subject);
+			mailer.putExtra(Intent.EXTRA_TEXT, body);
+			emailItem.setIntent(mailer);
+		}
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,9 +238,10 @@ public class Birthday extends Activity {
 				@Override
 				public void run() {
 					ListView list = (ListView) activity.findViewById(R.id.list);					
-					List<BContact> listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(activity);
+					listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(activity);
 
 					list.setAdapter(new BirthdayAdapter(listOfContacts, activity, loader));
+					registerForContextMenu((ListView)findViewById(R.id.list));
 					dialog.cancel();
 					if (listOfContacts.isEmpty()) {
 						 new AlertDialog.Builder(activity)

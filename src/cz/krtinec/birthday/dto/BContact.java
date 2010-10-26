@@ -102,6 +102,7 @@ public class BContact implements Comparable<BContact> {
 		return displayName + ":" + bDay == null ? "null" : bDay.toGMTString();
 	}
 	
+
 	@Override
 	public int compareTo(BContact another) {
 		if (this.nextYear && !another.nextYear) {

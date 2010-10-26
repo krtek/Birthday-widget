@@ -7,7 +7,7 @@
 
     <string name="app_name">Birthday</string>
     <string name="widget_name2x1">Birthday Widget 2x1</string>
-    <string name="widget_name4x1">Birthday Widget 4x1</string>
+    <string name="widget_name4x1">Birthday Widget 4x2</string>
     <string name="empty"></string>
     <string name="no_name_found">Nenašel jsem narozeniny.</string>
     <string name="crash_toast_text">Ooops. Narozeniny spadly - pracujeme na opravě.</string>    
