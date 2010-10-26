@@ -17,8 +17,7 @@ public class UpdateService4x1 extends UpdateService {
 
 	@Override
 	public RemoteViews updateViews() {
-		RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.widget4x1);
-		List<BContact> list = BirthdayProvider.getInstance().upcomingBirthday(this);
+		RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.widget4x1);		
 		if (list.size() > 0) {
 			BContact contact = list.get(0);
 			views.setTextViewText(R.id.first_name, contact.getDisplayName());

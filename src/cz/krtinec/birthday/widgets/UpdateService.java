@@ -2,11 +2,17 @@ package cz.krtinec.birthday.widgets;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
+import java.util.Calendar;
+import java.util.List;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +23,12 @@ import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.BContact;
 
-public abstract class UpdateService extends Service {		 
+public abstract class UpdateService extends Service {
+	protected List<BContact> list;
+	private int NOTIFY_CODE = 1;
+	private int WIDGET_CODE = 0;
+	
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -31,14 +42,16 @@ public abstract class UpdateService extends Service {
 	public void onStart(Intent intent, int startId) {
 		
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
-
+		list = BirthdayProvider.getInstance().upcomingBirthday(this);
+		alertOnBirthday();
 		RemoteViews views = updateViews();
 		Intent i = new Intent(getApplicationContext(), Birthday.class);
-		views.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT));
-		manager.updateAppWidget(getComponentName(), views);
+		views.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(this, WIDGET_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT));
+		list = null;
+		manager.updateAppWidget(getComponentName(), views);		
 	}
 	
-	
+
 	protected void replaceIconWithPhoto(RemoteViews views, BContact contact, int viewId) {
 		InputStream is = BirthdayProvider.openPhoto(this, contact.getId());
 		if (is != null) {
@@ -52,6 +65,28 @@ public abstract class UpdateService extends Service {
 			}
 		} else {
 			views.setImageViewResource(viewId, R.drawable.icon);
+		}
+	}
+	
+	private void alertOnBirthday() {
+		for (BContact c:list) {
+			if (c.getbDaySort().equals(BContact.PIVOT)) {
+//			if (c.getbDaySort().equals("0225")) {
+				//should fire alarm
+				Calendar now = Calendar.getInstance();
+				if (now.get(Calendar.HOUR_OF_DAY) == 8) {
+					String notificationFormat = this.getString(R.string.notification_pattern);					
+					Notification n = new Notification(R.drawable.icon, getString(R.string.notification_alert), now.getTimeInMillis());
+					n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;					
+					Intent i = new Intent(getApplicationContext(), Birthday.class);
+					PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFY_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
+														
+					n.setLatestEventInfo(this, getString(R.string.notification_alert), 
+							MessageFormat.format(notificationFormat, c.getDisplayName()), pendingIntent);
+					NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+					manager.notify("Birthday", (int)c.getId(), n);
+				}
+			}
 		}
 	}
 }

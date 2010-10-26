@@ -25,7 +25,7 @@ public class BContact implements Comparable<BContact> {
 	protected Date bDay;
 	protected DateIntegrity integrity;
 	protected String bDaySort;
-	protected String pivot = SHORT_FORMAT.format(TODAY.getTime());
+	public static String PIVOT = SHORT_FORMAT.format(TODAY.getTime());
 	protected boolean nextYear;
 	
 	static Calendar tempCalendar = new GregorianCalendar();
@@ -49,7 +49,7 @@ public class BContact implements Comparable<BContact> {
 			bDaySort = "0000";
 		}
 		
-		nextYear = bDaySort.compareTo(pivot) < 0;	
+		nextYear = bDaySort.compareTo(PIVOT) < 0;	
 		
 		if (DateIntegrity.FULL == this.integrity) {
 			age = TODAY.get(Calendar.YEAR) - tempCalendar.get(Calendar.YEAR);	
@@ -97,6 +97,10 @@ public class BContact implements Comparable<BContact> {
 		return this.integrity;
 	}
 	
+	public String getbDaySort() {
+		return bDaySort;
+	}
+
 	@Override
 	public String toString() {
 		return displayName + ":" + bDay == null ? "null" : bDay.toGMTString();
