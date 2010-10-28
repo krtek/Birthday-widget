@@ -20,6 +20,11 @@
     <string name="date_format_summary">Set display date format</string>
     <string name="template_title">Gratulation template</string>
     <string name="template_summary">Edit your predefined template. {0} is replaced by contact name.</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_enabled">Enabled</string>    
+    <string name="notifications_time">Notification</string>
+    <string name="general">General</string>
+    
     
     
     <!-- Debug view -->

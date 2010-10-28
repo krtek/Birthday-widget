@@ -16,5 +16,14 @@
 		<item>21.12.1978</item>
 		<item>Dec 21, 1978</item>
 	</string-array>
-	
+	<string-array name="notification_time_values">
+		<item>7</item>
+		<item>8</item>
+		<item>9</item>
+	</string-array>
+		<string-array name="notification_time_texts">
+		<item>7AM - 8AM</item>
+		<item>8AM - 9AM</item>
+		<item>9AM - 10AM</item>
+	</string-array>
 </resources>

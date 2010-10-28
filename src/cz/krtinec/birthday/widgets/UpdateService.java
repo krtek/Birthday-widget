@@ -14,9 +14,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import cz.krtinec.birthday.Birthday;
 import cz.krtinec.birthday.R;
@@ -43,7 +45,10 @@ public abstract class UpdateService extends Service {
 		
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 		list = BirthdayProvider.getInstance().upcomingBirthday(this);
-		alertOnBirthday();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		if (prefs.getBoolean("notifications.enabled", true)) {
+			alertOnBirthday();
+		}
 		RemoteViews views = updateViews();
 		Intent i = new Intent(getApplicationContext(), Birthday.class);
 		views.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(this, WIDGET_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT));
@@ -68,13 +73,15 @@ public abstract class UpdateService extends Service {
 		}
 	}
 	
-	private void alertOnBirthday() {
+	private void alertOnBirthday() {		
 		for (BContact c:list) {
 			if (c.getbDaySort().equals(BContact.PIVOT)) {
 //			if (c.getbDaySort().equals("0225")) {
 				//should fire alarm
 				Calendar now = Calendar.getInstance();
-				if (now.get(Calendar.HOUR_OF_DAY) == 8) {
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+				int hourToAlert = Integer.valueOf(prefs.getString("notifications.time", "8"));
+				if (now.get(Calendar.HOUR_OF_DAY) == hourToAlert) {
 					String notificationFormat = this.getString(R.string.notification_pattern);					
 					Notification n = new Notification(R.drawable.icon, getString(R.string.notification_alert), now.getTimeInMillis());
 					n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;					
