@@ -21,12 +21,20 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x1" />
         </receiver>
         
-         <receiver android:label="@string/widget_name4x1" android:name=".widgets.BirthdayWidget4x1">
+         <receiver android:label="@string/widget_name2x2" android:name=".widgets.BirthdayWidget2x2">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x2" />
+        </receiver>
+        
+        <receiver android:label="@string/widget_name4x1" android:name=".widgets.BirthdayWidget4x1">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1" />
         </receiver>
+        
         
         <!-- Preferences -->
         <activity android:name=".ui.BirthdayPreference" android:label="@string/preferences_menu">
@@ -37,6 +45,7 @@
         
         <!-- Service to perform web API queries -->        
         <service android:name=".BirthdayWidget$UpdateService" />
+        <service android:name=".widgets.UpdateService2x2"/>
         <service android:name=".widgets.UpdateService4x1"/>
         
         		<!-- Track Market installs from AdMob ads -->		
