@@ -38,8 +38,9 @@ public class BirthdayProvider {
 				"yyyy-MM-dd'T'hh:mm:ss", DateIntegrity.FULL));
 		//20080220T000000
 		patterns.add(new DatePattern("\\d{8}T\\d{6}", 
-				"yyyyMMdd'T'hhmmss", DateIntegrity.FULL));
-		
+				"yyyyMMdd'T'hhmmss", DateIntegrity.FULL));		
+		//1980-9-9-0
+		patterns.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd", DateIntegrity.FULL));
 	}
 	
 	public static BirthdayProvider getInstance() {
@@ -201,6 +202,8 @@ public class BirthdayProvider {
     		this.format = new SimpleDateFormat(format);
     		this.integrity = integrity;
 		}
+    	
+    	
     }
     
 }
