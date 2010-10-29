@@ -29,16 +29,15 @@ public abstract class UpdateService extends Service {
 	protected List<BContact> list;
 	private int NOTIFY_CODE = 1;
 	private int WIDGET_CODE = 0;
-	
+
+	public abstract RemoteViews updateViews();
+	public abstract ComponentName getComponentName();
 	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		return null;		
 	}
-
-	public abstract RemoteViews updateViews();
-	public abstract ComponentName getComponentName();
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
@@ -51,7 +50,7 @@ public abstract class UpdateService extends Service {
 		}
 		RemoteViews views = updateViews();
 		Intent i = new Intent(getApplicationContext(), Birthday.class);
-		views.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(this, WIDGET_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT));
+		views.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(this, WIDGET_CODE, i, PendingIntent.FLAG_UPDATE_CURRENT));
 		list = null;
 		manager.updateAppWidget(getComponentName(), views);		
 	}
