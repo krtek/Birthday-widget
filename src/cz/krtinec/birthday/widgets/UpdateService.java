@@ -64,8 +64,6 @@ public abstract class UpdateService extends Service {
 			try {
 				is.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		} else {
 			views.setImageViewResource(viewId, R.drawable.icon);
