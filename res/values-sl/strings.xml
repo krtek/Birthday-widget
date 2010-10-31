@@ -1,33 +1,39 @@
-<?xml version="1.0" encoding="utf-8" ?> 
- <!-- Generated with crowdin.net
-  --> 
+<?xml version="1.0" encoding="utf-8"?>
+<!--Generated with crowdin.net-->
 <resources>
-  <string name="save">Shrani</string> 
-  <string name="ok">V redu</string> 
-  <string name="app_name">Birthday</string> 
-  <string name="widget_name">Birthday Widget</string> 
-  <string name="widget_name2x1">Birthday Widget 2x1</string> 
-  <string name="widget_name4x1">Birthday Widget 4x2</string> 
-  <string name="empty" /> 
-  <string name="loading">Vnašanje datumov iz imenika.</string> 
-  <string name="no_name_found">Ni vpisanih datumov rojstnih dni.</string> 
-  <string name="crash_toast_text">Ups. Datumi so se sesuli. Trudimo se, da bi napako odpravili!</string> 
-  <string name="preferences_menu">Nastavitve</string> 
-  <string name="date_format_title">Oblika datuma</string> 
-  <string name="date_format_summary">Nastavitev oblike datuma</string> 
-  <string name="template_title">Naslov predloge</string> 
-  <string name="template_summary">Uredi izbrano predlogo. {0} je zamenjana z imenom iz imenika.</string> 
-  <string name="debug_menu">Osnovni pogled</string> 
-  <string name="debug_raw">Podatki: {0}</string> 
-  <string name="debug_parsed">Prikazano kot: {0}</string> 
-  <string name="help_menu">Pomoč</string> 
-  <string name="help_string">\nČe pride do težav, uporabi Meni -> Osnovni pogled\n\nali obišči FAQ na www.krtinec.cz/Home/bdwidget\n\nKontakt: lukas.marek@gmail.com\n\nin si oglej še twitter.com/BDWidget\n</string> 
-  <string name="help_title">Pomoč</string> 
-  <string name="no_data_found">V imeniku ni datumov rojstnih dni.\nNastavi jih preko Google Contacts.</string> 
-  <string name="context_menu_header">Vošči</string> 
-  <string name="context_menu_call">s klicem</string> 
-  <string name="context_menu_text">s sporočilom</string> 
-  <string name="context_menu_email">z e-pošto</string> 
-  <string name="congrats_subject">Voščilo</string> 
-  <string name="congrats_pattern">{0}, vse najboljše za tvoj rojstni dan!</string> 
-  </resources>
+  <string name="save">Shrani</string>
+  <string name="ok">V redu</string>
+  <string name="app_name">Rojstni dnevi</string>
+  <string name="widget_name">Birthday Widget</string>
+  <string name="widget_name2x1">Birthday Widget 2x1</string>
+  <string name="widget_name2x2">Birthday Widget 2x2</string>
+  <string name="widget_name4x1">Birthday Widget 4x2</string>
+  <string name="empty"></string>
+  <string name="loading">Vnašanje datumov iz imenika</string>
+  <string name="no_name_found">Ni vpisanih datumov rojstnih dni.</string>
+  <string name="crash_toast_text">Ups. Datumi so se sesuli. Trudimo se, da bi napako odpravili!</string>
+  <string name="preferences_menu">Nastavitve</string>
+  <string name="date_format_title">Oblika datuma</string>
+  <string name="date_format_summary">Nastavitev oblike datuma</string>
+  <string name="template_title">Naslov predloge</string>
+  <string name="template_summary">Uredi izbrano predlogo. {0} je zamenjana z imenom iz imenika.</string>
+  <string name="notifications">Notifications</string>
+  <string name="notifications_enabled">Enabled</string>
+  <string name="notifications_time">Notification at</string>
+  <string name="general">Splošne</string>
+  <string name="debug_menu">Osnovni pogled</string>
+  <string name="debug_raw">Podatki: {0}</string>
+  <string name="debug_parsed">&gt;Prikazano kot: {0}</string>
+  <string name="help_menu">Pomoč</string>
+  <string name="help_string">\nČe pride do težav, uporabi Meni -&gt; Osnovni pogled\n\nali obišči FAQ na www.krtinec.cz/Home/bdwidget\n\nKontakt: lukas.marek@gmail.com\n\nin si oglej še twitter.com/BDWidget\n</string>
+  <string name="help_title">Pomoč</string>
+  <string name="no_data_found">V imeniku ni datumov rojstnih dni.\nNastavi jih preko Google Contacts.</string>
+  <string name="context_menu_header">Vošči</string>
+  <string name="context_menu_call">s klicem</string>
+  <string name="context_menu_text">s sporočilom</string>
+  <string name="context_menu_email">z e-pošto</string>
+  <string name="congrats_subject">Voščilo</string>
+  <string name="congrats_pattern">{0}, vse najboljše za tvoj rojstni dan!</string>
+  <string name="notification_alert">Rojstni dan pozorni!</string>
+  <string name="notification_pattern">{0} ima rojstni dan!</string>
+</resources>
