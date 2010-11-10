@@ -1,13 +1,13 @@
 package cz.krtinec.birthday.dto;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 public class ParseResult {
-	public ParseResult(Date date, DateIntegrity integrity) {
+	public ParseResult(LocalDate date, DateIntegrity integrity) {
 		this.date = date;
 		this.integrity = integrity;
 	}
 	
-	public Date date;
+	public LocalDate date;
 	public DateIntegrity integrity;     	
 }

@@ -2,14 +2,17 @@ package cz.krtinec.birthday.data;
 
 import java.io.InputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.acra.ErrorReporter;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import cz.krtinec.birthday.dto.BContact;
 import cz.krtinec.birthday.dto.BContactDebug;
@@ -20,7 +23,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.Log;
@@ -35,12 +37,12 @@ public class BirthdayProvider {
 		patterns.add(new DatePattern("\\-\\-\\d{1,2}\\-\\d{1,2}$", "--MM-dd", DateIntegrity.WITHOUT_YEAR));
 		patterns.add(new DatePattern("\\d{8}$", "yyyyMMdd", DateIntegrity.FULL));
 		patterns.add(new DatePattern("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}:\\d{1,2}.*", 
-				"yyyy-MM-dd'T'hh:mm:ss", DateIntegrity.FULL));
+				"yyyy-MM-dd'T'HH:mm:ss", DateIntegrity.FULL));
 		//20080220T000000
 		patterns.add(new DatePattern("\\d{8}T\\d{6}", 
-				"yyyyMMdd'T'hhmmss", DateIntegrity.FULL));		
+				"yyyyMMdd'T'HHmmss", DateIntegrity.FULL));		
 		//1980-9-9-0
-		patterns.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd", DateIntegrity.FULL));
+		patterns.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd-H", DateIntegrity.FULL));
 	}
 	
 	public static BirthdayProvider getInstance() {
@@ -132,14 +134,14 @@ public class BirthdayProvider {
     	}
     	for (DatePattern pat: patterns) {
     		if (string.matches(pat.pattern)) {
-    			return new ParseResult(pat.format.parse(string), pat.integrity);
+    			LocalDate date = pat.format.withZone(DateTimeZone.getDefault()).parseDateTime(string).toLocalDate();
+    			return new ParseResult(date, pat.integrity);
     		}
     	}
     	//handle timestamp value
-    	if (string.matches("[-]{0,1}\\d*")) {
-    		Date d = new Date();
-    		d.setTime(Long.parseLong(string));
-    		return new ParseResult(d, DateIntegrity.FULL);
+    	if (string.matches("[-]{0,1}\\d*")) {    		
+    		LocalDate date = new DateTime(Long.parseLong(string)).withZone(DateTimeZone.getDefault()).toLocalDate();
+    		return new ParseResult(date, DateIntegrity.FULL);
     	}
     	
     	throw new ParseException("Cannot parse: " + string, 0);
@@ -194,12 +196,12 @@ public class BirthdayProvider {
     
     class DatePattern {
     	String pattern;
-    	SimpleDateFormat format;
+    	DateTimeFormatter format;
     	DateIntegrity integrity;
     	
     	public DatePattern(String pattern, String format, DateIntegrity integrity) {
     		this.pattern = pattern;    		
-    		this.format = new SimpleDateFormat(format);
+    		this.format = DateTimeFormat.forPattern(format);
     		this.integrity = integrity;
 		}
     	

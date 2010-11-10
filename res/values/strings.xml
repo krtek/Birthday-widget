@@ -26,8 +26,6 @@
     <string name="notifications_time">Notification at</string>
     <string name="general">General</string>
     
-    
-    
     <!-- Debug view -->
     <string name="debug_menu">Debug view</string>
     <string name="debug_raw">Raw data: {0}</string>
@@ -50,4 +48,6 @@
     
     <string name="notification_alert">Birthday alert!</string>
     <string name="notification_pattern">Hurry up, {0} has birthday!</string>
+    
+    <string name="anniversary">Anniversary</string>
 </resources>

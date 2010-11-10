@@ -1,40 +1,36 @@
 package cz.krtinec.birthday.dto;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import cz.krtinec.birthday.DateFormatter;
-import cz.krtinec.birthday.R;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 
 
 public class BContact implements Comparable<BContact> {
 	
-	public static final DateFormat SHORT_FORMAT = new SimpleDateFormat("MMdd");
-	protected static final Calendar TODAY = Calendar.getInstance();
+	public static final DateTimeFormatter SHORT_FORMAT = DateTimeFormat.forPattern("MMdd");
+	protected static final LocalDate TODAY = new LocalDate();
 
 	protected String displayName;
 	protected long id;
 	protected String lookupKey;
 	protected String photoId;
-	protected Date bDay;
+	protected LocalDate bDay;
 	protected DateIntegrity integrity;
 	protected String bDaySort;
-	public static String PIVOT = SHORT_FORMAT.format(TODAY.getTime());
+	public static String PIVOT = SHORT_FORMAT.print(TODAY);
 	protected boolean nextYear;
 	
-	static Calendar tempCalendar = new GregorianCalendar();
+	//static Calendar tempCalendar = new GregorianCalendar();
 	
 	private Integer age;
 	private Integer daysToBirthday;
 	
 	
-	public BContact(String displayName, long id, Date bDay, String lookupKey, String photoId, DateIntegrity integrity) {
+	public BContact(String displayName, long id, LocalDate bDay, String lookupKey, String photoId, DateIntegrity integrity) {
 		this.displayName = displayName;
 		this.id = id;
 		this.lookupKey = lookupKey;
@@ -42,9 +38,8 @@ public class BContact implements Comparable<BContact> {
 		this.bDay = bDay;		
 		this.integrity = integrity;
 		
-		if (this.bDay != null) {
-			tempCalendar.setTime(bDay);
-			bDaySort = SHORT_FORMAT.format(this.bDay);
+		if (this.bDay != null) {			
+			bDaySort = SHORT_FORMAT.print(this.bDay);
 		} else {
 			bDaySort = "0000";
 		}
@@ -52,17 +47,16 @@ public class BContact implements Comparable<BContact> {
 		nextYear = bDaySort.compareTo(PIVOT) < 0;	
 		
 		if (DateIntegrity.FULL == this.integrity) {
-			age = TODAY.get(Calendar.YEAR) - tempCalendar.get(Calendar.YEAR);	
+			age = TODAY.getYear() - bDay.getYear();	
 			age = nextYear ? age + 1: age;
 		} else {
 			age = null;
 		}
 			
 		if (this.bDay != null) {
-			//due to leap years
-			tempCalendar.set(Calendar.YEAR, TODAY.get(Calendar.YEAR));	
+			LocalDate tempCalendar = new LocalDate(TODAY.getYear(), bDay.getMonthOfYear(), bDay.getDayOfMonth());
 				
-			daysToBirthday = tempCalendar.get(Calendar.DAY_OF_YEAR) - TODAY.get(Calendar.DAY_OF_YEAR);
+			daysToBirthday = tempCalendar.getDayOfYear() - TODAY.getDayOfYear();
 			if (nextYear) {
 				daysToBirthday = daysToBirthday + 365;
 			}
@@ -103,7 +97,7 @@ public class BContact implements Comparable<BContact> {
 
 	@Override
 	public String toString() {
-		return displayName + ":" + bDay == null ? "null" : bDay.toGMTString();
+		return displayName + ":" + bDay == null ? "null" : bDay.toString();
 	}
 	
 
