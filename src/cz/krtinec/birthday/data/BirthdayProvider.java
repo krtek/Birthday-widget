@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.acra.ErrorReporter;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -31,18 +34,13 @@ public class BirthdayProvider {
 	
 	private static BirthdayProvider instance = new BirthdayProvider();
 	private List<DatePattern> patterns = new ArrayList<DatePattern>();
+	private static String TIMESTAMP_PATTERN = "[-]{0,1}\\d{9,}";
 	
 	private BirthdayProvider() {
-		patterns.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}$", "yyyy-MM-dd", DateIntegrity.FULL));
-		patterns.add(new DatePattern("\\-\\-\\d{1,2}\\-\\d{1,2}$", "--MM-dd", DateIntegrity.WITHOUT_YEAR));
-		patterns.add(new DatePattern("\\d{8}$", "yyyyMMdd", DateIntegrity.FULL));
-		patterns.add(new DatePattern("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}:\\d{1,2}.*", 
-				"yyyy-MM-dd'T'HH:mm:ss", DateIntegrity.FULL));
-		//20080220T000000
-		patterns.add(new DatePattern("\\d{8}T\\d{6}", 
-				"yyyyMMdd'T'HHmmss", DateIntegrity.FULL));		
-		//1980-9-9-0
-		patterns.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd-H", DateIntegrity.FULL));
+		patterns.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}", "yyyy-MM-dd", DateIntegrity.FULL));
+		patterns.add(new DatePattern("\\d{2}\\-\\d{1,2}\\-\\d{1,2}", "yy-MM-dd", DateIntegrity.FULL));
+		patterns.add(new DatePattern("\\-\\-\\d{1,2}\\-\\d{1,2}", "--MM-dd", DateIntegrity.WITHOUT_YEAR));
+		patterns.add(new DatePattern("\\d{8}", "yyyyMMdd", DateIntegrity.FULL));		
 	}
 	
 	public static BirthdayProvider getInstance() {
@@ -77,8 +75,11 @@ public class BirthdayProvider {
 	  			  result.add(new BContact(c.getString(0), c.getLong(1),parseResult.date, c.getString(3), c.getString(4), parseResult.integrity));  		
 	  		  } catch (ParseException e) {
 	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+	  			  //ErrorReporter.getInstance().handleSilentException(e);
+	  		  } catch (IllegalArgumentException e) {
+	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
 	  			  ErrorReporter.getInstance().handleSilentException(e);
-	  		  }
+	  		  } 
 	  	}	  	
 	  	if (c != null) {
 	  		c.close();
@@ -116,7 +117,7 @@ public class BirthdayProvider {
 			try {
 				parseResult = tryParseBDay(c.getString(2));
 				result.add(new BContactDebug(c.getString(0), c.getLong(1),parseResult.date, c.getString(2) , c.getString(3), c.getString(4), parseResult.integrity));
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				result.add(new BContactDebug(c.getString(0), c.getLong(1), null, c.getString(2) , c.getString(3), c.getString(4), DateIntegrity.NONE));
 			}
 	  		
@@ -128,20 +129,31 @@ public class BirthdayProvider {
 	}
 
     
+	/**
+	 * 
+	 * @param string
+	 * @return
+	 * @throws ParseException
+	 * @throws IllegalArgumentException
+	 */
     public ParseResult tryParseBDay(String string) throws ParseException {
     	if (string == null) {
     		throw new ParseException("Cannot parse: <null>", 0);
     	}
+    	
+    	if (string.matches(TIMESTAMP_PATTERN)) {
+    		LocalDate date = new DateTime(Long.parseLong(string)).withZone(DateTimeZone.getDefault()).toLocalDate();
+    		return new ParseResult(date, DateIntegrity.FULL);
+    	}
+    	
+    	Matcher m;
     	for (DatePattern pat: patterns) {
-    		if (string.matches(pat.pattern)) {
+    		m = Pattern.compile(pat.pattern).matcher(string);
+    		if (m.find()) {     			    			    			
+    			string = string.substring(m.start(), m.end());
     			LocalDate date = pat.format.withZone(DateTimeZone.getDefault()).parseDateTime(string).toLocalDate();
     			return new ParseResult(date, pat.integrity);
     		}
-    	}
-    	//handle timestamp value
-    	if (string.matches("[-]{0,1}\\d*")) {    		
-    		LocalDate date = new DateTime(Long.parseLong(string)).withZone(DateTimeZone.getDefault()).toLocalDate();
-    		return new ParseResult(date, DateIntegrity.FULL);
     	}
     	
     	throw new ParseException("Cannot parse: " + string, 0);
