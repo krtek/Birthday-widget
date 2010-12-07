@@ -142,7 +142,7 @@ public class BirthdayProvider {
     	}
     	
     	if (string.matches(TIMESTAMP_PATTERN)) {
-    		LocalDate date = new DateTime(Long.parseLong(string)).withZone(DateTimeZone.getDefault()).toLocalDate();
+    		LocalDate date = new DateTime(Long.parseLong(string)).withZone(DateTimeZone.UTC).toLocalDate();
     		return new ParseResult(date, DateIntegrity.FULL);
     	}
     	
@@ -151,7 +151,7 @@ public class BirthdayProvider {
     		m = Pattern.compile(pat.pattern).matcher(string);
     		if (m.find()) {     			    			    			
     			string = string.substring(m.start(), m.end());
-    			LocalDate date = pat.format.withZone(DateTimeZone.getDefault()).parseDateTime(string).toLocalDate();
+    			LocalDate date = pat.format.withZone(DateTimeZone.UTC).parseDateTime(string).toLocalDate();
     			return new ParseResult(date, pat.integrity);
     		}
     	}

@@ -1,5 +1,6 @@
 package cz.krtinec.birthday.dto;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -54,12 +55,10 @@ public class BContact implements Comparable<BContact> {
 		}
 			
 		if (this.bDay != null) {
-			LocalDate tempCalendar = new LocalDate(TODAY.getYear(), bDay.getMonthOfYear(), bDay.getDayOfMonth());
-				
-			daysToBirthday = tempCalendar.getDayOfYear() - TODAY.getDayOfYear();
-			if (nextYear) {
-				daysToBirthday = daysToBirthday + 365;
-			}
+			int year = nextYear ? TODAY.getYear() + 1 : TODAY.getYear();
+			LocalDate tempCalendar = new LocalDate(year, bDay.getMonthOfYear(), bDay.getDayOfMonth());
+			daysToBirthday = Days.daysBetween(TODAY, tempCalendar).getDays();	
+			
 		}
 	}
 
