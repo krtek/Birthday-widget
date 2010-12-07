@@ -58,7 +58,6 @@ public class BContact implements Comparable<BContact> {
 			int year = nextYear ? TODAY.getYear() + 1 : TODAY.getYear();
 			LocalDate tempCalendar = new LocalDate(year, bDay.getMonthOfYear(), bDay.getDayOfMonth());
 			daysToBirthday = Days.daysBetween(TODAY, tempCalendar).getDays();	
-			
 		}
 	}
 
