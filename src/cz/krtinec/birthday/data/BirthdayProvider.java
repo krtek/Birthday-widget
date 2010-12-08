@@ -78,7 +78,7 @@ public class BirthdayProvider {
 	  			  //ErrorReporter.getInstance().handleSilentException(e);
 	  		  } catch (IllegalArgumentException e) {
 	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
-	  			  ErrorReporter.getInstance().handleSilentException(e);
+	  			  //ErrorReporter.getInstance().handleSilentException(e);
 	  		  } 
 	  	}	  	
 	  	if (c != null) {
