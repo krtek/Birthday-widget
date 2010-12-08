@@ -111,6 +111,7 @@ public class BirthdayProvider {
 	  	       Event.TYPE + "=" + Event.TYPE_BIRTHDAY, new String[]{Event.CONTENT_ITEM_TYPE}, 
 	  	       ContactsContract.Contacts.DISPLAY_NAME); 
 	  	  
+	  	//TODO add reason (Exception message)  
 	  	Set<BContactDebug> result = new TreeSet<BContactDebug>();
 	  	while (c!= null && c.moveToNext()) {
 	  		ParseResult parseResult;
