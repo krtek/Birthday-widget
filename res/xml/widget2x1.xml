@@ -17,7 +17,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="146dip"
     android:minHeight="72dip"
-    android:updatePeriodMillis="3600000"
+	android:updatePeriodMillis="3600000"
     android:initialLayout="@layout/widget2x1"
     android:configure="cz.krtinec.birthday.ui.BirthdayPreference" 
     />

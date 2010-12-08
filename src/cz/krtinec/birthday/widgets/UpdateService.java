@@ -19,7 +19,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 import cz.krtinec.birthday.Birthday;
 import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.data.BirthdayProvider;
@@ -41,7 +43,7 @@ public abstract class UpdateService extends Service {
 	
 	@Override
 	public void onStart(Intent intent, int startId) {
-		
+		Log.d("UpdateService", "Service started...");
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 		list = BirthdayProvider.getInstance().upcomingBirthday(this);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -53,6 +55,8 @@ public abstract class UpdateService extends Service {
 		views.setOnClickPendingIntent(R.id.layout, PendingIntent.getActivity(this, WIDGET_CODE, i, PendingIntent.FLAG_UPDATE_CURRENT));
 		list = null;
 		manager.updateAppWidget(getComponentName(), views);		
+		stopSelf();
+		Log.d("UpdateService", "Service finished...");
 	}
 	
 
