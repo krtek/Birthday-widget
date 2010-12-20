@@ -76,26 +76,39 @@ public abstract class UpdateService extends Service {
 	
 	private void alertOnBirthday() {		
 		for (BContact c:list) {
-			if (c.getbDaySort().equals(BContact.PIVOT)) {
-//			if (c.getbDaySort().equals("0225")) {
+			if (hasBirthdayToday(c)) {
 				//should fire alarm
 				Calendar now = Calendar.getInstance();
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 				int hourToAlert = Integer.valueOf(prefs.getString("notifications.time", "8"));
-				if (now.get(Calendar.HOUR_OF_DAY) == hourToAlert) {
-					String notificationFormat = this.getString(R.string.notification_pattern);					
-					Notification n = new Notification(R.drawable.icon, getString(R.string.notification_alert), now.getTimeInMillis());
-					n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;					
-					Intent i = new Intent(getApplicationContext(), Birthday.class);
-					PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFY_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
-														
-					n.setLatestEventInfo(this, getString(R.string.notification_alert), 
-							MessageFormat.format(notificationFormat, c.getDisplayName()), pendingIntent);
-					NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-					manager.notify("Birthday", (int)c.getId(), n);
+				if (isTimeToNotify(now, hourToAlert)) {
+                    fireBirthdayAlert(c, now.getTimeInMillis());
 				}
 			}
 		}
 	}
+
+
+    static boolean hasBirthdayToday(BContact c) {
+        return c.getDaysToBirthday() == 0;
+    }
+
+    static boolean isTimeToNotify(Calendar now, int hourToAlert) {
+        return now.get(Calendar.HOUR_OF_DAY) == hourToAlert;
+    }
+
+
+    private void fireBirthdayAlert(BContact c, Long when) {
+        String notificationFormat = this.getString(R.string.notification_pattern);
+        Notification n = new Notification(R.drawable.icon, getString(R.string.notification_alert), when);
+        n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;
+        Intent i = new Intent(getApplicationContext(), Birthday.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFY_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        n.setLatestEventInfo(this, getString(R.string.notification_alert),
+                MessageFormat.format(notificationFormat, c.getDisplayName()), pendingIntent);
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify("Birthday", (int)c.getId(), n);
+    }
 }
 
