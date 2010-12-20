@@ -64,7 +64,11 @@ public abstract class UpdateService extends Service {
 		InputStream is = BirthdayProvider.openPhoto(this, contact.getId());
 		if (is != null) {
 			Bitmap bitmap = BitmapFactory.decodeStream(is);
-			views.setImageViewBitmap(viewId, bitmap);
+            if (bitmap != null) {
+			    views.setImageViewBitmap(viewId, bitmap);
+            } else {
+                views.setImageViewResource(viewId, R.drawable.icon);
+            }
 			try {
 				is.close();
 			} catch (IOException e) {
