@@ -2,6 +2,7 @@ package cz.krtinec.birthday;
 
 import java.util.List;
 
+import android.util.Log;
 import com.admob.android.ads.AdManager;
 
 import cz.krtinec.birthday.data.BirthdayProvider;
@@ -73,6 +74,7 @@ public class Birthday extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+        Log.d("Birthday","onStart() called.");
 		/*
 		 * To enable tracing, android.permission.WRITE_EXTERNAL_STORAGE must be set to true! 
 		 */
@@ -84,18 +86,25 @@ public class Birthday extends Activity {
 		thread.start();
 	}
 
+    @Override
+    protected  void onPause() {
+        super.onPause();
+        Log.d("Birthday","onPause() called.");
 
+    }
 
 	@Override
 	protected void onStop() {
 		super.onStop();
 		loader.shutdown();
+        Log.d("Birthday","onPause() called.");
 //		Debug.stopMethodTracing();		
 	}   
     
 	@Override
 	protected void onResume() {		
-		super.onResume();		
+		super.onResume();
+        Log.d("Birthday", "onResume() called.");
 		dialog = ProgressDialog.show(this, getString(R.string.app_name), getString(R.string.loading), true);
 		new Thread(new StartupThread(this)).start();		
 	}
