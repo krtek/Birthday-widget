@@ -13,7 +13,7 @@ import android.content.Context;
 public class BContact implements Comparable<BContact> {
 	
 	public static final DateTimeFormatter SHORT_FORMAT = DateTimeFormat.forPattern("MMdd");
-	protected static final LocalDate TODAY = new LocalDate();
+	protected final LocalDate today = new LocalDate();
 
 	protected String displayName;
 	protected long id;
@@ -22,7 +22,7 @@ public class BContact implements Comparable<BContact> {
 	protected LocalDate bDay;
 	protected DateIntegrity integrity;
 	protected String bDaySort;
-	public static String PIVOT = SHORT_FORMAT.print(TODAY);
+	public String pivot = SHORT_FORMAT.print(today);
 	protected boolean nextYear;
 	
 	//static Calendar tempCalendar = new GregorianCalendar();
@@ -45,19 +45,19 @@ public class BContact implements Comparable<BContact> {
 			bDaySort = "0000";
 		}
 		
-		nextYear = bDaySort.compareTo(PIVOT) < 0;	
+		nextYear = bDaySort.compareTo(pivot) < 0;
 		
 		if (DateIntegrity.FULL == this.integrity) {
-			age = TODAY.getYear() - bDay.getYear();	
+			age = today.getYear() - bDay.getYear();
 			age = nextYear ? age + 1: age;
 		} else {
 			age = null;
 		}
 			
 		if (this.bDay != null) {
-			int year = nextYear ? TODAY.getYear() + 1 : TODAY.getYear();
+			int year = nextYear ? today.getYear() + 1 : today.getYear();
 			LocalDate tempCalendar = new LocalDate(year, bDay.getMonthOfYear(), bDay.getDayOfMonth());
-			daysToBirthday = Days.daysBetween(TODAY, tempCalendar).getDays();	
+			daysToBirthday = Days.daysBetween(today, tempCalendar).getDays();
 		}
 	}
 
