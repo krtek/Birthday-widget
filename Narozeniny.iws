@@ -77,6 +77,7 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="BContact.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContact.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -92,6 +93,12 @@
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state line="3" column="32" selection-start="176" selection-end="176" vertical-scroll-proportion="-0.6622391">
+=======
+      <file leaf-file-name="BContact.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContact.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="21" selection-start="678" selection-end="678" vertical-scroll-proportion="0.04918033">
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
               <folding />
             </state>
           </provider>
@@ -142,9 +149,15 @@
         <option value="$PROJECT_DIR$/../NarozeninyTest/src/cz/krtinec/birthday/dto/BContactTest.java" />
         <option value="$PROJECT_DIR$/../NarozeninyTest/src/cz/krtinec/birthday/widgets/UpdateServiceTest.java" />
         <option value="$PROJECT_DIR$/src/cz/krtinec/birthday/widgets/UpdateService.java" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/cz/krtinec/birthday/data/BirthdayProvider.java" />
         <option value="$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContact.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+=======
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/cz/krtinec/birthday/data/BirthdayProvider.java" />
+        <option value="$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContact.java" />
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
       </list>
     </option>
   </component>
@@ -183,6 +196,11 @@
       <sortByType />
     </navigator>
     <panes>
+<<<<<<< HEAD
+=======
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -191,6 +209,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+<<<<<<< HEAD
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="Narozeniny" />
@@ -216,6 +235,11 @@
       <pane id="Favorites" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
+=======
+        </subPane>
+      </pane>
+      <pane id="Favorites" />
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -232,9 +256,15 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
+<<<<<<< HEAD
     <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+=======
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
   </component>
   <component name="RunManager" selected="Android Application.Narozeniny">
     <configuration default="false" name="BContactTest" type="JUnit" factoryName="JUnit" temporary="true">
@@ -293,6 +323,27 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+<<<<<<< HEAD
+=======
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -325,6 +376,7 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+<<<<<<< HEAD
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
       <option name="MAIN_CLASS_NAME" />
@@ -343,6 +395,8 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+=======
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
     <configuration default="true" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
@@ -477,14 +531,23 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="16" y="22" width="1280" height="697" extended-state="0" />
     <editor active="true" />
+=======
+    <frame x="0" y="22" width="1280" height="697" extended-state="0" />
+    <editor active="false" />
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
+=======
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.48090982" order="8" side_tool="false" content_ui="tabs" />
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24939074" sideWeight="0.24310344" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -496,7 +559,10 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32931036" sideWeight="0.49715677" order="1" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.48090982" order="8" side_tool="false" content_ui="tabs" />
+=======
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -582,6 +648,14 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="4" selection-start="3189" selection-end="3235" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
     <entry file="file://$PROJECT_DIR$/src/cz/krtinec/birthday/data/BirthdayProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="50" column="26" selection-start="1723" selection-end="1723" vertical-scroll-proportion="0.0" />
@@ -592,6 +666,16 @@
         <state line="5" column="11" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+<<<<<<< HEAD
+=======
+    <entry file="file://$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="21" selection-start="678" selection-end="678" vertical-scroll-proportion="0.04918033">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
     <entry file="file://$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContactDebug.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="13" selection-start="81" selection-end="81" vertical-scroll-proportion="0.0" />
@@ -607,6 +691,7 @@
         <state line="47" column="53" selection-start="1465" selection-end="1465" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/cz/krtinec/birthday/dto/BContact.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="42" column="54" selection-start="1222" selection-end="1222" vertical-scroll-proportion="0.0">
@@ -623,6 +708,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> a1cb377cfaa6839a5120540bc1dc8206e009deb2
   </component>
   <component name="masterDetails">
     <states>
