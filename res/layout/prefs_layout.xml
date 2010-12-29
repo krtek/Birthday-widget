@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/cz.krtinec.birthday"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+<Button 	android:id="@+id/save_button" 
+			android:text="@string/save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"            
+             />
+<ListView android:id="@android:id/list" 
+  	android:layout_width="fill_parent" 
+  	android:layout_height="fill_parent"
+  	android:layout_above="@id/save_button"
+  	 /> 
+</RelativeLayout>

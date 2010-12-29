@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceCategory android:title="@string/general">
+<ListPreference 	 
+	android:entryValues="@array/format_texts_index" 
+	android:entries="@array/format_texts" 
+	android:dialogIcon="@drawable/icon" 
+	android:dialogTitle="@string/date_format_title" 
+	android:title="@string/date_format_title" 
+	android:summary="@string/date_format_summary" 
+	android:key="date_format" 
+	android:persistent="true" 
+	android:defaultValue="1">
+</ListPreference>
+
+<EditTextPreference android:title="@string/template_title" 
+	android:key="template" 
+	android:summary="@string/template_summary"
+	android:persistent="true" 
+	android:defaultValue="@string/congrats_pattern">	
+	
+</EditTextPreference>
+</PreferenceCategory>
+
+<PreferenceCategory android:title="@string/notifications">
+	<CheckBoxPreference android:title="@string/notifications_enabled" android:key="notifications.enabled" android:defaultValue="true" android:disableDependentsState="false"></CheckBoxPreference>
+	<ListPreference android:dependency="notifications.enabled" android:key="notifications.time" android:title="@string/notifications_time" android:entries="@array/notification_time_texts" android:entryValues="@array/notification_time_values" android:defaultValue="8"></ListPreference>
+</PreferenceCategory>
+</PreferenceScreen>
