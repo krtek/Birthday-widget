@@ -39,58 +39,67 @@ public class BirthdayProvider {
 	public static BirthdayProvider getInstance() {
 		return instance;
 	}
-	
-	
-	public List<Event> upcomingBirthday(Context ctx) {
-		Log.i("Birthday provider", "Going to get upcoming events");
-		long start = System.currentTimeMillis();
-	  	  Uri dataUri = ContactsContract.Data.CONTENT_URI;
-	  	  
-	  	  String[] projection = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
-	  			  	ContactsContract.CommonDataKinds.Event.CONTACT_ID,
-	  			  	ContactsContract.CommonDataKinds.Event.START_DATE,
-	  			  	ContactsContract.Contacts.LOOKUP_KEY,
-	  			  	ContactsContract.Contacts.PHOTO_ID,
-                    ContactsContract.CommonDataKinds.Event.TYPE
-	  			  	};
-	  	  
-	  	  
-	  	  Cursor c = ctx.getContentResolver().query(
-	  	       dataUri,
-	  	       projection, 
-	  	       ContactsContract.Data.MIMETYPE + "= ? AND " + 
-	  	       "(" + ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " OR " +
-               ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY + ")",
-                    new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
-	  	                ContactsContract.Contacts.DISPLAY_NAME);
-	  	  
-	  	Set<Event> result = new TreeSet<Event>();
-	  	while (c!= null && c.moveToNext()) {
-	  		  try {
-	  			  ParseResult parseResult = tryParseBDay(c.getString(2));
-                  if (ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY == c.getInt(5)) {
-                    result.add(new BirthdayEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
-                             parseResult.integrity));
-                  } else if (ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY == c.getInt(5)) {
-                    result.add(new AnniversaryEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
-                             parseResult.integrity));
-                  }
 
-	  		  } catch (ParseException e) {
-	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
-	  		  } catch (IllegalArgumentException e) {
-	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
-	  		  }
-	  	}	  	
-	  	if (c != null) {
-	  		c.close();
-	  	}	  		  
-	  	Log.i("Birthday provider", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
-	  	start = System.currentTimeMillis();
-	  	List<Event> result2 = new ArrayList<Event>(result);
-	  	Log.i("Birthday provider", "Converted in " + (System.currentTimeMillis() - start) + "[ms]");
-	  	return result2;
-	}
+
+    public List<Event> upcomingBirthday(Context ctx) {
+        Log.i("Birthday provider", "Going to get upcoming events");
+        long start = System.currentTimeMillis();
+        Uri dataUri = ContactsContract.Data.CONTENT_URI;
+
+        String[] projection = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Event.CONTACT_ID,
+                ContactsContract.CommonDataKinds.Event.START_DATE,
+                ContactsContract.Contacts.LOOKUP_KEY,
+                ContactsContract.Contacts.PHOTO_ID,
+                ContactsContract.CommonDataKinds.Event.TYPE,
+                ContactsContract.CommonDataKinds.Event.LABEL
+        };
+
+
+        Cursor c = ctx.getContentResolver().query(
+                dataUri,
+                projection,
+                ContactsContract.Data.MIMETYPE + "= ? AND " +
+                        "(" + ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " OR " +
+                        ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY + " OR " +
+                        ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM + " OR " +
+                        ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_OTHER + ")",
+                new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
+                ContactsContract.Contacts.DISPLAY_NAME);
+
+        Set<Event> result = new TreeSet<Event>();
+        while (c!= null && c.moveToNext()) {
+            try {
+                ParseResult parseResult = tryParseBDay(c.getString(2));
+                if (ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY == c.getInt(5)) {
+                    result.add(new BirthdayEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
+                            parseResult.integrity));
+                } else if (ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY == c.getInt(5)) {
+                    result.add(new AnniversaryEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
+                            parseResult.integrity));
+                } else if (ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM == c.getInt(5)) {
+                    result.add(new CustomEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
+                            parseResult.integrity, c.getString(6)));
+                } else if (ContactsContract.CommonDataKinds.Event.TYPE_OTHER == c.getInt(5)) {
+                    result.add(new OtherEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
+                            parseResult.integrity));
+                }
+
+            } catch (ParseException e) {
+                Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+            } catch (IllegalArgumentException e) {
+                Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+            }
+        }
+        if (c != null) {
+            c.close();
+        }
+        Log.i("Birthday provider", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
+        start = System.currentTimeMillis();
+        List<Event> result2 = new ArrayList<Event>(result);
+        Log.i("Birthday provider", "Converted in " + (System.currentTimeMillis() - start) + "[ms]");
+        return result2;
+    }
 	
 	
 	

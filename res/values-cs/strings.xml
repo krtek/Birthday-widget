@@ -39,4 +39,8 @@
   <string name="congrats_pattern">Milý {0}, všechno nejlepší k narozeninám!</string>
   <string name="notification_alert">Narozeniny!</string>
   <string name="notification_pattern">Honem, {0} má narozeniny!</string>
+
+  <string name="anniversary">Výročí</string>
+  <string name="birthday">Narozeniny</string>
+  <string name="other">Jiné</string>
 </resources>

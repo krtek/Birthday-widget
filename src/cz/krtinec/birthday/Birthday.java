@@ -2,13 +2,14 @@ package cz.krtinec.birthday;
 
 import java.util.List;
 
+import android.content.DialogInterface;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.*;
 import com.admob.android.ads.AdManager;
 
 import cz.krtinec.birthday.data.BirthdayProvider;
-import cz.krtinec.birthday.dto.AnniversaryEvent;
-import cz.krtinec.birthday.dto.BirthdayEvent;
-import cz.krtinec.birthday.dto.Event;
+import cz.krtinec.birthday.dto.*;
 import cz.krtinec.birthday.ui.AdapterParent;
 import cz.krtinec.birthday.ui.BirthdayPreference;
 import cz.krtinec.birthday.ui.PhotoLoader;
@@ -35,9 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class Birthday extends Activity {
@@ -111,7 +109,8 @@ public class Birthday extends Activity {
 		new Thread(new StartupThread(this)).start();		
 	}
 
-	
+
+
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -222,16 +221,36 @@ public class Birthday extends Activity {
                 BirthdayEvent bEvent = (BirthdayEvent) event;
                 ((TextView)v.findViewById(R.id.age)).setText(
                         String.valueOf((bEvent.getAge() == null) ? "--" : bEvent.getAge()));
-                ((TextView)v.findViewById(R.id.date)).setText("Birthday: " + event.getDisplayDate(ctx));
+                ((TextView)v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
+                ((TextView)v.findViewById(R.id.type)).setText(getCaption(R.string.birthday));
 
             } else if (event instanceof AnniversaryEvent) {
                 ((TextView)v.findViewById(R.id.age)).setText("--");
-                ((TextView)v.findViewById(R.id.date)).setText("Anniversary: " + event.getDisplayDate(ctx));
+                ((TextView)v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
+                ((TextView)v.findViewById(R.id.type)).setText(getCaption(R.string.anniversary));
+            } else if (event instanceof CustomEvent) {
+                CustomEvent cEvent = (CustomEvent) event;
+                ((TextView)v.findViewById(R.id.age)).setText("--");
+                ((TextView)v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
+                ((TextView)v.findViewById(R.id.type)).setText(getCaption(cEvent.getLabel()));
+            } else if (event instanceof OtherEvent) {
+                ((TextView)v.findViewById(R.id.age)).setText("--");
+                ((TextView)v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
+                ((TextView)v.findViewById(R.id.type)).setText(getCaption(R.string.other));
             }
 
 			return v;
 
-		} 		
+		}
+
+        private String getCaption(int resId) {
+            String desc = ctx.getString(resId);
+            return getCaption(desc);
+        }
+
+        private String getCaption(String desc) {
+            return desc + ": ";
+        }
     }
     
     class StartupThread implements Runnable {
@@ -249,8 +268,8 @@ public class Birthday extends Activity {
 				public void run() {
 					ListView list = (ListView) activity.findViewById(R.id.list);					
 					listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(activity);
-
-					list.setAdapter(new BirthdayAdapter(listOfContacts, activity, loader));
+                    final BirthdayAdapter adapter = new BirthdayAdapter(listOfContacts, activity, loader);
+					list.setAdapter(adapter);
 					registerForContextMenu((ListView)findViewById(R.id.list));
 					dialog.cancel();
 					if (listOfContacts.isEmpty()) {

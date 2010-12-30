@@ -50,4 +50,7 @@
     <string name="notification_pattern">Hurry up, {0} has birthday!</string>
     
     <string name="anniversary">Anniversary</string>
+    <string name="birthday">Birthday</string>
+    <string name="other">Other</string>
+
 </resources>

@@ -22,7 +22,13 @@
 		android:orientation="vertical"
 		android:layout_column="1"> 
 		<TextView android:text="name" android:id="@+id/name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="20dip" android:padding="5dip"></TextView>
-		<TextView android:text="date" android:id="@+id/date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12dip" android:padding="5dip"></TextView>
+        <LinearLayout
+                android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView android:text="type" android:id="@+id/type" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12dip" android:textStyle="italic" android:padding="5dip"></TextView>
+            <TextView android:text="date" android:id="@+id/date" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12dip" android:padding="5dip"></TextView>
+        </LinearLayout>
 	</LinearLayout>
 	
 		<LinearLayout

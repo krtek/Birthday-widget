@@ -30,5 +30,9 @@
   <string name="context_menu_text">s sporočilom</string> 
   <string name="context_menu_email">z e-pošto</string> 
   <string name="congrats_subject">Voščilo</string> 
-  <string name="congrats_pattern">{0}, vse najboljše za tvoj rojstni dan!</string> 
+  <string name="congrats_pattern">{0}, vse najboljše za tvoj rojstni dan!</string>
+
+  <string name="anniversary">Obletnica</string>
+  <string name="birthday">Rojstni dan</string>
+  <string name="other">Druge</string>
 </resources>
