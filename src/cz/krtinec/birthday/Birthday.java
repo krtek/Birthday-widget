@@ -270,6 +270,17 @@ public class Birthday extends Activity {
 					listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(activity);
                     final BirthdayAdapter adapter = new BirthdayAdapter(listOfContacts, activity, loader);
 					list.setAdapter(adapter);
+                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Event e = (Event) adapter.getItem(i);
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI,
+                                    String.valueOf(e.getId()));
+                            intent.setData(uri);
+                            activity.startActivity(intent);
+                        }
+                    });
 					registerForContextMenu((ListView)findViewById(R.id.list));
 					dialog.cancel();
 					if (listOfContacts.isEmpty()) {
