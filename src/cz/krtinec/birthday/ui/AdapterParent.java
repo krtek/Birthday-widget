@@ -2,14 +2,14 @@ package cz.krtinec.birthday.ui;
 
 import java.util.List;
 
-import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.dto.Event;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 
-public abstract class AdapterParent<T extends BContact> extends BaseAdapter {
+public abstract class AdapterParent<T extends Event> extends BaseAdapter {
 	protected List<T> list;
 	protected Context ctx;
 	protected PhotoLoader loader;

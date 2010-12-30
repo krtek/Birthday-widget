@@ -6,7 +6,9 @@ import android.util.Log;
 import com.admob.android.ads.AdManager;
 
 import cz.krtinec.birthday.data.BirthdayProvider;
-import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.dto.AnniversaryEvent;
+import cz.krtinec.birthday.dto.BirthdayEvent;
+import cz.krtinec.birthday.dto.Event;
 import cz.krtinec.birthday.ui.AdapterParent;
 import cz.krtinec.birthday.ui.BirthdayPreference;
 import cz.krtinec.birthday.ui.PhotoLoader;
@@ -48,7 +50,7 @@ public class Birthday extends Activity {
 	private PhotoLoader loader;
 	private ProgressDialog dialog;
 	private Handler handler;
-	private List<BContact> listOfContacts;
+	private List<Event> listOfContacts;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,7 +118,7 @@ public class Birthday extends Activity {
 			ContextMenuInfo menuInfo) { 
 		menu.setHeaderTitle(R.string.context_menu_header);
 		
-		BContact item = listOfContacts.get(((AdapterContextMenuInfo) menuInfo).position);
+		Event item = listOfContacts.get(((AdapterContextMenuInfo) menuInfo).position);
 		MenuItem callItem = menu.add(R.string.context_menu_call).setEnabled(false);
 		MenuItem smstItem = menu.add(R.string.context_menu_text).setEnabled(false);		
 		MenuItem emailItem = menu.add(R.string.context_menu_email).setEnabled(false);		
@@ -194,15 +196,15 @@ public class Birthday extends Activity {
 		   .create();
 		 }
 	
-    static class BirthdayAdapter extends AdapterParent<BContact> {        	
+    static class BirthdayAdapter extends AdapterParent<Event> {
     	
-    	public BirthdayAdapter(List<BContact> list, Context ctx, PhotoLoader loader) {
+    	public BirthdayAdapter(List<Event> list, Context ctx, PhotoLoader loader) {
     		super(list,ctx, loader);    		
     	}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			BContact contact = list.get(position);
+			Event event = list.get(position);
 			View v;
 			if (convertView == null) {
 				LayoutInflater vi = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -212,22 +214,21 @@ public class Birthday extends Activity {
 			}
 
 			
-			((TextView)v.findViewById(R.id.name)).setText(contact.getDisplayName());
-			((TextView)v.findViewById(R.id.age)).setText(String.valueOf((contact.getAge() == null) ? "--" : contact.getAge()));
-			((TextView)v.findViewById(R.id.date)).setText(contact.getDisplayDate(ctx));
-			((TextView)v.findViewById(R.id.days)).setText(String.valueOf(contact.getDaysToBirthday()));
+			((TextView)v.findViewById(R.id.name)).setText(event.getDisplayName());
+			((TextView)v.findViewById(R.id.days)).setText(String.valueOf(event.getDaysToEvent()));
 			((ImageView)v.findViewById(R.id.bicon)).setImageResource(R.drawable.icon);
-			loader.addPhotoToLoad((ImageView)v.findViewById(R.id.bicon), contact.getId());
+			loader.addPhotoToLoad((ImageView)v.findViewById(R.id.bicon), event.getId());
+            if (event instanceof BirthdayEvent) {
+                BirthdayEvent bEvent = (BirthdayEvent) event;
+                ((TextView)v.findViewById(R.id.age)).setText(
+                        String.valueOf((bEvent.getAge() == null) ? "--" : bEvent.getAge()));
+                ((TextView)v.findViewById(R.id.date)).setText("Birthday: " + event.getDisplayDate(ctx));
 
-			
-/**			if (contact.getPhotoId() != null && 
-					(photoStream = BirthdayProvider.openPhoto(ctx, contact.getId())) != null) {
-				Drawable d = Drawable.createFromStream(photoStream, "src");
-				((ImageView)v.findViewById(R.id.bicon)).setImageDrawable(d);
-			} else {
-				((ImageView)v.findViewById(R.id.bicon)).setImageResource(R.drawable.icon);
-			} **/
-			
+            } else if (event instanceof AnniversaryEvent) {
+                ((TextView)v.findViewById(R.id.age)).setText("--");
+                ((TextView)v.findViewById(R.id.date)).setText("Anniversary: " + event.getDisplayDate(ctx));
+            }
+
 			return v;
 
 		} 		

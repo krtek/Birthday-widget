@@ -9,6 +9,8 @@ VERSION:3.0
 FN:Dad
 N:;Dad;;;
 BDAY:1956-01-05
+item1.X-ABDATE:1977-06-12
+item1.X-ABLabel:_$!<Anniversary>!$_
 END:VCARD
 BEGIN:VCARD
 VERSION:3.0
@@ -16,8 +18,10 @@ FN:Mom
 N:;Mom;;;
 TEL;TYPE=CELL:+420777888000
 BDAY:1960-11-10
-item1.X-ABDATE:1977-12-12
+item1.X-ABDATE:1977-06-12
 item1.X-ABLabel:_$!<Anniversary>!$_
+item2.X-ABDATE:1977-06-21
+item2.X-ABLabel:Custom
 END:VCARD
 BEGIN:VCARD
 VERSION:3.0

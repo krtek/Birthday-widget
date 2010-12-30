@@ -1,29 +1,20 @@
 package cz.krtinec.birthday;
 
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
 
-import com.admob.android.ads.AdManager;
-
-import cz.krtinec.birthday.Birthday.BirthdayAdapter;
 import cz.krtinec.birthday.data.BirthdayProvider;
-import cz.krtinec.birthday.dto.BContact;
-import cz.krtinec.birthday.dto.BContactDebug;
-import cz.krtinec.birthday.dto.DateIntegrity;
+import cz.krtinec.birthday.dto.EventDebug;
 import cz.krtinec.birthday.ui.AdapterParent;
 import cz.krtinec.birthday.ui.PhotoLoader;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,7 +36,7 @@ public class BirthdayDebug extends Activity {
 			Thread thread = new Thread(loader);
 			thread.setPriority(Thread.MIN_PRIORITY);
 			thread.start();
-	        List<BContactDebug> listOfContacts = BirthdayProvider.getInstance().allBirthday(this);
+	        List<EventDebug> listOfContacts = BirthdayProvider.getInstance().allBirthday(this);
 	        list.setAdapter(new BirthdayDebugAdapter(listOfContacts, this, loader));    
 	}
 	
@@ -56,14 +47,14 @@ public class BirthdayDebug extends Activity {
 //		Debug.stopMethodTracing();		
 	}
 	
-    static class BirthdayDebugAdapter extends AdapterParent<BContactDebug> {
-    	public BirthdayDebugAdapter(List<BContactDebug> list, Context ctx, PhotoLoader loader) {
+    static class BirthdayDebugAdapter extends AdapterParent<EventDebug> {
+    	public BirthdayDebugAdapter(List<EventDebug> list, Context ctx, PhotoLoader loader) {
     		super(list, ctx, loader);
     	}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			BContactDebug contact = list.get(position);
+			EventDebug contact = list.get(position);
 			View v;
 			if (convertView == null) {
 				LayoutInflater vi = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -10,7 +10,7 @@ import cz.krtinec.birthday.DateFormatter;
 import android.content.Context;
 
 
-public class BContact implements Comparable<BContact> {
+public abstract class Event implements Comparable<Event> {
 	
 	public static final DateTimeFormatter SHORT_FORMAT = DateTimeFormat.forPattern("MMdd");
 	protected final LocalDate today = new LocalDate();
@@ -18,55 +18,41 @@ public class BContact implements Comparable<BContact> {
 	protected String displayName;
 	protected long id;
 	protected String lookupKey;
-	protected String photoId;
-	protected LocalDate bDay;
+	protected LocalDate eventDate;
 	protected DateIntegrity integrity;
-	protected String bDaySort;
+	protected String eventDaySort;
 	public String pivot = SHORT_FORMAT.print(today);
 	protected boolean nextYear;
 	
 	//static Calendar tempCalendar = new GregorianCalendar();
+
+	private Integer daysToEvent;
 	
-	private Integer age;
-	private Integer daysToBirthday;
 	
-	
-	public BContact(String displayName, long id, LocalDate bDay, String lookupKey, String photoId, DateIntegrity integrity) {
+	public Event(String displayName, long id, LocalDate eventDate, String lookupKey , DateIntegrity integrity) {
 		this.displayName = displayName;
 		this.id = id;
 		this.lookupKey = lookupKey;
-		this.photoId = photoId;			
-		this.bDay = bDay;		
+		this.eventDate = eventDate;
 		this.integrity = integrity;
 		
-		if (this.bDay != null) {			
-			bDaySort = SHORT_FORMAT.print(this.bDay);
+		if (this.eventDate != null) {
+			eventDaySort = SHORT_FORMAT.print(this.eventDate);
 		} else {
-			bDaySort = "0000";
+			eventDaySort = "0000";
 		}
 		
-		nextYear = bDaySort.compareTo(pivot) < 0;
-		
-		if (DateIntegrity.FULL == this.integrity) {
-			age = today.getYear() - bDay.getYear();
-			age = nextYear ? age + 1: age;
-		} else {
-			age = null;
-		}
+		nextYear = eventDaySort.compareTo(pivot) < 0;
 			
-		if (this.bDay != null) {
+		if (this.eventDate != null) {
 			int year = nextYear ? today.getYear() + 1 : today.getYear();
-			LocalDate tempCalendar = new LocalDate(year, bDay.getMonthOfYear(), bDay.getDayOfMonth());
-			daysToBirthday = Days.daysBetween(today, tempCalendar).getDays();
+			LocalDate tempCalendar = new LocalDate(year, eventDate.getMonthOfYear(), eventDate.getDayOfMonth());
+			daysToEvent = Days.daysBetween(today, tempCalendar).getDays();
 		}
-	}
-
-	public Integer getAge() {
-		return age;
 	}
 	
-	public int getDaysToBirthday() {
-		return daysToBirthday;
+	public int getDaysToEvent() {
+		return daysToEvent;
 	}
 	
 	public String getDisplayName() {
@@ -77,37 +63,25 @@ public class BContact implements Comparable<BContact> {
 		return id;
 	}
 	
-	public String getPhotoId() {
-		return photoId;
-	}
-	
-	public String getLookupKey() {
-		return lookupKey;
-	}
-	
 	public DateIntegrity getIntegrity() {
 		return this.integrity;
-	}
-	
-	public String getbDaySort() {
-		return bDaySort;
 	}
 
 	@Override
 	public String toString() {
-		return displayName + ":" + bDay == null ? "null" : bDay.toString();
+		return displayName + ":" + (eventDate == null ? "null" : eventDate.toString());
 	}
 	
 
 	@Override
-	public int compareTo(BContact another) {
+	public int compareTo(Event another) {
 		if (this.nextYear && !another.nextYear) {
 			return 1;
 		} else if (!this.nextYear && another.nextYear) {
 			return -1;
 		}
 		
-		int bCompare = this.bDaySort.compareTo(another.bDaySort);
+		int bCompare = this.eventDaySort.compareTo(another.eventDaySort);
 		if (bCompare == 0) {
 			return this.displayName.compareTo(another.displayName);
 		} else {
@@ -116,7 +90,7 @@ public class BContact implements Comparable<BContact> {
 	}
 	
 	public String getDisplayDate(Context ctx) {
-		return DateFormatter.getInstance(ctx).format(this.bDay, this.integrity);
+		return DateFormatter.getInstance(ctx).format(this.eventDate, this.integrity);
 	}
 
 }

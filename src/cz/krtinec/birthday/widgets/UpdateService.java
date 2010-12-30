@@ -21,14 +21,13 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 import cz.krtinec.birthday.Birthday;
 import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.data.BirthdayProvider;
-import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.dto.Event;
 
 public abstract class UpdateService extends Service {
-	protected List<BContact> list;
+	protected List<Event> list;
 	private int NOTIFY_CODE = 1;
 	private int WIDGET_CODE = 0;
 
@@ -60,7 +59,7 @@ public abstract class UpdateService extends Service {
 	}
 	
 
-	protected void replaceIconWithPhoto(RemoteViews views, BContact contact, int viewId) {
+	protected void replaceIconWithPhoto(RemoteViews views, Event contact, int viewId) {
 		InputStream is = BirthdayProvider.openPhoto(this, contact.getId());
 		if (is != null) {
 			Bitmap bitmap = BitmapFactory.decodeStream(is);
@@ -79,7 +78,7 @@ public abstract class UpdateService extends Service {
 	}
 	
 	private void alertOnBirthday() {		
-		for (BContact c:list) {
+		for (Event c:list) {
 			if (hasBirthdayToday(c)) {
 				//should fire alarm
 				Calendar now = Calendar.getInstance();
@@ -93,16 +92,16 @@ public abstract class UpdateService extends Service {
 	}
 
 
-    static boolean hasBirthdayToday(BContact c) {
-        return c.getDaysToBirthday() == 0;
+    public static boolean hasBirthdayToday(Event c) {
+        return c.getDaysToEvent() == 0;
     }
 
-    static boolean isTimeToNotify(Calendar now, int hourToAlert) {
+    public static boolean isTimeToNotify(Calendar now, int hourToAlert) {
         return now.get(Calendar.HOUR_OF_DAY) == hourToAlert;
     }
 
 
-    private void fireBirthdayAlert(BContact c, Long when) {
+    private void fireBirthdayAlert(Event c, Long when) {
         String notificationFormat = this.getString(R.string.notification_pattern);
         Notification n = new Notification(R.drawable.icon, getString(R.string.notification_alert), when);
         n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;

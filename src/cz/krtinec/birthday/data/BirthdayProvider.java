@@ -9,25 +9,18 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.acra.ErrorReporter;
+import cz.krtinec.birthday.dto.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
-import cz.krtinec.birthday.dto.BContact;
-import cz.krtinec.birthday.dto.BContactDebug;
-import cz.krtinec.birthday.dto.DateIntegrity;
-import cz.krtinec.birthday.dto.ParseResult;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
-import android.provider.ContactsContract.CommonDataKinds.Event;
 import android.util.Log;
 
 public class BirthdayProvider {    
@@ -48,8 +41,8 @@ public class BirthdayProvider {
 	}
 	
 	
-	public List<BContact> upcomingBirthday(Context ctx) {
-		Log.i("Birthday provider", "Going to get upcoming bdays");
+	public List<Event> upcomingBirthday(Context ctx) {
+		Log.i("Birthday provider", "Going to get upcoming events");
 		long start = System.currentTimeMillis();
 	  	  Uri dataUri = ContactsContract.Data.CONTENT_URI;
 	  	  
@@ -57,7 +50,8 @@ public class BirthdayProvider {
 	  			  	ContactsContract.CommonDataKinds.Event.CONTACT_ID,
 	  			  	ContactsContract.CommonDataKinds.Event.START_DATE,
 	  			  	ContactsContract.Contacts.LOOKUP_KEY,
-	  			  	ContactsContract.Contacts.PHOTO_ID	  			  		  			  	  			  
+	  			  	ContactsContract.Contacts.PHOTO_ID,
+                    ContactsContract.CommonDataKinds.Event.TYPE
 	  			  	};
 	  	  
 	  	  
@@ -65,35 +59,42 @@ public class BirthdayProvider {
 	  	       dataUri,
 	  	       projection, 
 	  	       ContactsContract.Data.MIMETYPE + "= ? AND " + 
-	  	       Event.TYPE + "=" + Event.TYPE_BIRTHDAY, new String[]{Event.CONTENT_ITEM_TYPE}, 
-	  	       ContactsContract.Contacts.DISPLAY_NAME); 
+	  	       "(" + ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " OR " +
+               ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY + ")",
+                    new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
+	  	                ContactsContract.Contacts.DISPLAY_NAME);
 	  	  
-	  	Set<BContact> result = new TreeSet<BContact>();
+	  	Set<Event> result = new TreeSet<Event>();
 	  	while (c!= null && c.moveToNext()) {
 	  		  try {
 	  			  ParseResult parseResult = tryParseBDay(c.getString(2));
-	  			  result.add(new BContact(c.getString(0), c.getLong(1),parseResult.date, c.getString(3), c.getString(4), parseResult.integrity));  		
+                  if (ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY == c.getInt(5)) {
+                    result.add(new BirthdayEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
+                             parseResult.integrity));
+                  } else if (ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY == c.getInt(5)) {
+                    result.add(new AnniversaryEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
+                             parseResult.integrity));
+                  }
+
 	  		  } catch (ParseException e) {
 	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
-	  			  //ErrorReporter.getInstance().handleSilentException(e);
 	  		  } catch (IllegalArgumentException e) {
 	  			  Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
-	  			  //ErrorReporter.getInstance().handleSilentException(e);
-	  		  } 
+	  		  }
 	  	}	  	
 	  	if (c != null) {
 	  		c.close();
 	  	}	  		  
 	  	Log.i("Birthday provider", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
 	  	start = System.currentTimeMillis();
-	  	List<BContact> result2 = new ArrayList<BContact>(result);
+	  	List<Event> result2 = new ArrayList<Event>(result);
 	  	Log.i("Birthday provider", "Converted in " + (System.currentTimeMillis() - start) + "[ms]");
 	  	return result2;
 	}
 	
 	
 	
-	public List<BContactDebug> allBirthday(Context ctx) {
+	public List<EventDebug> allBirthday(Context ctx) {
 	  	  Uri dataUri = ContactsContract.Data.CONTENT_URI;
 	  	  
 	  	  String[] projection = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
@@ -108,25 +109,25 @@ public class BirthdayProvider {
 	  	       dataUri,
 	  	       projection, 
 	  	       ContactsContract.Data.MIMETYPE + "= ? AND " + 
-	  	       Event.TYPE + "=" + Event.TYPE_BIRTHDAY, new String[]{Event.CONTENT_ITEM_TYPE}, 
+	  	       ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY, new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
 	  	       ContactsContract.Contacts.DISPLAY_NAME); 
 	  	  
 	  	//TODO add reason (Exception message)  
-	  	Set<BContactDebug> result = new TreeSet<BContactDebug>();
+	  	Set<EventDebug> result = new TreeSet<EventDebug>();
 	  	while (c!= null && c.moveToNext()) {
 	  		ParseResult parseResult;
 			try {
 				parseResult = tryParseBDay(c.getString(2));
-				result.add(new BContactDebug(c.getString(0), c.getLong(1),parseResult.date, c.getString(2) , c.getString(3), c.getString(4), parseResult.integrity));
+				result.add(new EventDebug(c.getString(0), c.getLong(1),parseResult.date, c.getString(2) , c.getString(3), parseResult.integrity));
 			} catch (Exception e) {
-				result.add(new BContactDebug(c.getString(0), c.getLong(1), null, c.getString(2) , c.getString(3), c.getString(4), DateIntegrity.NONE));
+				result.add(new EventDebug(c.getString(0), c.getLong(1), null, c.getString(2) , c.getString(3),  DateIntegrity.NONE));
 			}
 	  		
 	  	}
 	  	if (c != null) {
 	  		c.close();
 	  	}
-	  	return new ArrayList<BContactDebug>(result);
+	  	return new ArrayList<EventDebug>(result);
 	}
 
     

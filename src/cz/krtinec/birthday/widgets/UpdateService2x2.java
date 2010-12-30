@@ -2,7 +2,7 @@ package cz.krtinec.birthday.widgets;
 
 
 import cz.krtinec.birthday.R;
-import cz.krtinec.birthday.dto.BContact;
+import cz.krtinec.birthday.dto.Event;
 import android.content.ComponentName;
 import android.widget.RemoteViews;
 
@@ -21,7 +21,7 @@ public class UpdateService2x2 extends UpdateService {
 	public RemoteViews updateViews() {
 		RemoteViews views = new RemoteViews(this.getPackageName(), getLayout());		
 		if (list.size() > 0) {
-			BContact contact = list.get(0);
+			Event contact = list.get(0);
 			views.setTextViewText(R.id.first_name, contact.getDisplayName());
 			views.setTextViewText(R.id.first_date, contact.getDisplayDate(this));	
 			replaceIconWithPhoto(views, contact, R.id.first_icon);					
@@ -29,7 +29,7 @@ public class UpdateService2x2 extends UpdateService {
 			views.setTextViewText(R.id.first_name, getText(R.string.no_name_found));				
 		}
 		if (list.size() > 1) {
-			BContact contact = list.get(1);
+			Event contact = list.get(1);
 			views.setTextViewText(R.id.second_name, contact.getDisplayName());
 			views.setTextViewText(R.id.second_date, contact.getDisplayDate(this));
 			replaceIconWithPhoto(views, contact, R.id.second_icon);
@@ -37,7 +37,7 @@ public class UpdateService2x2 extends UpdateService {
 			views.setTextViewText(R.id.second_name, getText(R.string.no_name_found));
 		}
 		if (list.size() > 2) {
-			BContact contact = list.get(2);
+			Event contact = list.get(2);
 			views.setTextViewText(R.id.third_name, contact.getDisplayName());
 			views.setTextViewText(R.id.third_date, contact.getDisplayDate(this));
 			replaceIconWithPhoto(views, contact, R.id.third_icon);
@@ -45,7 +45,7 @@ public class UpdateService2x2 extends UpdateService {
 			views.setTextViewText(R.id.third_name, getText(R.string.no_name_found));
 		}
 		if (list.size() > 3) {
-			BContact contact = list.get(3);
+			Event contact = list.get(3);
 			views.setTextViewText(R.id.fourth_name, contact.getDisplayName());
 			views.setTextViewText(R.id.fourth_date, contact.getDisplayDate(this));
 			replaceIconWithPhoto(views, contact, R.id.fourth_icon);
