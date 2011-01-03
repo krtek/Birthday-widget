@@ -89,6 +89,8 @@ public class BirthdayProvider {
                 Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
             } catch (IllegalArgumentException e) {
                 Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+            } catch (NullPointerException e) {
+                Log.i("BirthdayProvider", "Skipping contact id: " + c.getString(1) + " due to NPE.");
             }
         }
         if (c != null) {
