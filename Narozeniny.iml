@@ -35,15 +35,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK" level="application" />
     <orderEntry type="module-library">
-      <library name="acra-2.0.3.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/acra-2.0.3.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
       <library name="admob-sdk-android.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/admob-sdk-android.jar!/" />
@@ -57,6 +48,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/joda-time-1.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/acra-3.1.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
