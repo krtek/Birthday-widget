@@ -144,7 +144,7 @@ public class Birthday extends Activity {
 		if (phone != null) {
 			smstItem.setEnabled(true);
 			Intent smsIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" + phone ) );
-			smsIntent.putExtra( "sms_body", Utils.getCongrats(this, item.getDisplayName()));
+			smsIntent.putExtra( "sms_body", Utils.getCongrats(item, this, item.getDisplayName()));
 			smstItem.setIntent(smsIntent);
 			callItem.setEnabled(true);
 			Intent callIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "tel:" + phone ) );

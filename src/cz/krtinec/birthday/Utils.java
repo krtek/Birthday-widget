@@ -24,10 +24,11 @@ import java.text.MessageFormat;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import cz.krtinec.birthday.dto.Event;
 
 public class Utils {
 
-	public static String getCongrats(Context ctx, String name) {
+	public static String getCongrats(Event event, Context ctx, String name) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 		String template = prefs.getString(Birthday.TEMPLATE_KEY, ctx.getString(R.string.congrats_pattern));
 		return MessageFormat.format(template, name);

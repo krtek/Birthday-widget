@@ -63,7 +63,8 @@
     <string name="context_menu_email">e-mail</string>
     
     <string name="congrats_subject">Congratulation</string>
-    <string name="congrats_pattern">Dear {0}, I wish you a very happy birthday!</string>
+    <string name="birthday_congrats_pattern">Dear {0}, I wish you a very happy birthday!</string>
+    <string name="anniversary_congrats_pattern">Dear {0}, I wish you a very happy birthday!</string>
     
     <string name="notification_alert">Birthday alert!</string>
     <string name="notification_pattern">Hurry up, {0} has birthday!</string>
