@@ -42,5 +42,4 @@ public class BirthdayEvent extends Event {
     public Integer getAge() {
 		return age;
 	}
-
 }

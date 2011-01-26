@@ -60,6 +60,9 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class Birthday extends Activity {
 	private static final String VERSION_KEY = "version";
 	public static final String TEMPLATE_KEY = "template";
+    public static final String TEMPLATE_KEY_ANNIVERSARY = "template.anniversary";
+    public static final String TEMPLATE_KEY_CUSTOM = "template.custom";
+    public static final String TEMPLATE_KEY_OTHER = "template.other";
 	
 	private static final int DEBUG_MENU = 0;
 	private static final int PREFS_MENU = 1;
@@ -144,7 +147,7 @@ public class Birthday extends Activity {
 		if (phone != null) {
 			smstItem.setEnabled(true);
 			Intent smsIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" + phone ) );
-			smsIntent.putExtra( "sms_body", Utils.getCongrats(item, this, item.getDisplayName()));
+			smsIntent.putExtra( "sms_body", Utils.getCongrats(item, this));
 			smstItem.setIntent(smsIntent);
 			callItem.setEnabled(true);
 			Intent callIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "tel:" + phone ) );
@@ -154,7 +157,7 @@ public class Birthday extends Activity {
 		if (email != null) {			
 			emailItem.setEnabled(true);	
 			String subject = getString(R.string.congrats_subject);
-			String body = Utils.getCongrats(this, item.getDisplayName());
+			String body = Utils.getCongrats(item, this);
 			Intent mailer = new Intent(Intent.ACTION_SEND);
 			mailer.setType("text/plain");
 			mailer.putExtra(Intent.EXTRA_EMAIL, new String[]{email});

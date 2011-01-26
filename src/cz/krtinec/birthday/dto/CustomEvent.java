@@ -37,6 +37,10 @@ public class CustomEvent extends Event {
         this.label = label;
     }
 
+    /**
+     * Custom event description.
+     * @return
+     */
     public String getLabel() {
         return label;
     }

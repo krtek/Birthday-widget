@@ -24,15 +24,40 @@ import java.text.MessageFormat;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import cz.krtinec.birthday.dto.Event;
+import cz.krtinec.birthday.dto.*;
 
 public class Utils {
 
-	public static String getCongrats(Event event, Context ctx, String name) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-		String template = prefs.getString(Birthday.TEMPLATE_KEY, ctx.getString(R.string.congrats_pattern));
-		return MessageFormat.format(template, name);
+	public static String getCongrats(Event event, Context ctx) {
+        String template = getTemplate(event, ctx);
+		return MessageFormat.format(template, event.getDisplayName() , getEventLabel(event, ctx));
 	}
-	
 
+
+    private static String getTemplate(Event event, Context ctx) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        if (event instanceof BirthdayEvent) {
+            return prefs.getString(Birthday.TEMPLATE_KEY, ctx.getString(R.string.congrats_pattern));
+        } else if (event instanceof AnniversaryEvent) {
+            return prefs.getString(Birthday.TEMPLATE_KEY_ANNIVERSARY, ctx.getString(R.string.congrats_pattern));
+        } else if (event instanceof OtherEvent) {
+            //TODO Solve other events ?
+            return prefs.getString(Birthday.TEMPLATE_KEY_OTHER, ctx.getString(R.string.congrats_pattern));
+        } else {
+            return prefs.getString(Birthday.TEMPLATE_KEY_CUSTOM, ctx.getString(R.string.congrats_pattern));
+        }
+    }
+
+    private static String getEventLabel(Event event, Context ctx) {
+        if (event instanceof BirthdayEvent) {
+            return ctx.getString(R.string.birthday);
+        } else if (event instanceof AnniversaryEvent) {
+            return ctx.getString(R.string.anniversary);
+        } else if (event instanceof CustomEvent) {
+            return ((CustomEvent) event).getLabel();
+        } else {
+            //TODO Solve other events ?
+            return ctx.getString(R.string.birthday);
+        }
+    }
 }

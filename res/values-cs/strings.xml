@@ -55,11 +55,11 @@
   <string name="context_menu_text">SMSkou</string>
   <string name="context_menu_email">e-mailem</string>
   <string name="congrats_subject">Všechno nejlepší</string>
-  <string name="congrats_pattern">Milý {0}, všechno nejlepší k narozeninám!</string>
+  <string name="congrats_pattern">Milý {0}, přeju pěkné {1}!</string>
   <string name="notification_alert">Narozeniny!</string>
   <string name="notification_pattern">Honem, {0} má narozeniny!</string>
 
-  <string name="anniversary">Výročí</string>
-  <string name="birthday">Narozeniny</string>
-  <string name="other">Jiné</string>
+  <string name="anniversary">výročí</string>
+  <string name="birthday">narozeniny</string>
+  <string name="other">jiné</string>
 </resources>
