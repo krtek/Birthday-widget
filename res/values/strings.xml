@@ -38,8 +38,8 @@
     <string name="preferences_menu">Preferences</string>    
     <string name="date_format_title">Date format</string>
     <string name="date_format_summary">Set display date format</string>
-    <string name="template_title">Greetings template</string>
-    <string name="template_summary">Edit your predefined template. {0} is replaced by contact name.</string>
+    <string name="birthday_template_title">Birthday greetings</string>
+    <string name="template_summary">Edit your predefined template. {0} is replaced by contact name, {1} by event title.</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_enabled">Enabled</string>    
     <string name="notifications_time">Notification at</string>
@@ -71,5 +71,13 @@
     <string name="anniversary">anniversary</string>
     <string name="birthday">birthday</string>
     <string name="other">other</string>
+
+    <!-- Greetings templates -->
+    <string name="anniversary_template_title">Anniversary greetings</string>
+    <string name="custom_template_title">Custom greetings</string>
+    <string name="other_template_title">Other greetings</string>
+
+    <string name="greetings">Greetings</string>
+
 
 </resources>
