@@ -26,8 +26,24 @@ import org.joda.time.LocalDate;
  * User: krtek
  */
 public class AnniversaryEvent extends Event {
+    private Integer yearsFrom;
+
       public AnniversaryEvent(String displayName, long id, LocalDate eventDate, String lookupKey,
                          DateIntegrity integrity) {
           super(displayName, id, eventDate, lookupKey, integrity);
+          if (DateIntegrity.FULL == this.integrity) {
+             yearsFrom = today.getYear() - eventDate.getYear();
+             yearsFrom = nextYear ? yearsFrom + 1: yearsFrom;
+          } else {
+             yearsFrom = null;
+          }
       }
+
+    /**
+     * Returns number of years from event.
+     * @return
+     */
+    public Integer getYearsFrom() {
+        return yearsFrom;
+    }
 }

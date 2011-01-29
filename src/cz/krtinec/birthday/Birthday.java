@@ -245,9 +245,10 @@ public class Birthday extends Activity {
                         String.valueOf((bEvent.getAge() == null) ? "--" : bEvent.getAge()));
                 ((TextView)v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
                 ((TextView)v.findViewById(R.id.type)).setText(getCaption(R.string.birthday));
-
             } else if (event instanceof AnniversaryEvent) {
-                ((TextView)v.findViewById(R.id.age)).setText("--");
+                AnniversaryEvent aEvent = (AnniversaryEvent) event;
+                ((TextView)v.findViewById(R.id.age)).setText(
+                        String.valueOf((aEvent.getYearsFrom() == null) ? "--" : aEvent.getYearsFrom()));
                 ((TextView)v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
                 ((TextView)v.findViewById(R.id.type)).setText(getCaption(R.string.anniversary));
             } else if (event instanceof CustomEvent) {
