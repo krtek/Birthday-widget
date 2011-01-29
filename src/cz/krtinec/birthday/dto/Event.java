@@ -112,4 +112,16 @@ public abstract class Event implements Comparable<Event> {
 		return DateFormatter.getInstance(ctx).format(this.eventDate, this.integrity);
 	}
 
+    public int getYear() {
+        return integrity == DateIntegrity.FULL ? eventDate.getYear() : today.getYear();
+    }
+
+    public int getMonthOfYear() {
+        return eventDate.getMonthOfYear();
+    }
+
+    public int getDayOfMonth() {
+        return eventDate.getDayOfMonth();
+    }
+
 }

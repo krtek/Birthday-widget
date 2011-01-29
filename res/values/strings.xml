@@ -79,5 +79,7 @@
 
     <string name="greetings">Greetings</string>
 
+    <string name="add_bday_menu">Add birthday</string>
+
 
 </resources>

@@ -21,7 +21,7 @@ package cz.krtinec.birthday;
 
 import java.util.List;
 
-import android.content.DialogInterface;
+import android.app.*;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.*;
@@ -33,9 +33,6 @@ import cz.krtinec.birthday.ui.AdapterParent;
 import cz.krtinec.birthday.ui.BirthdayPreference;
 import cz.krtinec.birthday.ui.PhotoLoader;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -56,6 +53,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import org.joda.time.LocalDate;
 
 public class Birthday extends Activity {
 	private static final String VERSION_KEY = "version";
@@ -67,6 +65,17 @@ public class Birthday extends Activity {
 	private static final int DEBUG_MENU = 0;
 	private static final int PREFS_MENU = 1;
 	private static final int HELP_MENU = 2;
+    private static final int ADD_BDAY_MENU = 3;
+
+    private static final int ACTIVITY_PICK_CONTACT = 10;
+    private static final int DIALOG_HELP = 11;
+    private static final int DIALOG_BIRTHDAY = 12;
+    private static final int DIALOG_LOADING = 13;
+    private static final int DIALOG_EMPTY = 14;
+
+    private Uri contactToEdit;
+
+
 	private PhotoLoader loader;
 	private ProgressDialog dialog;
 	private Handler handler;
@@ -82,8 +91,7 @@ public class Birthday extends Activity {
 			int version = this.getPackageManager().getPackageInfo("cz.krtinec.birthday", 0).versionCode;
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 			if (version != prefs.getInt(VERSION_KEY, 1)) {
-				AlertDialog dialog = createHelpDialog(this);
-				dialog.show();
+				showDialog(DIALOG_HELP);
 				Editor editor = prefs.edit();
 				editor.putInt(VERSION_KEY, version);
 				editor.commit();				
@@ -127,7 +135,7 @@ public class Birthday extends Activity {
 	protected void onResume() {		
 		super.onResume();
         Log.d("Birthday", "onResume() called.");
-		dialog = ProgressDialog.show(this, getString(R.string.app_name), getString(R.string.loading), true);
+		showDialog(DIALOG_LOADING);
 		new Thread(new StartupThread(this)).start();		
 	}
 
@@ -173,6 +181,7 @@ public class Birthday extends Activity {
 		menu.add(Menu.NONE, DEBUG_MENU, 0, R.string.debug_menu).setIcon(android.R.drawable.ic_menu_edit);
 		menu.add(Menu.NONE, PREFS_MENU, 1, R.string.preferences_menu).setIcon(android.R.drawable.ic_menu_preferences);		
 		menu.add(Menu.NONE, HELP_MENU, 2, R.string.help_menu).setIcon(android.R.drawable.ic_menu_help);
+        menu.add(Menu.NONE, ADD_BDAY_MENU, 3, R.string.add_bday_menu).setIcon(android.R.drawable.ic_input_add);
 		return true;
 	}
     
@@ -189,21 +198,109 @@ public class Birthday extends Activity {
 				startActivity(debugIntent);
 				return true;
 			}
-			case HELP_MENU: {			
-				AlertDialog dialog = createHelpDialog(this);
-				dialog.show();
+			case HELP_MENU: {
+                showDialog(DIALOG_HELP);
+                return true;
 			}
+            case ADD_BDAY_MENU: {
+                 Intent intent = new Intent(Intent.ACTION_PICK);
+                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                 startActivityForResult(intent, ACTIVITY_PICK_CONTACT);
+                return true;
+            }
 		}
 		return false;
 		
 	}
-	
-	public static AlertDialog createHelpDialog(Context context) {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         switch (requestCode) {
+            case (ACTIVITY_PICK_CONTACT) :
+                if (resultCode == Activity.RESULT_OK) {
+                    contactToEdit = data.getData();
+                    showDialog(DIALOG_BIRTHDAY);
+                    return;
+                }
+            break;
+        }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case (DIALOG_HELP): {
+                return createHelpDialog(this);
+            }
+            case (DIALOG_LOADING): {
+                if (this.dialog != null) {
+                    //cancel current dialog
+                    this.dialog.dismiss();
+                }
+                this.dialog = ProgressDialog.show(this, getString(R.string.app_name),
+                        getString(R.string.loading), true);
+                return this.dialog;
+            } case (DIALOG_EMPTY): {
+                return new AlertDialog.Builder(this)
+						   .setTitle(R.string.help_title)
+						   .setCancelable(true)
+						   .setIcon(android.R.drawable.ic_dialog_info)
+						   .setPositiveButton(R.string.ok, null)
+						   .setMessage(R.string.no_data_found)
+						   .create();
+            } case (DIALOG_BIRTHDAY): {
+                if (contactToEdit == null) {
+                    throw new IllegalArgumentException("Have no contact to edit");
+                }
+                return createEditDialog(this, contactToEdit);
+            }
+
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case (DIALOG_BIRTHDAY): {
+                DatePickerDialog datePicker = (DatePickerDialog) dialog;
+                ParseResult bDay = BirthdayProvider.getInstance().getBirthday(this, contactToEdit);
+                if (bDay != null) {
+                    datePicker.updateDate(bDay.integrity == DateIntegrity.FULL ? bDay.date.getYear() : 2011,
+                    bDay.date.getMonthOfYear() - 1,
+                    bDay.date.getDayOfMonth());
+                }
+            }
+        }
+    }
+
+    private static Dialog createEditDialog(final Context ctx, final Uri contact) {
+        ParseResult bDay = BirthdayProvider.getInstance().getBirthday(ctx, contact);
+
+        DatePickerDialog datePicker = new DatePickerDialog(ctx, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                LocalDate date = new LocalDate(year, month + 1, day);
+                BirthdayProvider.getInstance().updateBirthday(ctx, contact, date);
+            }
+        }, 2011, 1, 1);
+
+        if (bDay != null) {
+            datePicker.updateDate(bDay.integrity == DateIntegrity.FULL ? bDay.date.getYear() : 2011,
+                    bDay.date.getMonthOfYear() - 1,
+                    bDay.date.getDayOfMonth());
+        }
+
+        return datePicker;
+    }
+
+    private static AlertDialog createHelpDialog(Context context) {
 		  final TextView message = new TextView(context);
 		  // i.e.: R.string.dialog_message =>
 		            // "Test this dialog following the link to dtmilano.blogspot.com"
-		  final SpannableString s = 
-		               new SpannableString(context.getText(R.string.help_string));		  
+		  final SpannableString s =
+		               new SpannableString(context.getText(R.string.help_string));
 		  Linkify.addLinks(s, Linkify.ALL);
 		  message.setText(s);
 		  message.setMovementMethod(LinkMovementMethod.getInstance());
@@ -307,14 +404,7 @@ public class Birthday extends Activity {
 					registerForContextMenu((ListView)findViewById(R.id.list));
 					dialog.cancel();
 					if (listOfContacts.isEmpty()) {
-						 new AlertDialog.Builder(activity)
-						   .setTitle(R.string.help_title)
-						   .setCancelable(true)
-						   .setIcon(android.R.drawable.ic_dialog_info)
-						   .setPositiveButton(R.string.ok, null)
-						   .setMessage(R.string.no_data_found)
-						   .create()
-						   .show();
+						 showDialog(DIALOG_EMPTY);
 					}
 				}
 			});			
