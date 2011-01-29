@@ -48,7 +48,7 @@ public class Utils {
         }
     }
 
-    private static String getEventLabel(Event event, Context ctx) {
+    public static String getEventLabel(Event event, Context ctx) {
         if (event instanceof BirthdayEvent) {
             return ctx.getString(R.string.birthday);
         } else if (event instanceof AnniversaryEvent) {

@@ -65,8 +65,8 @@
     <string name="congrats_subject">Congratulations</string>
     <string name="congrats_pattern">Dear {0}, I wish you a very happy {1}!</string>
     
-    <string name="notification_alert">Birthday alert!</string>
-    <string name="notification_pattern">Hurry up, {0} has birthday!</string>
+    <string name="notification_alert">{0} alert!</string>
+    <string name="notification_pattern">Hurry up, {0} has {1}!</string>
     
     <string name="anniversary">anniversary</string>
     <string name="birthday">birthday</string>

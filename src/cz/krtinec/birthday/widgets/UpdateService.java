@@ -42,6 +42,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import cz.krtinec.birthday.Birthday;
 import cz.krtinec.birthday.R;
+import cz.krtinec.birthday.Utils;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.Event;
 
@@ -122,13 +123,14 @@ public abstract class UpdateService extends Service {
 
     private void fireBirthdayAlert(Event c, Long when) {
         String notificationFormat = this.getString(R.string.notification_pattern);
-        Notification n = new Notification(R.drawable.icon, getString(R.string.notification_alert), when);
+        String label = MessageFormat.format(getString(R.string.notification_alert), Utils.getEventLabel(c, this));
+        Notification n = new Notification(R.drawable.icon, label, when);
         n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;
         Intent i = new Intent(getApplicationContext(), Birthday.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFY_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
         n.setLatestEventInfo(this, getString(R.string.notification_alert),
-                MessageFormat.format(notificationFormat, c.getDisplayName()), pendingIntent);
+                MessageFormat.format(notificationFormat, c.getDisplayName(), Utils.getEventLabel(c, this)), pendingIntent);
         NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify("Birthday", (int)c.getId(), n);
     }
