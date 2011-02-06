@@ -24,11 +24,14 @@
           xmlns:app="http://schemas.android.com/apk/res/cz.krtinec.birthday"
           android:layout_width="fill_parent"
           android:layout_height="fill_parent">
+
     <TextView android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dip"
-            android:padding="5dip"/>
+            android:padding="5dip"
+            android:textStyle="bold"
+            />
 
     <ImageView android:id="@+id/edit_button_add"
             android:layout_width="wrap_content"
