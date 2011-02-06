@@ -19,10 +19,7 @@
 
 package cz.krtinec.birthday.ui;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.app.*;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 
@@ -37,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import cz.krtinec.birthday.Birthday;
 import cz.krtinec.birthday.DateFormatter;
 import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.data.BirthdayProvider;
@@ -60,6 +58,7 @@ import java.util.List;
 public class EditActivity extends Activity {
     private static final int DIALOG_EDIT_DATE = 12;
     private static final int DIALOG_SAVE_FAILED = 13;
+    private static final int DIALOG_SAVING = 14;
     private EditableEvent eventToEdit = null;
     private EditAdapter listAdapter;
 
@@ -104,11 +103,22 @@ public class EditActivity extends Activity {
             Button saveButton = (Button) findViewById(R.id.btn_done);
             Button cancelButton = (Button) findViewById(R.id.btn_discard);
 
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getBaseContext(), Birthday.class);
+                    startActivity(i);
+                }
+            });
+
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     try {
+                        showDialog(DIALOG_SAVING);
                         BirthdayProvider.getInstance().performUpdate(context, listAdapter.buildDiff());
+                        Intent i = new Intent(getBaseContext(), Birthday.class);
+                        startActivity(i);
                     } catch (RemoteException e) {
                         Log.i("EditActivity", "Save failed!", e);
                         showDialog(DIALOG_SAVE_FAILED);
@@ -134,7 +144,12 @@ public class EditActivity extends Activity {
                          setMessage(R.string.save_error).
                          setPositiveButton(R.string.ok, null).
                          create();
-             }
+             } case (DIALOG_SAVING): {
+                return new ProgressDialog.Builder(this).
+                        setTitle(R.string.save).
+                        setMessage(R.string.wait_dialog)
+                        .create();
+            }
         }
         return null;
     }
