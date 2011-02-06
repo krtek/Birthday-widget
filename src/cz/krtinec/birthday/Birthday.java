@@ -31,6 +31,7 @@ import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.*;
 import cz.krtinec.birthday.ui.AdapterParent;
 import cz.krtinec.birthday.ui.BirthdayPreference;
+import cz.krtinec.birthday.ui.EditActivity;
 import cz.krtinec.birthday.ui.PhotoLoader;
 
 import android.content.Context;
@@ -69,7 +70,7 @@ public class Birthday extends Activity {
 
     private static final int ACTIVITY_PICK_CONTACT = 10;
     private static final int DIALOG_HELP = 11;
-    private static final int DIALOG_BIRTHDAY = 12;
+
     private static final int DIALOG_LOADING = 13;
     private static final int DIALOG_EMPTY = 14;
 
@@ -155,7 +156,7 @@ public class Birthday extends Activity {
 		if (phone != null) {
 			smstItem.setEnabled(true);
 			Intent smsIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "sms:" + phone ) );
-			smsIntent.putExtra( "sms_body", Utils.getCongrats(item, this));
+			smsIntent.putExtra( "sms_body", Utils.getCongrats(this, item));
 			smstItem.setIntent(smsIntent);
 			callItem.setEnabled(true);
 			Intent callIntent = new Intent( Intent.ACTION_VIEW, Uri.parse( "tel:" + phone ) );
@@ -165,7 +166,7 @@ public class Birthday extends Activity {
 		if (email != null) {			
 			emailItem.setEnabled(true);	
 			String subject = getString(R.string.congrats_subject);
-			String body = Utils.getCongrats(item, this);
+			String body = Utils.getCongrats(this, item);
 			Intent mailer = new Intent(Intent.ACTION_SEND);
 			mailer.setType("text/plain");
 			mailer.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
@@ -220,7 +221,9 @@ public class Birthday extends Activity {
             case (ACTIVITY_PICK_CONTACT) :
                 if (resultCode == Activity.RESULT_OK) {
                     contactToEdit = data.getData();
-                    showDialog(DIALOG_BIRTHDAY);
+                    Intent intent = new Intent(getBaseContext(), EditActivity.class);
+                    intent.setData(contactToEdit);
+                    startActivity(intent);
                     return;
                 }
             break;
@@ -249,51 +252,15 @@ public class Birthday extends Activity {
 						   .setPositiveButton(R.string.ok, null)
 						   .setMessage(R.string.no_data_found)
 						   .create();
-            } case (DIALOG_BIRTHDAY): {
-                if (contactToEdit == null) {
-                    throw new IllegalArgumentException("Have no contact to edit");
-                }
-                return createEditDialog(this, contactToEdit);
             }
 
         }
         return null;
     }
 
-    @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
-        switch (id) {
-            case (DIALOG_BIRTHDAY): {
-                DatePickerDialog datePicker = (DatePickerDialog) dialog;
-                ParseResult bDay = BirthdayProvider.getInstance().getBirthday(this, contactToEdit);
-                if (bDay != null) {
-                    datePicker.updateDate(bDay.integrity == DateIntegrity.FULL ? bDay.date.getYear() : 2011,
-                    bDay.date.getMonthOfYear() - 1,
-                    bDay.date.getDayOfMonth());
-                }
-            }
-        }
-    }
 
-    private static Dialog createEditDialog(final Context ctx, final Uri contact) {
-        ParseResult bDay = BirthdayProvider.getInstance().getBirthday(ctx, contact);
 
-        DatePickerDialog datePicker = new DatePickerDialog(ctx, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                LocalDate date = new LocalDate(year, month + 1, day);
-                BirthdayProvider.getInstance().updateBirthday(ctx, contact, date);
-            }
-        }, 2011, 1, 1);
 
-        if (bDay != null) {
-            datePicker.updateDate(bDay.integrity == DateIntegrity.FULL ? bDay.date.getYear() : 2011,
-                    bDay.date.getMonthOfYear() - 1,
-                    bDay.date.getDayOfMonth());
-        }
-
-        return datePicker;
-    }
 
     private static AlertDialog createHelpDialog(Context context) {
 		  final TextView message = new TextView(context);
@@ -394,10 +361,11 @@ public class Birthday extends Activity {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Event e = (Event) adapter.getItem(i);
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            Intent intent = new Intent(Intent.ACTION_EDIT);
                             Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI,
                                     String.valueOf(e.getId()));
                             intent.setData(uri);
+                            intent.setClass(getBaseContext(), EditActivity.class);
                             activity.startActivity(intent);
                         }
                     });

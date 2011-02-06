@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import android.content.*;
 import android.os.RemoteException;
+import android.view.View;
 import cz.krtinec.birthday.dto.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -54,7 +55,8 @@ public class BirthdayProvider {
             ContactsContract.Contacts.LOOKUP_KEY,
             ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Event.TYPE,
-            ContactsContract.CommonDataKinds.Event.LABEL
+            ContactsContract.CommonDataKinds.Event.LABEL,
+            ContactsContract.CommonDataKinds.Event._ID
         };
 
 	
@@ -69,24 +71,45 @@ public class BirthdayProvider {
 		return instance;
 	}
 
-    public List<Event> getEvents(Uri contact, Context ctx) {
+    public List<EditableEvent> getEvents(Context ctx, Uri contact) {
         Log.i("Birthday provider", "Going to get events for " + contact);
 
+        String[] projection = new String[] {
+            ContactsContract.CommonDataKinds.Event._ID,
+            ContactsContract.CommonDataKinds.Event.START_DATE,
+            ContactsContract.CommonDataKinds.Event.TYPE,
+            ContactsContract.CommonDataKinds.Event.LABEL,
+        };
+
+        Long id = getIdForContact(ctx, contact);
+        if (id == null) {
+            throw new IllegalArgumentException("Contact not found: " + contact);
+        }
+
         Cursor c = ctx.getContentResolver().query(
-        contact,
-        BIRTHDAY_PROJECTION,
-        ContactsContract.Data.MIMETYPE + "= ? AND " +
+        ContactsContract.Data.CONTENT_URI,
+            projection,
+            ContactsContract.Data.CONTACT_ID + "= ? AND "+
+                ContactsContract.Data.MIMETYPE + "= ? AND " +
                 "(" + ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " OR " +
                 ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY + " OR " +
                 ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM + " OR " +
                 ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_OTHER + ")",
-        new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
-        null);
+            new String[]{ String.valueOf(id),  ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
+            null);
 
-        List<Event> events = new ArrayList<Event>();
+        List<EditableEvent> events = new ArrayList<EditableEvent>();
         while (c!= null && c.moveToNext()) {
             try {
-                events.add(parseCursor(c));
+                ParseResult parseResult = tryParseBDay(c.getString(1));
+
+                EditableEvent evt = new EditableEvent(c.getLong(0),
+                        EventType.getEventType(c.getInt(2)),
+                        parseResult.date,
+                        parseResult.integrity,
+                        c.getString(3));
+
+                events.add(evt);
 
             } catch (ParseException e) {
                 Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
@@ -140,16 +163,29 @@ public class BirthdayProvider {
 
     public Long getIdForContact(Context ctx, Uri contact) {
 
-            Cursor idCursor = ctx.getContentResolver().query(contact, null, null, null, null);
-            Long id = null;
+        Cursor idCursor = ctx.getContentResolver().query(contact, null, null, null, null);
+        Long id = null;
 
-            if (idCursor != null && idCursor.moveToFirst()) {
-                int idIdx = idCursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID);
-                id = idCursor.getLong(idIdx);
-            }
-            idCursor.close();
+        if (idCursor != null && idCursor.moveToFirst()) {
+            int idIdx = idCursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID);
+            id = idCursor.getLong(idIdx);
+        }
+        idCursor.close();
 
         return id;
+    }
+
+    public String getContactName(Context ctx, Uri contact) {
+        Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
+        String displayName = null;
+        if (c != null && c.moveToFirst()) {
+            int id = c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
+            displayName = c.getString(id);
+        }
+
+        c.close();
+        return displayName;
+
     }
 
 
@@ -234,6 +270,8 @@ public class BirthdayProvider {
         }
         return null;
     }
+
+
 
 
     public List<EventDebug> allBirthday(Context ctx) {
@@ -349,7 +387,14 @@ public class BirthdayProvider {
         }
     }
 
-    
+    public ContentProviderResult[] performUpdate(Context ctx, ArrayList<ContentProviderOperation> ops) throws RemoteException, OperationApplicationException {
+        Log.i("BirthdayProvider", "Going to update events: " + ops);
+        ContentProviderResult[] result = ctx.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        Log.i("BirthdayProvider", "Update result: ");
+        return result;
+    }
+
+
     class DatePattern {
     	String pattern;
     	DateTimeFormatter format;

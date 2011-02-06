@@ -22,6 +22,7 @@
 	<!-- Buttons -->
 	<string name="save">Save</string>
 	<string name="ok">Ok</string>
+    <string name="discard">Discard</string>
 	
 
     <string name="app_name">Birthday</string>
@@ -80,6 +81,12 @@
     <string name="greetings">Greetings</string>
 
     <string name="add_bday_menu">Add birthday</string>
+    <string name="edit">Edit</string>
+
+    <string name="description_plus_button">Add</string>
+    <string name="description_minus_button">Remove</string>
+    <string name="error">Error</string>
+    <string name="save_error">An error occurred during save. Sorry.</string>
 
 
 </resources>

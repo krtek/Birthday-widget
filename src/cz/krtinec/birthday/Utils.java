@@ -28,13 +28,13 @@ import cz.krtinec.birthday.dto.*;
 
 public class Utils {
 
-	public static String getCongrats(Event event, Context ctx) {
-        String template = getTemplate(event, ctx);
-		return MessageFormat.format(template, event.getDisplayName() , getEventLabel(event, ctx));
+	public static String getCongrats(Context ctx, Event event) {
+        String template = getTemplate(ctx, event);
+		return MessageFormat.format(template, event.getDisplayName() , getEventLabel(ctx, event));
 	}
 
 
-    private static String getTemplate(Event event, Context ctx) {
+    private static String getTemplate(Context ctx, Event event) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         if (event instanceof BirthdayEvent) {
             return prefs.getString(Birthday.TEMPLATE_KEY, ctx.getString(R.string.congrats_pattern));
@@ -48,7 +48,7 @@ public class Utils {
         }
     }
 
-    public static String getEventLabel(Event event, Context ctx) {
+    public static String getEventLabel(Context ctx, Event event) {
         if (event instanceof BirthdayEvent) {
             return ctx.getString(R.string.birthday);
         } else if (event instanceof AnniversaryEvent) {
@@ -59,5 +59,23 @@ public class Utils {
             //TODO Solve other events ?
             return ctx.getString(R.string.birthday);
         }
+    }
+
+    public static String getEventLabel(Context ctx, EditableEvent evt) {
+        switch (evt.getType()) {
+            case BIRTHDAY: {
+                return ctx.getString(R.string.birthday);
+            }
+            case ANNIVERSARY: {
+                return ctx.getString(R.string.anniversary);
+            }
+            case CUSTOM: {
+                return evt.getLabel();
+            }
+            case OTHER: {
+                return ctx.getString(R.string.other);
+            }
+        }
+        return ctx.getString(R.string.birthday);
     }
 }

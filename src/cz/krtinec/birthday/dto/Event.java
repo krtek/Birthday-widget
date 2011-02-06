@@ -37,25 +37,25 @@ public abstract class Event implements Comparable<Event> {
 	protected String displayName;
 	protected long id;
 	protected String lookupKey;
-	protected LocalDate eventDate;
-	protected DateIntegrity integrity;
-	protected String eventDaySort;
+    protected String eventDaySort;
 	public String pivot = SHORT_FORMAT.print(today);
 	protected boolean nextYear;
 	
 	//static Calendar tempCalendar = new GregorianCalendar();
 
 	private Integer daysToEvent;
-	
-	
-	public Event(String displayName, long id, LocalDate eventDate, String lookupKey , DateIntegrity integrity) {
-		this.displayName = displayName;
+    protected LocalDate eventDate;
+    protected DateIntegrity integrity;
+
+
+    public Event(String displayName, long id, LocalDate eventDate, String lookupKey , DateIntegrity integrity) {
+        this.integrity = integrity;
+        this.displayName = displayName;
 		this.id = id;
 		this.lookupKey = lookupKey;
-		this.eventDate = eventDate;
-		this.integrity = integrity;
-		
-		if (this.eventDate != null) {
+        this.eventDate = eventDate;
+
+        if (this.eventDate != null) {
 			eventDaySort = SHORT_FORMAT.print(this.eventDate);
 		} else {
 			eventDaySort = "0000";

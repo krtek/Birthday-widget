@@ -23,5 +23,16 @@
     <style name="WidgetBackground">
         <item name="android:background">@drawable/widget_bg</item>
     </style>
+    <style name="MinusButton">
+        <item name="android:background">@drawable/btn_circle_normal</item>
+        <item name="android:src">@drawable/ic_btn_round_minus</item>
+        <item name="android:contentDescription">@string/description_minus_button</item>
+    </style>
+
+    <style name="PlusButton">
+        <item name="android:background">@drawable/btn_circle_normal</item>
+        <item name="android:src">@drawable/ic_btn_round_plus</item>
+        <item name="android:contentDescription">@string/description_plus_button</item>
+    </style>
     
 </resources>
