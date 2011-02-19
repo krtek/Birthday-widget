@@ -23,10 +23,10 @@
           android:layout_width="fill_parent"
           android:layout_height="wrap_content">
     <Spinner android:id="@+id/edit_type_button"
-            android:layout_width="100dip"
+            android:layout_width="150dip"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_height="wrap_content"
-            android:prompt="@string/birthday"/>
+            android:prompt="@string/event_type"/>
 
     <ImageView android:id="@+id/edit_remove_button"
             android:layout_width="wrap_content"

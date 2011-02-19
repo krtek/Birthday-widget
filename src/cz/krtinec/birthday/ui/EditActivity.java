@@ -319,7 +319,7 @@ public class EditActivity extends Activity {
         private void fillEditRow(View v, final EditableEvent evt) {
             if (evt.getEventDate() != null) {
                 ((Button)v.findViewById(R.id.edit_display_date)).setText(DateFormatter.getInstance(ctx).
-                    format(evt.getEventDate(), evt.getIntegrity()));
+                    formatEdit(evt.getEventDate()));
             } else {
                 ((Button)v.findViewById(R.id.edit_display_date)).setText("Click to set");
             }

@@ -30,10 +30,13 @@ import android.preference.PreferenceManager;
 
 public class DateFormatter {
 	private static DateFormatter instance = null;
-	private DateTimeFormatter longFormat;
+    private static final String EMPTY_DATE = "--";
+    private DateTimeFormatter longFormat;
 	private DateTimeFormatter shortFormat;
+    private Context ctx;
 	
 	private DateFormatter(Context ctx) {
+        this.ctx = ctx;
 		int fIndex = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(ctx).getString("date_format", "1"));
 		longFormat = DateTimeFormat.forPattern(ctx.getResources().getStringArray(R.array.long_format_values)[fIndex]);
 		shortFormat = DateTimeFormat.forPattern(ctx.getResources().getStringArray(R.array.short_format_values)[fIndex]); 
@@ -49,7 +52,7 @@ public class DateFormatter {
 	
 	public String format(LocalDate date, DateIntegrity integrity) {
 		if (date == null) {
-			return "--";
+			return EMPTY_DATE;
 		}
 		
 		DateTimeFormatter format = integrity == DateIntegrity.FULL ? 
@@ -57,6 +60,21 @@ public class DateFormatter {
 			
 		return format.print(date);
 	}
+
+    /**
+     * Format date for edit button.
+     * @param date
+     * @return
+     */
+    public String formatEdit(LocalDate date) {
+        if (date == null) {
+            return EMPTY_DATE;
+        }
+        DateTimeFormatter pattern =
+                DateTimeFormat.forPattern(ctx.getResources().getStringArray(R.array.long_format_values)[0]);
+
+        return pattern.print(date);
+    }
 	
 	public static void reset() {
 		instance = null;

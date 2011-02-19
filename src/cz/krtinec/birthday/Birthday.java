@@ -179,10 +179,10 @@ public class Birthday extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, DEBUG_MENU, 0, R.string.debug_menu).setIcon(android.R.drawable.ic_menu_edit);
+		menu.add(Menu.NONE, DEBUG_MENU, 3, R.string.debug_menu).setIcon(android.R.drawable.ic_menu_edit);
 		menu.add(Menu.NONE, PREFS_MENU, 1, R.string.preferences_menu).setIcon(android.R.drawable.ic_menu_preferences);		
-		menu.add(Menu.NONE, HELP_MENU, 2, R.string.help_menu).setIcon(android.R.drawable.ic_menu_help);
-        menu.add(Menu.NONE, ADD_BDAY_MENU, 3, R.string.add_bday_menu).setIcon(android.R.drawable.ic_input_add);
+		menu.add(Menu.NONE, HELP_MENU, 3, R.string.help_menu).setIcon(android.R.drawable.ic_menu_help);
+        menu.add(Menu.NONE, ADD_BDAY_MENU, 0, R.string.add_bday_menu).setIcon(android.R.drawable.ic_menu_add);
 		return true;
 	}
     

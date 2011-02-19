@@ -91,5 +91,6 @@
 
 
     <string name="choose_account">Choose account</string>
+    <string name="event_type">Event type</string>
 
 </resources>
