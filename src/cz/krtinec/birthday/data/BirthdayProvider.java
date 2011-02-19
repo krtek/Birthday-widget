@@ -59,7 +59,7 @@ public class BirthdayProvider {
             ContactsContract.CommonDataKinds.Event.RAW_CONTACT_ID
         };
 
-    private static final Account ACCOUNT_PHONE = new Account("No sync", "Phone");
+    private static final Account ACCOUNT_PHONE = new Account("Internal", "Phone");
 
 	
 	private BirthdayProvider() {

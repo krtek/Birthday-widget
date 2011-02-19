@@ -176,7 +176,7 @@ public class EditActivity extends Activity {
                 accounts = accountMap.keySet().toArray(new Account[accountMap.keySet().size()]);
                 return new AlertDialog.Builder(this).
                         setTitle(R.string.choose_account).
-                        setAdapter(new AccountAdapter<Account>(this, android.R.layout.two_line_list_item, accounts), new DialogInterface.OnClickListener(){
+                        setAdapter(new AccountAdapter<Account>(this, R.layout.simple_list_item_2, accounts), new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Log.d("EditActivity", "Selected " + accounts[i] + " account");
@@ -433,13 +433,13 @@ public class EditActivity extends Activity {
             View v;
 			if (convertView == null) {
 				LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = vi.inflate(android.R.layout.two_line_list_item, null);
+				v = vi.inflate(R.layout.simple_list_item_2, null);
 			} else {
 				v = convertView;
 			}
 
-            ((TextView) v.findViewById(android.R.id.text1)).setText(account.type);
-            ((TextView) v.findViewById(android.R.id.text2)).setText(account.name);
+            ((TextView) v.findViewById(android.R.id.text1)).setText(account.name);
+            ((TextView) v.findViewById(android.R.id.text2)).setText(account.type);
 
             return v;
         }
