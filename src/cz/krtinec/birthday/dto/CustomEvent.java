@@ -32,8 +32,8 @@ public class CustomEvent extends Event {
     private String label;
 
     public CustomEvent(String displayName, long id, LocalDate eventDate, String lookupKey,
-                       DateIntegrity integrity, String label) {
-        super(displayName, id, eventDate, lookupKey, integrity);
+                       DateIntegrity integrity, long rawContactId, String label) {
+        super(displayName, id, eventDate, lookupKey, integrity, rawContactId);
         this.label = label;
     }
 

@@ -80,7 +80,7 @@
 
     <string name="greetings">Greetings</string>
 
-    <string name="add_bday_menu">Add birthday</string>
+    <string name="add_bday_menu">Add event</string>
     <string name="edit">Edit</string>
 
     <string name="description_plus_button">Add</string>
@@ -89,5 +89,7 @@
     <string name="save_error">An error occurred during save. Sorry.</string>
     <string name="wait_dialog">Please wait...</string>
 
+
+    <string name="choose_account">Choose account</string>
 
 </resources>

@@ -29,8 +29,8 @@ public class BirthdayEvent extends Event {
     private Integer age;
 
     public BirthdayEvent(String displayName, long id, LocalDate eventDate, String lookupKey,
-                          DateIntegrity integrity) {
-        super(displayName, id, eventDate, lookupKey, integrity);
+                          DateIntegrity integrity, long rawContactId) {
+        super(displayName, id, eventDate, lookupKey, integrity, rawContactId);
         if (DateIntegrity.FULL == this.integrity) {
              age = today.getYear() - eventDate.getYear();
              age = nextYear ? age + 1: age;

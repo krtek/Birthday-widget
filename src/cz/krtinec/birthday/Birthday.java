@@ -362,8 +362,8 @@ public class Birthday extends Activity {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Event e = (Event) adapter.getItem(i);
                             Intent intent = new Intent(Intent.ACTION_EDIT);
-                            Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI,
-                                    String.valueOf(e.getId()));
+                            Uri uri = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI,
+                                    String.valueOf(e.getRawContactId()));
                             intent.setData(uri);
                             intent.setClass(getBaseContext(), EditActivity.class);
                             activity.startActivity(intent);

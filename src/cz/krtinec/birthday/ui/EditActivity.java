@@ -19,12 +19,10 @@
 
 package cz.krtinec.birthday.ui;
 
+import android.accounts.Account;
 import android.app.*;
-import android.content.ContentProviderOperation;
-import android.content.Context;
+import android.content.*;
 
-import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -45,8 +43,11 @@ import cz.krtinec.birthday.dto.EditableEvent;
 import cz.krtinec.birthday.dto.EventType;
 import org.joda.time.LocalDate;
 
+import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -59,8 +60,12 @@ public class EditActivity extends Activity {
     private static final int DIALOG_EDIT_DATE = 12;
     private static final int DIALOG_SAVE_FAILED = 13;
     private static final int DIALOG_SAVING = 14;
+    private static final int DIALOG_CHOOSE_ACCOUNT = 15;
     private EditableEvent eventToEdit = null;
     private EditAdapter listAdapter;
+    private Map<Account, Long> accountMap;
+    private Account[] accounts;
+    private Button saveButton;
 
     private static SpinnerItem[] SPINNER_ITEMS;
 
@@ -68,7 +73,6 @@ public class EditActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit);
-        Intent i = getIntent();
         SPINNER_ITEMS = new SpinnerItem[] {
             new SpinnerItem(EventType.BIRTHDAY, this.getString(R.string.birthday)),
             new SpinnerItem(EventType.ANNIVERSARY, this.getString(R.string.anniversary)),
@@ -86,50 +90,69 @@ public class EditActivity extends Activity {
             String name = BirthdayProvider.getInstance().getContactName(this, contact);
             TextView nameView = (TextView) findViewById(R.id.name);
             nameView.setText(name);
-            ListView listView = (ListView) findViewById(R.id.list);
-            List<EditableEvent> listOfEvents = BirthdayProvider.getInstance().getEvents(this, contact);
-            Long id = BirthdayProvider.getInstance().getIdForContact(this, contact);
-            listAdapter = new EditAdapter(this, listOfEvents, id);
-            listView.setAdapter(listAdapter);
-            ImageView b = (ImageView) findViewById(R.id.edit_button_add);
-            b.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    listAdapter.addRow();
+
+            if (contact.toString().indexOf("raw_contact") == -1) {
+                Log.d("EditActivity", "Must choose raw contact.");
+                Map<Account, Long> rawIds =
+                    BirthdayProvider.getInstance().getRawContactIds(this, Long.parseLong(contact.getLastPathSegment()));
+                Log.i("EditActivity", rawIds.toString());
+                accountMap = rawIds;
+                showDialog(DIALOG_CHOOSE_ACCOUNT);
+            } else {
+                Log.d("EditActivity", "Get raw contact id for: " + contact);
+                Long rawContactId = Long.parseLong(contact.getLastPathSegment());
+                onRawContactIdSelected(rawContactId);
+            }
+        }
+    }
+
+    private void onRawContactIdSelected(long rawContactId) {
+        ListView listView = (ListView) findViewById(R.id.list);
+        List<EditableEvent> listOfEvents = BirthdayProvider.getInstance().getEvents(this, rawContactId);
+
+        listAdapter = new EditAdapter(this, listOfEvents, rawContactId);
+        listView.setAdapter(listAdapter);
+        ImageView b = (ImageView) findViewById(R.id.edit_button_add);
+        b.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                listAdapter.addRow();
+                //disable save button
+                if (saveButton != null) {
+                    saveButton.setEnabled(false);
                 }
-            });
+            }
+        });
 
-            final Context context = this;
-            Button saveButton = (Button) findViewById(R.id.btn_done);
-            Button cancelButton = (Button) findViewById(R.id.btn_discard);
+        final Context context = this;
+        saveButton = (Button) findViewById(R.id.btn_done);
+        Button cancelButton = (Button) findViewById(R.id.btn_discard);
 
-            cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getBaseContext(), Birthday.class);
+                startActivity(i);
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    showDialog(DIALOG_SAVING);
+                    BirthdayProvider.getInstance().performUpdate(context, listAdapter.buildDiff());
                     Intent i = new Intent(getBaseContext(), Birthday.class);
                     startActivity(i);
+                } catch (RemoteException e) {
+                    Log.i("EditActivity", "Save failed!", e);
+                    showDialog(DIALOG_SAVE_FAILED);
+                } catch (OperationApplicationException e) {
+                    Log.i("EditActivity", "Save failed!", e);
+                    showDialog(DIALOG_SAVE_FAILED);
                 }
-            });
-
-            saveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        showDialog(DIALOG_SAVING);
-                        BirthdayProvider.getInstance().performUpdate(context, listAdapter.buildDiff());
-                        Intent i = new Intent(getBaseContext(), Birthday.class);
-                        startActivity(i);
-                    } catch (RemoteException e) {
-                        Log.i("EditActivity", "Save failed!", e);
-                        showDialog(DIALOG_SAVE_FAILED);
-                    } catch (OperationApplicationException e) {
-                        Log.i("EditActivity", "Save failed!", e);
-                        showDialog(DIALOG_SAVE_FAILED);
-                    }
-                }
-            });
-        }
-
+            }
+        });
     }
 
     @Override
@@ -149,6 +172,17 @@ public class EditActivity extends Activity {
                         setTitle(R.string.save).
                         setMessage(R.string.wait_dialog)
                         .create();
+            } case (DIALOG_CHOOSE_ACCOUNT): {
+                accounts = accountMap.keySet().toArray(new Account[accountMap.keySet().size()]);
+                return new AlertDialog.Builder(this).
+                        setTitle(R.string.choose_account).
+                        setAdapter(new AccountAdapter<Account>(this, android.R.layout.two_line_list_item, accounts), new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.d("EditActivity", "Selected " + accounts[i] + " account");
+                                onRawContactIdSelected(accountMap.get(accounts[i]));
+                            }
+                        }).create();
             }
         }
         return null;
@@ -166,7 +200,11 @@ public class EditActivity extends Activity {
                 } else {
                     datePicker.updateDate(2011, 0, 1);
                 }
-
+                break;
+            }
+            case (DIALOG_CHOOSE_ACCOUNT): {
+                ((AlertDialog)dialog).getListView().setAdapter(new AccountAdapter<Account>(this, android.R.layout.two_line_list_item, accounts));
+                break;
             }
         }
     }
@@ -179,6 +217,11 @@ public class EditActivity extends Activity {
                 eventToEdit.setEventDate(new LocalDate(year, month + 1, day));
                 eventToEdit.setIntegrity(DateIntegrity.FULL);
                 listAdapter.notifyDataSetChanged();
+                //enable save button
+                if (saveButton != null) {
+                    saveButton.setEnabled(true);
+                }
+
             }
         }, 2011, 0, 1);
 
@@ -230,9 +273,9 @@ public class EditActivity extends Activity {
         private Context ctx;
         private List<EditableEvent> base;
         private List<EditableEvent> deleted;
-        private Long contactId;
+        private Long rawContactId;
 
-        public EditAdapter(Context ctx, List<EditableEvent> list, Long contactId) {
+        public EditAdapter(Context ctx, List<EditableEvent> list, Long rawContactId) {
             this.ctx = ctx;
             this.list = list;
             this.deleted = new ArrayList<EditableEvent>(1);
@@ -240,7 +283,7 @@ public class EditActivity extends Activity {
             for (EditableEvent e: list) {
                 this.base.add(e.clone());
             }
-            this.contactId = contactId;
+            this.rawContactId = rawContactId;
         }
 
         @Override
@@ -323,7 +366,7 @@ public class EditActivity extends Activity {
         }
 
         public void addRow() {
-            this.list.add(new EditableEvent(contactId));
+            this.list.add(new EditableEvent(rawContactId));
             this.notifyDataSetChanged();
         }
 
@@ -344,7 +387,7 @@ public class EditActivity extends Activity {
                             build());
                     } else {
                         diff.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).
-                                withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.getContactId())).
+                                withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.getRawContactId())).
                                 withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.getEventDate().toString()).
                                 withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.getType().getCode()).
                                 withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).
@@ -379,4 +422,26 @@ public class EditActivity extends Activity {
         }  return null;
     }
 
+    class AccountAdapter<T> extends ArrayAdapter<T> {
+        public AccountAdapter(Context context, int textViewResourceId, T[] objects) {
+            super(context, textViewResourceId, objects);    //To change body of overridden methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Account account = (Account) getItem(position);
+            View v;
+			if (convertView == null) {
+				LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				v = vi.inflate(android.R.layout.two_line_list_item, null);
+			} else {
+				v = convertView;
+			}
+
+            ((TextView) v.findViewById(android.R.id.text1)).setText(account.type);
+            ((TextView) v.findViewById(android.R.id.text2)).setText(account.name);
+
+            return v;
+        }
+    }
 }

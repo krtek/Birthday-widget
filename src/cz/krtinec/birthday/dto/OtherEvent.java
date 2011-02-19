@@ -31,7 +31,7 @@ import org.joda.time.LocalDate;
 public class OtherEvent extends Event {
 
     public OtherEvent(String displayName, long id, LocalDate eventDate, String lookupKey,
-                      DateIntegrity integrity) {
-        super(displayName, id, eventDate, lookupKey, integrity);
+                      DateIntegrity integrity, long rawContactId) {
+        super(displayName, id, eventDate, lookupKey, integrity, rawContactId);
     }
 }

@@ -46,9 +46,10 @@ public abstract class Event implements Comparable<Event> {
 	private Integer daysToEvent;
     protected LocalDate eventDate;
     protected DateIntegrity integrity;
+    private long rawContactId;
 
 
-    public Event(String displayName, long id, LocalDate eventDate, String lookupKey , DateIntegrity integrity) {
+    public Event(String displayName, long id, LocalDate eventDate, String lookupKey , DateIntegrity integrity, long rawContactId) {
         this.integrity = integrity;
         this.displayName = displayName;
 		this.id = id;
@@ -68,6 +69,7 @@ public abstract class Event implements Comparable<Event> {
 			LocalDate tempCalendar = new LocalDate(year, eventDate.getMonthOfYear(), eventDate.getDayOfMonth());
 			daysToEvent = Days.daysBetween(today, tempCalendar).getDays();
 		}
+        this.rawContactId = rawContactId;
 	}
 	
 	public int getDaysToEvent() {
@@ -124,4 +126,7 @@ public abstract class Event implements Comparable<Event> {
         return eventDate.getDayOfMonth();
     }
 
+    public Long getRawContactId() {
+        return rawContactId;
+    }
 }

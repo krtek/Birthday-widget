@@ -35,7 +35,7 @@ public class EditableEvent implements Cloneable {
     private EventType type;
     private LocalDate eventDate;
     private DateIntegrity integrity;
-    private Long contactId;
+    private Long rawContactId;
 
     public EditableEvent(Long eventId, EventType type, LocalDate eventDate, DateIntegrity integrity, String label) {
         this.eventId = eventId;
@@ -45,8 +45,8 @@ public class EditableEvent implements Cloneable {
         this.label = label;
     }
 
-    public EditableEvent(Long contactId) {
-        this.contactId = contactId;
+    public EditableEvent(Long rawContactId) {
+        this.rawContactId = rawContactId;
         this.eventId = -1L;
     }
 
@@ -90,12 +90,12 @@ public class EditableEvent implements Cloneable {
         this.integrity = integrity;
     }
 
-    public Long getContactId() {
-        return contactId;
+    public Long getRawContactId() {
+        return rawContactId;
     }
 
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
+    public void setRawContactId(Long contactId) {
+        this.rawContactId = contactId;
     }
 
     @Override

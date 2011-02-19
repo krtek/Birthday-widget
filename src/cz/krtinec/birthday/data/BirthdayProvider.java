@@ -21,13 +21,12 @@ package cz.krtinec.birthday.data;
 
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.*;
 import android.os.RemoteException;
 import android.view.View;
@@ -56,8 +55,11 @@ public class BirthdayProvider {
             ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Event.TYPE,
             ContactsContract.CommonDataKinds.Event.LABEL,
-            ContactsContract.CommonDataKinds.Event._ID
+            ContactsContract.CommonDataKinds.Event._ID,
+            ContactsContract.CommonDataKinds.Event.RAW_CONTACT_ID
         };
+
+    private static final Account ACCOUNT_PHONE = new Account("No sync", "Phone");
 
 	
 	private BirthdayProvider() {
@@ -71,8 +73,8 @@ public class BirthdayProvider {
 		return instance;
 	}
 
-    public List<EditableEvent> getEvents(Context ctx, Uri contact) {
-        Log.i("Birthday provider", "Going to get events for " + contact);
+    public List<EditableEvent> getEvents(Context ctx, long rawContactId) {
+        Log.i("Birthday provider", "Going to get events for " + rawContactId);
 
         String[] projection = new String[] {
             ContactsContract.CommonDataKinds.Event._ID,
@@ -81,21 +83,16 @@ public class BirthdayProvider {
             ContactsContract.CommonDataKinds.Event.LABEL,
         };
 
-        Long id = getIdForContact(ctx, contact);
-        if (id == null) {
-            throw new IllegalArgumentException("Contact not found: " + contact);
-        }
-
         Cursor c = ctx.getContentResolver().query(
         ContactsContract.Data.CONTENT_URI,
             projection,
-            ContactsContract.Data.CONTACT_ID + "= ? AND "+
+            ContactsContract.Data.RAW_CONTACT_ID + "= ? AND "+
                 ContactsContract.Data.MIMETYPE + "= ? AND " +
                 "(" + ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + " OR " +
                 ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY + " OR " +
                 ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM + " OR " +
                 ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_OTHER + ")",
-            new String[]{ String.valueOf(id),  ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
+            new String[]{ String.valueOf(rawContactId),  ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE},
             null);
 
         List<EditableEvent> events = new ArrayList<EditableEvent>();
@@ -127,41 +124,8 @@ public class BirthdayProvider {
         return events;
     }
 
-    /**
-     *  Returns birthday for given contact.
-     * @param ctx
-     * @param contact
-     * @return
-     */
-        public ParseResult getBirthday(Context ctx, Uri contact) {
-            Log.i("Birthday provider", "Going to get events for " + contact);
-            Long id = getIdForContact(ctx, contact);
 
-            if (id != null) {
-                Cursor c = ctx.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
-                        BIRTHDAY_PROJECTION,
-                        ContactsContract.Data.CONTACT_ID + "= ? AND " +
-                                ContactsContract.CommonDataKinds.Event.TYPE + "=" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY,
-                        new String[]{id.toString()},
-                        null
-                        );
-                 if (c!= null && c.moveToFirst()) {
-                     try {
-                         ParseResult parseResult = tryParseBDay(c.getString(2));
-                         return parseResult;
-                     } catch (ParseException e) {
-                         Log.i("BirthdayProvider", "Cannot parse: " + c.getString(2));
-                         return null;
-                     } finally {
-                         c.close();
-                     }
-                 }
-
-            }
-        return null;
-    }
-
-    public Long getIdForContact(Context ctx, Uri contact) {
+/*    public Long getIdForContact(Context ctx, Uri contact) {
 
         Cursor idCursor = ctx.getContentResolver().query(contact, null, null, null, null);
         Long id = null;
@@ -171,9 +135,8 @@ public class BirthdayProvider {
             id = idCursor.getLong(idIdx);
         }
         idCursor.close();
-
         return id;
-    }
+    }*/
 
     public String getContactName(Context ctx, Uri contact) {
         Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
@@ -186,31 +149,6 @@ public class BirthdayProvider {
         c.close();
         return displayName;
 
-    }
-
-
-    public void updateBirthday(Context ctx, Uri contact, LocalDate bDay) {
-        Long id = getIdForContact(ctx, contact);
-
-        if (id !=null) {
-
-            ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-            ops.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(ContactsContract.Data.CONTACT_ID + "= ? AND " + ContactsContract.CommonDataKinds.Event.TYPE + "= ?",
-                            new String[]{String.valueOf(id), String.valueOf(ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY)})
-                    .withValue(ContactsContract.CommonDataKinds.Event.START_DATE, bDay.toString())
-                    .build());
-
-            try {
-                ContentProviderResult[] result = ctx.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-                Log.d("BirthdayProvider", result.toString());
-            } catch (RemoteException e) {
-                Log.i("BirthdayProvider", "Cannot update birthday", e);
-            } catch (OperationApplicationException e) {
-                Log.i("BirthdayProvider", "Cannot update birthday", e);
-            }
-
-        }
     }
 
 
@@ -246,10 +184,10 @@ public class BirthdayProvider {
         if (c != null) {
             c.close();
         }
-        Log.i("Birthday provider", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
+        Log.i("BirthdayProvider", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
         start = System.currentTimeMillis();
         List<Event> result2 = new ArrayList<Event>(result);
-        Log.i("Birthday provider", "Converted in " + (System.currentTimeMillis() - start) + "[ms]");
+        Log.i("BirthdayProvider", "Converted in " + (System.currentTimeMillis() - start) + " [ms]");
         return result2;
     }
 
@@ -257,16 +195,16 @@ public class BirthdayProvider {
         ParseResult parseResult = tryParseBDay(c.getString(2));
         if (ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY == c.getInt(5)) {
             return new BirthdayEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
-                    parseResult.integrity);
+                    parseResult.integrity, c.getLong(8));
         } else if (ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY == c.getInt(5)) {
             return new AnniversaryEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
-                    parseResult.integrity);
+                    parseResult.integrity, c.getLong(8));
         } else if (ContactsContract.CommonDataKinds.Event.TYPE_CUSTOM == c.getInt(5)) {
             return new CustomEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
-                    parseResult.integrity, c.getString(6));
+                    parseResult.integrity, c.getLong(8), c.getString(6));
         } else if (ContactsContract.CommonDataKinds.Event.TYPE_OTHER == c.getInt(5)) {
             return new OtherEvent(c.getString(0), c.getLong(1),parseResult.date, c.getString(3),
-                    parseResult.integrity);
+                    parseResult.integrity, c.getLong(8));
         }
         return null;
     }
@@ -281,7 +219,8 @@ public class BirthdayProvider {
 	  			  	ContactsContract.CommonDataKinds.Event.CONTACT_ID,
 	  			  	ContactsContract.CommonDataKinds.Event.START_DATE,
 	  			  	ContactsContract.Contacts.LOOKUP_KEY,
-	  			  	ContactsContract.Contacts.PHOTO_ID
+	  			  	ContactsContract.Contacts.PHOTO_ID,
+                    ContactsContract.CommonDataKinds.Event.RAW_CONTACT_ID,
 	  			  	};
 	  	  
 	  	  
@@ -298,9 +237,9 @@ public class BirthdayProvider {
 	  		ParseResult parseResult;
 			try {
 				parseResult = tryParseBDay(c.getString(2));
-				result.add(new EventDebug(c.getString(0), c.getLong(1),parseResult.date, c.getString(2) , c.getString(3), parseResult.integrity));
+				result.add(new EventDebug(c.getString(0), c.getLong(1),parseResult.date, c.getString(2) , c.getString(3), parseResult.integrity, c.getLong(5)));
 			} catch (Exception e) {
-				result.add(new EventDebug(c.getString(0), c.getLong(1), null, c.getString(2) , c.getString(3),  DateIntegrity.NONE));
+				result.add(new EventDebug(c.getString(0), c.getLong(1), null, c.getString(2) , c.getString(3),  DateIntegrity.NONE, c.getLong(5)));
 			}
 	  		
 	  	}
@@ -394,6 +333,44 @@ public class BirthdayProvider {
         return result;
     }
 
+    public Map<Account, Long> getRawContactIds(Context ctx, Long contactId) {
+        Cursor cursor =  ctx.getContentResolver().query(
+                ContactsContract.RawContacts.CONTENT_URI,
+                new String[]
+                        {ContactsContract.RawContacts._ID,
+                        ContactsContract.RawContacts.ACCOUNT_TYPE,
+                        ContactsContract.RawContacts.ACCOUNT_NAME},
+                ContactsContract.RawContacts.CONTACT_ID + " = ?",
+                new String[]{String.valueOf(contactId)}, null);
+
+        Account[] accounts = AccountManager.get(ctx).getAccounts();
+        Log.i("BirtdayProvider", "Available accounts: " + accounts.length);
+        Map<Account, Long> result = new HashMap<Account, Long>();
+        while (cursor.moveToNext()) {
+            Log.d("BirtdayProvider",
+                    "RawId: " + cursor.getLong(0) + ", type: " + cursor.getString(1) + ", name: " + cursor.getString(2));
+            result.put(findAccount(accounts, cursor.getString(1), cursor.getString(2)), cursor.getLong(0));
+        }
+        return result;
+    }
+
+
+
+    private Account findAccount(Account[] list, String type, String name) {
+        Log.d("BirtdayProvider", "Matching " + name + " and " + type);
+        if (name == null && type == null) {
+            return ACCOUNT_PHONE;
+        }
+        for (Account a: list) {
+            Log.d("BirtdayProvider", "Account Name: " + a.name + " Account Type: " + a.type);
+            if (a.type.equals(type) && a.name.equals(name)) {
+                return a;
+            }
+        }
+        Log.d("BirthdayProvider", "Match not found");
+        return null;
+    }
+
 
     class DatePattern {
     	String pattern;
@@ -405,8 +382,5 @@ public class BirthdayProvider {
     		this.format = DateTimeFormat.forPattern(format);
     		this.integrity = integrity;
 		}
-    	
-    	
     }
-    
 }
