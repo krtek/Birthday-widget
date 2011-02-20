@@ -59,7 +59,8 @@ public class BirthdayProvider {
             ContactsContract.CommonDataKinds.Event.RAW_CONTACT_ID
         };
 
-    private static final Account ACCOUNT_PHONE = new Account("Internal", "Phone");
+    private final Account ACCOUNT_PHONE;
+    private final Account ACCOUNT_UNKNOWN;
 
 	
 	private BirthdayProvider() {
@@ -67,6 +68,8 @@ public class BirthdayProvider {
 		PATTERNS.add(new DatePattern("\\d{2}\\-\\d{1,2}\\-\\d{1,2}", "yy-MM-dd", DateIntegrity.FULL));
 		PATTERNS.add(new DatePattern("\\-\\-\\d{1,2}\\-\\d{1,2}", "--MM-dd", DateIntegrity.WITHOUT_YEAR));
 		PATTERNS.add(new DatePattern("\\d{8}", "yyyyMMdd", DateIntegrity.FULL));
+        ACCOUNT_PHONE = new Account("Internal", "Phone");
+        ACCOUNT_UNKNOWN = new Account("Unknown", "Phone");
 	}
 	
 	public static BirthdayProvider getInstance() {
@@ -356,7 +359,13 @@ public class BirthdayProvider {
     }
 
 
-
+    /**
+     *
+     * @param list
+     * @param type
+     * @param name
+     * @return Never returns null.
+     */
     private Account findAccount(Account[] list, String type, String name) {
         Log.d("BirtdayProvider", "Matching " + name + " and " + type);
         if (name == null && type == null) {
@@ -369,7 +378,7 @@ public class BirthdayProvider {
             }
         }
         Log.d("BirthdayProvider", "Match not found");
-        return null;
+        return ACCOUNT_UNKNOWN;
     }
 
 
