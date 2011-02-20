@@ -139,7 +139,8 @@ public class BirthdayProvider {
     }*/
 
     public String getContactName(Context ctx, Uri contact) {
-        Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
+        Cursor c = ctx.getContentResolver().query(contact,
+                new String[] {ContactsContract.Contacts.DISPLAY_NAME}, null, null, null);
         String displayName = null;
         if (c != null && c.moveToFirst()) {
             int id = c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);

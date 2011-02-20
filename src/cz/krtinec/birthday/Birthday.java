@@ -22,6 +22,7 @@ package cz.krtinec.birthday;
 import java.util.List;
 
 import android.app.*;
+import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.*;
@@ -204,9 +205,8 @@ public class Birthday extends Activity {
                 return true;
 			}
             case ADD_BDAY_MENU: {
-                 Intent intent = new Intent(Intent.ACTION_PICK);
-                 intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
-                 startActivityForResult(intent, ACTIVITY_PICK_CONTACT);
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent, ACTIVITY_PICK_CONTACT);
                 return true;
             }
 		}
