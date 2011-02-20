@@ -377,23 +377,23 @@ public class EditActivity extends Activity {
         public ArrayList<ContentProviderOperation> buildDiff() {
             ArrayList<ContentProviderOperation> diff = new ArrayList<ContentProviderOperation>();
             for (EditableEvent e: list) {
-                if (!base.contains(e)) {
-                    //update
-                    if (containsId(base, e.getEventId())) {
-                        diff.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI).
-                            withSelection(ContactsContract.Data._ID + " = ?", new String[] {String.valueOf(e.getEventId())}).
+
+                //update
+                if (containsId(base, e.getEventId())) {
+                    diff.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI).
+                        withSelection(ContactsContract.Data._ID + " = ?", new String[] {String.valueOf(e.getEventId())}).
+                        withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.getEventDate().toString()).
+                        withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.getType().getCode()).
+                        build());
+                } else {
+                    diff.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).
+                            withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.getRawContactId())).
                             withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.getEventDate().toString()).
                             withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.getType().getCode()).
+                            withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).
                             build());
-                    } else {
-                        diff.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).
-                                withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.getRawContactId())).
-                                withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.getEventDate().toString()).
-                                withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.getType().getCode()).
-                                withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).
-                                build());
-                    }
                 }
+
             }
             for (EditableEvent e: deleted) {
                 diff.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI).
