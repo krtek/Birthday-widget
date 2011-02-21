@@ -142,15 +142,18 @@ public class BirthdayProvider {
     }*/
 
     public String getContactName(Context ctx, Uri contact) {
-        Cursor c = ctx.getContentResolver().query(contact,
-                new String[] {ContactsContract.Contacts.DISPLAY_NAME}, null, null, null);
+        contact = Uri.withAppendedPath(contact, ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
+        Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
         String displayName = null;
         if (c != null && c.moveToFirst()) {
-            int id = c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
+            Log.d("BirthdayProvider", "Columns: " + Arrays.asList(c.getColumnNames()));
+            int id = c.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME);
+            Log.d("BirthdayProvider", "getContactName(), column index: " + id);
             displayName = c.getString(id);
         }
-
         c.close();
+
+
         return displayName;
 
     }
