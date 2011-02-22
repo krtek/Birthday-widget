@@ -142,6 +142,7 @@ public class EditActivity extends Activity {
                 try {
                     showDialog(DIALOG_SAVING);
                     BirthdayProvider.getInstance().performUpdate(context, listAdapter.buildDiff());
+                    removeDialog(DIALOG_SAVING);
                     Intent i = new Intent(getBaseContext(), Birthday.class);
                     startActivity(i);
                 } catch (RemoteException e) {
