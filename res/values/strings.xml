@@ -55,7 +55,7 @@
     <string name="help_menu">Help</string>
     <string name="help_string">\nIn case of any troubles use Menu -> Debug mode\n\nOr check FAQ at www.krtinec.cz/Home/bdwidget\n\nContact: lukas.marek@gmail.com\n\nAnd don\'t forget to follow me on twitter.com/BDWidget\n</string>
     <string name="help_title">Birthday Help</string>
-    <string name="no_data_found">No birthdays found in your contacts.\nPlease set some via Google Contacts.</string>
+    <string name="no_data_found">No birthday found in your contacts.\nPress MENU and set some.</string>
     
     <!-- Context menu -->
     <string name="context_menu_header">Congratulate by</string>
