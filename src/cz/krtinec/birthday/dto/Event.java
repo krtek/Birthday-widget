@@ -20,6 +20,7 @@
 package cz.krtinec.birthday.dto;
 
 import org.joda.time.Days;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -66,7 +67,13 @@ public abstract class Event implements Comparable<Event> {
 			
 		if (this.eventDate != null) {
 			int year = nextYear ? today.getYear() + 1 : today.getYear();
-			LocalDate tempCalendar = new LocalDate(year, eventDate.getMonthOfYear(), eventDate.getDayOfMonth());
+            LocalDate tempCalendar;
+            try {
+			    tempCalendar = new LocalDate(year, eventDate.getMonthOfYear(), eventDate.getDayOfMonth());
+            } catch (IllegalFieldValueException e) {
+                //Probably February 29th
+                tempCalendar = new LocalDate(year, eventDate.getMonthOfYear(), eventDate.getDayOfMonth() - 1);
+            }
 			daysToEvent = Days.daysBetween(today, tempCalendar).getDays();
 		}
         this.rawContactId = rawContactId;
