@@ -127,33 +127,25 @@ public class BirthdayProvider {
         return events;
     }
 
-
-/*    public Long getIdForContact(Context ctx, Uri contact) {
-
-        Cursor idCursor = ctx.getContentResolver().query(contact, null, null, null, null);
-        Long id = null;
-
-        if (idCursor != null && idCursor.moveToFirst()) {
-            int idIdx = idCursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID);
-            id = idCursor.getLong(idIdx);
-        }
-        idCursor.close();
-        return id;
-    }*/
-
     public String getContactName(Context ctx, Uri contact) {
-        contact = Uri.withAppendedPath(contact, ContactsContract.RawContacts.Entity.CONTENT_DIRECTORY);
         Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
         String displayName = null;
+        Long contactID;
         if (c != null && c.moveToFirst()) {
-            Log.d("BirthdayProvider", "Columns: " + Arrays.asList(c.getColumnNames()));
-            int id = c.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME);
-            Log.d("BirthdayProvider", "getContactName(), column index: " + id);
-            displayName = c.getString(id);
+            int id = c.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID);
+            if (id == -1) {
+                id = c.getColumnIndex(ContactsContract.Contacts._ID);
+            }
+            contactID = c.getLong(id);
+            Log.d("BirthdayProvider", "getContactName(), contactID: " + contactID);
+            c.close();
+            Uri contactUri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contactID));
+            c = ctx.getContentResolver().query(contactUri, null, null, null, null);
+            if (c !=null && c.moveToFirst()) {
+                displayName = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            }
         }
         c.close();
-
-
         return displayName;
 
     }
