@@ -43,9 +43,7 @@ import cz.krtinec.birthday.dto.EditableEvent;
 import cz.krtinec.birthday.dto.EventType;
 import org.joda.time.LocalDate;
 
-import javax.swing.event.ListSelectionEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -225,11 +223,14 @@ public class EditActivity extends Activity {
 
             }
         }, 2011, 0, 1);
-
-        if (eventToEdit != null && eventToEdit.getEventDate() != null) {
-            datePicker.updateDate(eventToEdit.getEventDate().getYear(),
-                    eventToEdit.getEventDate().getMonthOfYear() - 1,
-                    eventToEdit.getEventDate().getDayOfMonth());
+        try {
+	        if (eventToEdit != null && eventToEdit.getEventDate() != null) {
+	            datePicker.updateDate(eventToEdit.getEventDate().getYear(),
+	                    eventToEdit.getEventDate().getMonthOfYear() - 1,
+	                    eventToEdit.getEventDate().getDayOfMonth());
+	        }
+        } catch (IllegalArgumentException e) {
+        	//tried to set some weird date - ignore
         }
 
         return datePicker;
