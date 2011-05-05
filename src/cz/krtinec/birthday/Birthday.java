@@ -22,12 +22,12 @@ package cz.krtinec.birthday;
 import java.util.List;
 
 import android.app.*;
-import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.*;
-import com.admob.android.ads.AdManager;
 
+import com.google.ads.AdRequest;
+import com.google.ads.AdView;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.*;
 import cz.krtinec.birthday.ui.AdapterParent;
@@ -87,7 +87,6 @@ public class Birthday extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        AdManager.setTestDevices( new String[] { "F57D9A6828124CD742993F5653A6AC3C", AdManager.TEST_EMULATOR} );
                 
         try {
 			int version = this.getPackageManager().getPackageInfo("cz.krtinec.birthday", 0).versionCode;
@@ -119,7 +118,7 @@ public class Birthday extends Activity {
 	}
 
     @Override
-    protected  void onPause() {
+    protected void onPause() {
         super.onPause();
         Log.d("Birthday","onPause() called.");
 
@@ -374,6 +373,10 @@ public class Birthday extends Activity {
 					if (listOfContacts.isEmpty()) {
 						 showDialog(DIALOG_EMPTY);
 					}
+                    AdView adView = (AdView)findViewById(R.id.ad);
+                    AdRequest request = new AdRequest();
+                    request.setTesting(true);
+                    adView.loadAd(request);
 				}
 			});			
 		}

@@ -62,6 +62,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Android 2.1-update1 Platform" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="Android 2.1-update1 Platform" level="application" />
+    <orderEntry type="library" name="Android-admob" level="application" />
   </component>
 </module>
 

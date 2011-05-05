@@ -20,18 +20,16 @@
 
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res/cz.krtinec.birthday"
+  xmlns:ads="http://schemas.android.com/apk/res/cz.krtinec.birthday"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
-  <com.admob.android.ads.AdView  
+  <com.google.ads.AdView
       android:id="@+id/ad" 
       android:layout_width="fill_parent" 
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      app:backgroundColor="#000000"
-      app:primaryTextColor="#FFFFFF"
-      app:secondaryTextColor="#CCCCCC"
-      app:keywords="Birthday, present, gift"
+      ads:adUnitId="a14c9119d7c9272"
+      ads:adSize="BANNER"
     />
 	<ListView android:id="@+id/list" 
 	  	android:layout_width="wrap_content" 

@@ -53,6 +53,7 @@
       </facet-type>
     </autodetection-disabled>
   </component>
+  <component name="IdProvider" IDEtalkID="B8031A6B5C375E1F6AE6B45A06FB31E9" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -206,8 +207,12 @@
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
+  <component name="TaskProjectConfiguration">
+    <server type="GitHub" url="https://github.com" />
+  </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
 

@@ -59,11 +59,12 @@ public class EditActivity extends Activity {
     private static final int DIALOG_SAVE_FAILED = 13;
     private static final int DIALOG_SAVING = 14;
     private static final int DIALOG_CHOOSE_ACCOUNT = 15;
-    private EditableEvent eventToEdit = null;
-    private EditAdapter listAdapter;
-    private Map<Account, Long> accountMap;
-    private Account[] accounts;
-    private Button saveButton;
+    private static EditableEvent eventToEdit = null;
+    private static EditAdapter listAdapter;
+    private static Map<Account, Long> accountMap;
+    private static Account[] accounts;
+    private static Button saveButton;
+    private static long rawContactId;
 
     private static SpinnerItem[] SPINNER_ITEMS;
 
@@ -88,7 +89,8 @@ public class EditActivity extends Activity {
             String name = BirthdayProvider.getInstance().getContactName(this, contact);
             TextView nameView = (TextView) findViewById(R.id.name);
             nameView.setText(name);
-
+            //empty intent
+            setIntent(null);
             if (contact.toString().indexOf("raw_contact") == -1) {
                 Log.d("EditActivity", "Must choose raw contact.");
                 Map<Account, Long> rawIds =
@@ -98,9 +100,11 @@ public class EditActivity extends Activity {
                 showDialog(DIALOG_CHOOSE_ACCOUNT);
             } else {
                 Log.d("EditActivity", "Get raw contact id for: " + contact);
-                Long rawContactId = Long.parseLong(contact.getLastPathSegment());
+                rawContactId = Long.parseLong(contact.getLastPathSegment());
                 onRawContactIdSelected(rawContactId);
             }
+        } else {
+        	onRawContactIdSelected(rawContactId);
         }
     }
 
