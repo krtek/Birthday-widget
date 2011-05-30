@@ -20,14 +20,14 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="cz.krtinec.birthday"
-          android:versionName="2.0.3" android:versionCode="21">
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="BirthdayApp" android:debuggable="false">
-    <!--<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">-->
+          android:versionName="2.0.3" android:versionCode="21" android:installLocation="internalOnly">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
+        <!--<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">-->
         <activity android:name=".Birthday"
                   android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".BirthdayDebug"
@@ -39,42 +39,42 @@
         <!-- Broadcast Receiver that will process AppWidget updates -->
         <receiver android:name=".BirthdayWidget" android:label="@string/widget_name2x1">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x1" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x1"/>
         </receiver>
 
         <receiver android:label="@string/widget_name2x2" android:name=".widgets.BirthdayWidget2x2">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x2" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x2"/>
         </receiver>
 
         <receiver android:label="@string/widget_name4x1" android:name=".widgets.BirthdayWidget4x1">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1"/>
         </receiver>
 
 
         <!-- Preferences -->
         <activity android:name=".ui.BirthdayPreference" android:label="@string/preferences_menu">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
 
         <!-- Service to perform web API queries -->
-        <service android:name=".BirthdayWidget$UpdateService" />
+        <service android:name=".BirthdayWidget$UpdateService"/>
         <service android:name=".widgets.UpdateService2x2"/>
         <service android:name=".widgets.UpdateService4x1"/>
 
         <!-- AdMobActivity definition -->
         <activity android:name="com.google.ads.AdActivity"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                  android:configChanges="orientation|keyboard|keyboardHidden" />
+                  android:configChanges="orientation|keyboard|keyboardHidden"/>
     </application>
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -83,7 +83,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-sdk android:minSdkVersion="7"/>
-    <supports-screens android:anyDensity="true" />
+    <supports-screens android:anyDensity="true"/>
 
 
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>  -->
