@@ -39,7 +39,7 @@
     <string name="preferences_menu">Preferences</string>    
     <string name="date_format_title">Date format</string>
     <string name="date_format_summary">Set display date format</string>
-    <string name="birthday_template_title">Birthday greetings</string>
+    <string name="template_title">Birthday greetings</string>
     <string name="template_summary">Edit your predefined template. {0} is replaced by contact name, {1} by event title.</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_enabled">Enabled</string>    
