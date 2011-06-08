@@ -20,7 +20,7 @@
 
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:ads="http://schemas.android.com/apk/res/cz.krtinec.birthday"
+  xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content">
   <com.google.ads.AdView
@@ -30,6 +30,7 @@
       android:layout_alignParentBottom="true"
       ads:adUnitId="a14c9119d7c9272"
       ads:adSize="BANNER"
+      ads:loadAdOnCreate="true"
     />
 	<ListView android:id="@+id/list" 
 	  	android:layout_width="wrap_content" 

@@ -40,6 +40,9 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+  <component name="GradleUISettings2">
+    <setting name="root" />
+  </component>
   <component name="IdProvider" IDEtalkID="B8031A6B5C375E1F6AE6B45A06FB31E9" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />

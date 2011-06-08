@@ -373,10 +373,6 @@ public class Birthday extends Activity {
 					if (listOfContacts.isEmpty()) {
 						 showDialog(DIALOG_EMPTY);
 					}
-                    AdView adView = (AdView)findViewById(R.id.ad);
-                    AdRequest request = new AdRequest();
-                    request.setTesting(true);
-                    adView.loadAd(request);
 				}
 			});			
 		}
