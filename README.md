@@ -4,4 +4,4 @@
 * Android 2.1+ required
 
 ## More info
-* Homepage at http://www.krtinec.cz/Home/bdwidget
+See [homepage](http://www.krtinec.cz/Home/bdwidget).
