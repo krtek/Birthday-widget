@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/Birthday/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/Birthday/gen" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/Birthday/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/Birthday/res" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/Birthday/assets" />
+        <option name="LIBS_FOLDER_RELATIVE_PATH" value="/Birthday/libs" />
+        <option name="REGENERATE_R_JAVA" value="true" />
+        <option name="REGENERATE_JAVA_BY_AIDL" value="true" />
+        <option name="USE_CUSTOM_APK_RESOURCE_FOLDER" value="false" />
+        <option name="CUSTOM_APK_RESOURCE_FOLDER" value="" />
+        <option name="USE_CUSTOM_COMPILER_MANIFEST" value="false" />
+        <option name="CUSTOM_COMPILER_MANIFEST" value="" />
+        <option name="APK_PATH" value="/Birthday/bin/Birthday.apk" />
+        <option name="LIBRARY_PROJECT" value="false" />
+        <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="true" />
+        <option name="GENERATE_UNSIGNED_APK" value="false" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/Birthday/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/Birthday">
+      <sourceFolder url="file://$MODULE_DIR$/Birthday/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Birthday/gen" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/Birthday/lib/joda-time-1.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="Android-admob" level="application" />
+  </component>
+</module>
+

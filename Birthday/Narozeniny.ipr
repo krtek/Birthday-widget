@@ -40,19 +40,6 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-  <component name="FacetAutodetectingManager">
-    <autodetection-disabled>
-      <facet-type id="android">
-        <modules>
-          <module name="NarozeninyTest">
-            <files>
-              <file url="file://$PROJECT_DIR$/../NarozeninyTest/AndroidManifest.xml" />
-            </files>
-          </module>
-        </modules>
-      </facet-type>
-    </autodetection-disabled>
-  </component>
   <component name="GradleUISettings2">
     <setting name="root" />
   </component>
@@ -197,8 +184,8 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Birthday.iml" filepath="$PROJECT_DIR$/Birthday.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Birthday-test/Birthday-test.iml" filepath="$PROJECT_DIR$/Birthday-test/Birthday-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Narozeniny.iml" filepath="$PROJECT_DIR$/Narozeniny.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../NarozeninyTest/NarozeninyTest.iml" filepath="$PROJECT_DIR$/../NarozeninyTest/NarozeninyTest.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
