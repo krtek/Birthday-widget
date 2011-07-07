@@ -22,8 +22,7 @@ package cz.krtinec.birthday.dto;
 import org.joda.time.LocalDate;
 
 /**
- * Created by IntelliJ IDEA.
- * User: krtek
+ * Birthday event.
  */
 public class BirthdayEvent extends Event {
     private Integer age;

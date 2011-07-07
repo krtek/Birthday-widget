@@ -19,23 +19,21 @@
 
 package cz.krtinec.birthday.dto;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Editable;
 import org.joda.time.LocalDate;
 
 /**
- * Created by IntelliJ IDEA.
- * User: krtek
- * Date: 29.1.11
- * Time: 20:38
- * To change this template use File | Settings | File Templates.
+ * Object used in event editing.
  */
-public class EditableEvent implements Cloneable {
-    private Long eventId;
-    private String label;
-    private EventType type;
-    private LocalDate eventDate;
-    private DateIntegrity integrity;
-    private Long rawContactId;
+public class EditableEvent implements Cloneable, Parcelable {
+    public Long eventId;
+    public String label;
+    public EventType type;
+    public LocalDate eventDate;
+    public DateIntegrity integrity;
+    public Long rawContactId;
 
     public EditableEvent(Long eventId, EventType type, LocalDate eventDate, DateIntegrity integrity, String label) {
         this.eventId = eventId;
@@ -50,53 +48,6 @@ public class EditableEvent implements Cloneable {
         this.eventId = -1L;
     }
 
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public EventType getType() {
-        return type;
-    }
-
-    public void setType(EventType type) {
-        this.type = type;
-    }
-
-    public LocalDate getEventDate() {
-        return eventDate;
-    }
-
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
-    }
-
-    public DateIntegrity getIntegrity() {
-        return integrity;
-    }
-
-    public void setIntegrity(DateIntegrity integrity) {
-        this.integrity = integrity;
-    }
-
-    public Long getRawContactId() {
-        return rawContactId;
-    }
-
-    public void setRawContactId(Long contactId) {
-        this.rawContactId = contactId;
-    }
 
     @Override
     public EditableEvent clone() {
@@ -124,4 +75,42 @@ public class EditableEvent implements Cloneable {
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
         return result;
     }
+
+    private EditableEvent(Parcel in) {
+        eventId = in.readLong();
+        label = in.readString();
+        type = EventType.getEventType(in.readInt());
+        Long evtLong = in.readLong();
+        integrity = DateIntegrity.valueOf(in.readString());
+        Long contactId = in.readLong();
+        rawContactId = contactId == -1 ? null : contactId;
+
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(eventId);
+        parcel.writeString(label);
+        parcel.writeInt(type.getCode());
+        parcel.writeLong(eventDate == null ? -1 : eventDate.toDateMidnight().toDate().getTime() );
+        parcel.writeString(integrity == null ? null : integrity.name());
+        parcel.writeLong(rawContactId == null ? -1l : rawContactId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<EditableEvent> CREATOR =
+            new Parcelable.Creator<EditableEvent>() {
+                public EditableEvent createFromParcel(Parcel in) {
+                    return new EditableEvent(in);
+                }
+
+                public EditableEvent[] newArray(int size) {
+                    return new EditableEvent[size];
+                }
+            };
 }

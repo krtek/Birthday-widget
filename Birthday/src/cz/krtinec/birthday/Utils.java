@@ -62,7 +62,7 @@ public class Utils {
     }
 
     public static String getEventLabel(Context ctx, EditableEvent evt) {
-        switch (evt.getType()) {
+        switch (evt.type) {
             case BIRTHDAY: {
                 return ctx.getString(R.string.birthday);
             }
@@ -70,7 +70,7 @@ public class Utils {
                 return ctx.getString(R.string.anniversary);
             }
             case CUSTOM: {
-                return evt.getLabel();
+                return evt.label;
             }
             case OTHER: {
                 return ctx.getString(R.string.other);

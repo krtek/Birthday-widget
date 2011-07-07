@@ -22,11 +22,7 @@ package cz.krtinec.birthday.dto;
 import org.joda.time.LocalDate;
 
 /**
- * Created by IntelliJ IDEA.
- * User: krtek
- * Date: 30.12.10
- * Time: 14:33
- * To change this template use File | Settings | File Templates.
+ * Custom event with an event label.
  */
 public class CustomEvent extends Event {
     private String label;

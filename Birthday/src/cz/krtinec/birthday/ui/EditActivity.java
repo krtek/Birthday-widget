@@ -48,11 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by IntelliJ IDEA.
- * User: krtek
- * Date: 29.1.11
- * Time: 19:48
- * To change this template use File | Settings | File Templates.
+ * Allows edit particular event.
  */
 public class EditActivity extends Activity {
     private static final int DIALOG_EDIT_DATE = 12;
@@ -67,6 +63,10 @@ public class EditActivity extends Activity {
     private static long rawContactId;
 
     private static SpinnerItem[] SPINNER_ITEMS;
+    private static final String EVENTS_LIST = "EVENTS_LIST";
+    private static final String EVENTS_BASE = "EVENTS_BASE";
+    private static final String EVENTS_DELETED = "EVENTS_DELETED";
+    private static final String RAW_CONTACT_ID = "RAW_CONTACT_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +77,7 @@ public class EditActivity extends Activity {
             new SpinnerItem(EventType.ANNIVERSARY, this.getString(R.string.anniversary)),
             new SpinnerItem(EventType.OTHER, this.getString(R.string.other))
         };
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         Intent i = getIntent();
         if (i != null) {
             Uri contact = i.getData();
@@ -91,7 +87,7 @@ public class EditActivity extends Activity {
             nameView.setText(name);
             //empty intent
             setIntent(null);
-            if (contact.toString().indexOf("raw_contact") == -1) {
+            if (!contact.toString().contains("raw_contact")) {
                 Log.d("EditActivity", "Must choose raw contact.");
                 Map<Account, Long> rawIds =
                     BirthdayProvider.getInstance().getRawContactIds(this, Long.parseLong(contact.getLastPathSegment()));
@@ -105,6 +101,36 @@ public class EditActivity extends Activity {
             }
         } else {
         	onRawContactIdSelected(rawContactId);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle instanceState) {
+        super.onSaveInstanceState(instanceState);
+        instanceState.putParcelableArrayList(EVENTS_LIST, (ArrayList<EditableEvent>) listAdapter.list);
+        instanceState.putParcelableArrayList(EVENTS_BASE, (ArrayList<EditableEvent>) listAdapter.base);
+        instanceState.putParcelableArrayList(EVENTS_DELETED, (ArrayList<EditableEvent>) listAdapter.deleted);
+        instanceState.putLong(RAW_CONTACT_ID, listAdapter.rawContactId);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.containsKey(EVENTS_LIST)) {
+            EditAdapter adapter = new EditAdapter(this,
+                    (ArrayList) savedInstanceState.getParcelableArrayList(EVENTS_LIST),
+                    (ArrayList) savedInstanceState.getParcelableArrayList(EVENTS_BASE),
+                    (ArrayList) savedInstanceState.getParcelableArrayList(EVENTS_DELETED),
+                    savedInstanceState.getLong(RAW_CONTACT_ID));
+            listAdapter = adapter;
+            ListView listView = (ListView) findViewById(R.id.list);
+            Log.d("EditActivity", "Adapter: " + listView.getAdapter());
+            listView.setAdapter(listAdapter);
         }
     }
 
@@ -196,10 +222,10 @@ public class EditActivity extends Activity {
         switch (id) {
             case (DIALOG_EDIT_DATE): {
                 DatePickerDialog datePicker = (DatePickerDialog) dialog;
-                if (eventToEdit != null && eventToEdit.getEventDate() != null) {
-                    datePicker.updateDate(eventToEdit.getEventDate().getYear(),
-                            eventToEdit.getEventDate().getMonthOfYear() - 1,
-                            eventToEdit.getEventDate().getDayOfMonth());
+                if (eventToEdit != null && eventToEdit.eventDate != null) {
+                    datePicker.updateDate(eventToEdit.eventDate.getYear(),
+                            eventToEdit.eventDate.getMonthOfYear() - 1,
+                            eventToEdit.eventDate.getDayOfMonth());
                 } else {
                     datePicker.updateDate(2011, 0, 1);
                 }
@@ -217,8 +243,8 @@ public class EditActivity extends Activity {
         DatePickerDialog datePicker = new DatePickerDialog(ctx, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                eventToEdit.setEventDate(new LocalDate(year, month + 1, day));
-                eventToEdit.setIntegrity(DateIntegrity.FULL);
+                eventToEdit.eventDate = new LocalDate(year, month + 1, day);
+                eventToEdit.integrity = DateIntegrity.FULL;
                 listAdapter.notifyDataSetChanged();
                 //enable save button
                 if (saveButton != null) {
@@ -228,10 +254,10 @@ public class EditActivity extends Activity {
             }
         }, 2011, 0, 1);
         try {
-	        if (eventToEdit != null && eventToEdit.getEventDate() != null) {
-	            datePicker.updateDate(eventToEdit.getEventDate().getYear(),
-	                    eventToEdit.getEventDate().getMonthOfYear() - 1,
-	                    eventToEdit.getEventDate().getDayOfMonth());
+	        if (eventToEdit != null && eventToEdit.eventDate != null) {
+	            datePicker.updateDate(eventToEdit.eventDate.getYear(),
+	                    eventToEdit.eventDate.getMonthOfYear() - 1,
+	                    eventToEdit.eventDate.getDayOfMonth());
 	        }
         } catch (IllegalArgumentException e) {
         	//tried to set some weird date - ignore
@@ -292,6 +318,14 @@ public class EditActivity extends Activity {
             this.rawContactId = rawContactId;
         }
 
+        private EditAdapter(Context ctx, List<EditableEvent> list, List<EditableEvent> base, List<EditableEvent> deleted, Long rawContactId) {
+            this.ctx = ctx;
+            this.list = list;
+            this.base = base;
+            this.deleted = deleted;
+            this.rawContactId = rawContactId;
+        }
+
         @Override
         public int getCount() {
             return list.size();
@@ -304,7 +338,7 @@ public class EditActivity extends Activity {
 
         @Override
         public long getItemId(int i) {
-            return list.get(i).getEventId();
+            return list.get(i).eventId;
         }
 
         @Override
@@ -323,9 +357,9 @@ public class EditActivity extends Activity {
         }
 
         private void fillEditRow(View v, final EditableEvent evt) {
-            if (evt.getEventDate() != null) {
+            if (evt.eventDate != null) {
                 ((Button)v.findViewById(R.id.edit_display_date)).setText(DateFormatter.getInstance(ctx).
-                    formatEdit(evt.getEventDate()));
+                    formatEdit(evt.eventDate));
             } else {
                 ((Button)v.findViewById(R.id.edit_display_date)).setText("Click to set");
             }
@@ -335,13 +369,13 @@ public class EditActivity extends Activity {
                     android.R.layout.simple_spinner_item, SPINNER_ITEMS);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             s.setAdapter(adapter);
-            s.setSelection(adapter.getPosition(getSpinnerType(evt.getType())));
+            s.setSelection(adapter.getPosition(getSpinnerType(evt.type)));
             s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     SpinnerItem si = (SpinnerItem) adapterView.getItemAtPosition(i);
                     Log.d("EditActivity", "Selected item: " + si);
-                    evt.setType(si.eventType);
+                    evt.type = si.eventType;
                 }
 
                 @Override
@@ -385,17 +419,17 @@ public class EditActivity extends Activity {
             for (EditableEvent e: list) {
 
                 //update
-                if (containsId(base, e.getEventId())) {
+                if (containsId(base, e.eventId)) {
                     diff.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI).
-                        withSelection(ContactsContract.Data._ID + " = ?", new String[] {String.valueOf(e.getEventId())}).
-                        withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.getEventDate().toString()).
-                        withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.getType().getCode()).
+                        withSelection(ContactsContract.Data._ID + " = ?", new String[] {String.valueOf(e.eventId)}).
+                        withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.eventDate.toString()).
+                        withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.type.getCode()).
                         build());
                 } else {
                     diff.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).
-                            withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.getRawContactId())).
-                            withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.getEventDate().toString()).
-                            withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.getType().getCode()).
+                            withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.rawContactId)).
+                            withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.eventDate.toString()).
+                            withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.type.getCode()).
                             withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).
                             build());
                 }
@@ -403,7 +437,7 @@ public class EditActivity extends Activity {
             }
             for (EditableEvent e: deleted) {
                 diff.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI).
-                        withSelection(ContactsContract.Data._ID + " = ?", new String[] {String.valueOf(e.getEventId())}).
+                        withSelection(ContactsContract.Data._ID + " = ?", new String[] {String.valueOf(e.eventId)}).
                         build());
             }
 
@@ -412,7 +446,7 @@ public class EditActivity extends Activity {
 
         private boolean containsId(List<EditableEvent> l, Long id) {
             for (EditableEvent e: l) {
-                if (e.getEventId().equals(id)) {
+                if (e.eventId.equals(id)) {
                     return true;
                 }
             }
