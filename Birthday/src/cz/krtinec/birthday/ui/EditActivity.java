@@ -462,7 +462,7 @@ public class EditActivity extends Activity {
         }  return null;
     }
 
-    class AccountAdapter<T> extends ArrayAdapter<T> {
+    static class AccountAdapter<T> extends ArrayAdapter<T> {
         public AccountAdapter(Context context, int textViewResourceId, T[] objects) {
             super(context, textViewResourceId, objects);    //To change body of overridden methods use File | Settings | File Templates.
         }

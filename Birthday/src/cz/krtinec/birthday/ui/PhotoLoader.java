@@ -20,8 +20,10 @@
 package cz.krtinec.birthday.ui;
 
 import java.io.InputStream;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.data.BirthdayProvider;
@@ -33,8 +35,10 @@ import android.widget.ImageView;
 public class PhotoLoader implements Runnable {
     private final Handler handler;
     private final Context ctx;
-    private BlockingQueue<PhotoToLoad> photosToLoad = new LinkedBlockingQueue<PhotoToLoad>();
+    private Map<ImageView, Long> photosToLoad = new ConcurrentHashMap<ImageView, Long>();
+
     private boolean shutdown = false;
+    private Map<Long, Drawable> cache = new WeakHashMap<Long, Drawable>();
     
     public PhotoLoader(Handler handler, Context ctx) {
             this.handler = handler;
@@ -42,9 +46,7 @@ public class PhotoLoader implements Runnable {
     }
 
     public void addPhotoToLoad(ImageView icon, long contactId) {        	
-    	PhotoToLoad p = new PhotoToLoad(icon, contactId);    	
-    	photosToLoad.remove(p);
-    	photosToLoad.add(p);    	
+        photosToLoad.put(icon, contactId);
     }
     
     public void shutdown() {
@@ -54,47 +56,30 @@ public class PhotoLoader implements Runnable {
     @Override
     public void run() {
     		while (!shutdown) {
-    			try {
-    				final PhotoToLoad photo = photosToLoad.take();
-    				final Drawable drawable;
-		            InputStream photoStream;
-					if ((photoStream = BirthdayProvider.openPhoto(ctx, photo.contactId)) != null) {
-						drawable = Drawable.createFromStream(photoStream, "src");					
-					} else {
-						drawable = null;
-					}
-					handler.post(new Runnable() {
-						public void run() {
-							if (drawable != null) {
-								photo.icon.setImageDrawable(drawable);
-							} else {
-								photo.icon.setImageResource(R.drawable.icon);
-							}
-						}
-					});    			
-    				
-    			} catch (InterruptedException e) {
-    				//
-    			}
-    			
+                if (!photosToLoad.isEmpty()) {
+                    for (final ImageView icon: photosToLoad.keySet()) {
+                        Long contactId = photosToLoad.get(icon);
+                        Drawable drawable = null;
+                        drawable = cache.get(contactId);
+                        if (drawable == null) {
+                            InputStream photoStream;
+                            if ((photoStream = BirthdayProvider.openPhoto(ctx, contactId)) != null) {
+                                drawable = Drawable.createFromStream(photoStream, "src");
+                                cache.put(contactId, drawable);
+                            }
+                        }
+                        final Drawable drawable1 = drawable;
+                        handler.post(new Runnable() {
+                            public void run() {
+                                if (drawable1 != null) {
+                                    icon.setImageDrawable(drawable1);
+                                } else {
+                                    icon.setImageResource(R.drawable.icon);
+                                }
+                            }
+                        });
+                    }
+                }
     		}
-    	
-        	
-    }       
-    
-    static class PhotoToLoad {
-    	ImageView icon;
-    	long contactId;
-    	PhotoToLoad(ImageView icon, long contactId) {
-    		this.icon = icon;
-    		this.contactId = contactId;
-    	}
-		@Override
-		public boolean equals(Object o) {
-			PhotoToLoad p2 = (PhotoToLoad) o;
-			return this.icon == p2.icon;
-		}
-    	
-    	
     }
 }
