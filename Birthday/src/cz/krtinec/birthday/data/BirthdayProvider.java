@@ -45,8 +45,8 @@ import android.util.Log;
 
 public class BirthdayProvider {    
 	
-	private static BirthdayProvider instance = new BirthdayProvider();
-	private List<DatePattern> PATTERNS = new ArrayList<DatePattern>();
+	private static BirthdayProvider instance;
+	private static List<DatePattern> PATTERNS = new ArrayList<DatePattern>();
 	private static String TIMESTAMP_PATTERN = "[-]{0,1}\\d{9,}";
     private static String[] BIRTHDAY_PROJECTION = new String[] { ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Event.CONTACT_ID,
@@ -62,20 +62,25 @@ public class BirthdayProvider {
     private final Account ACCOUNT_PHONE;
     private final Account ACCOUNT_UNKNOWN;
 
-	
-	private BirthdayProvider() {
+    static {
         PATTERNS.add(new DatePattern("(0000)\\-\\d{1,2}\\-\\d{1,2}", "0000-MM-dd", DateIntegrity.WITHOUT_YEAR));
         PATTERNS.add(new DatePattern("(0000)\\d{4}", "0000MMdd", DateIntegrity.WITHOUT_YEAR));
 		PATTERNS.add(new DatePattern("\\d{4}\\-\\d{1,2}\\-\\d{1,2}", "yyyy-MM-dd", DateIntegrity.FULL));
 		PATTERNS.add(new DatePattern("\\d{2}\\-\\d{1,2}\\-\\d{1,2}", "yy-MM-dd", DateIntegrity.FULL));
 		PATTERNS.add(new DatePattern("\\-\\-\\d{1,2}\\-\\d{1,2}", "--MM-dd", DateIntegrity.WITHOUT_YEAR));
 		PATTERNS.add(new DatePattern("\\d{8}", "yyyyMMdd", DateIntegrity.FULL));
+    }
+	
+	private BirthdayProvider() {
         ACCOUNT_PHONE = new Account("Internal", "Phone");
         ACCOUNT_UNKNOWN = new Account("Unknown", "Phone");
 	}
 	
-	public static BirthdayProvider getInstance() {
-		return instance;
+	public synchronized static BirthdayProvider getInstance() {
+        if (instance == null) {
+		    instance = new BirthdayProvider();
+        }
+        return instance;
 	}
 
     public List<EditableEvent> getEvents(Context ctx, long rawContactId) {
@@ -258,7 +263,7 @@ public class BirthdayProvider {
 	 * @throws ParseException
 	 * @throws IllegalArgumentException
 	 */
-    public ParseResult tryParseBDay(String string) throws ParseException {
+    public static ParseResult tryParseBDay(String string) throws ParseException {
     	if (string == null) {
     		throw new ParseException("Cannot parse: <null>", 0);
     	}
@@ -379,7 +384,7 @@ public class BirthdayProvider {
     }
 
 
-    class DatePattern {
+    static class DatePattern {
     	String pattern;
     	DateTimeFormatter format;
     	DateIntegrity integrity;
