@@ -24,7 +24,7 @@ import android.os.Handler;
 import android.widget.ImageView;
 import cz.krtinec.birthday.ui.PhotoLoader;
 import junit.framework.TestCase;
-import static org.mockito.Mockito.*;
+
 
 /**
  * User: lukas.marek@cleverlance.com
@@ -32,11 +32,5 @@ import static org.mockito.Mockito.*;
  */
 public class PhotoLoaderTest extends TestCase {
     public void testPhotoLoader() {
-        Handler handler = mock(Handler.class);
-        Context ctx = mock(Context.class);
-        PhotoLoader loader = new PhotoLoader(handler, ctx);
-        new Thread(loader).start();
-        ImageView iv = mock(ImageView.class);
-        loader.addPhotoToLoad(iv, 123l);
     }
 }
