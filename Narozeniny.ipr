@@ -198,14 +198,15 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Birthday.iml" filepath="$PROJECT_DIR$/Birthday.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Birthday-test/Birthday-test.iml" filepath="$PROJECT_DIR$/Birthday-test/Birthday-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Birthday-test/Birthday-device-test.iml" filepath="$PROJECT_DIR$/Birthday-test/Birthday-device-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Birthday-junit/Birthday-junit.iml" filepath="$PROJECT_DIR$/Birthday-junit/Birthday-junit.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="Android 2.2 Platform" project-jdk-type="Android SDK">
-    <output url="file://$PROJECT_DIR$/bin" />
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
@@ -217,5 +218,14 @@
     <mapping directory="" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
+  <component name="libraryTable">
+    <library name="Mockito">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/Birthday-junit/lib/mockito-all-1.9.0-rc1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
 </project>
 

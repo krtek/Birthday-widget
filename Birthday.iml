@@ -15,14 +15,14 @@
         <option name="CUSTOM_APK_RESOURCE_FOLDER" value="" />
         <option name="USE_CUSTOM_COMPILER_MANIFEST" value="false" />
         <option name="CUSTOM_COMPILER_MANIFEST" value="" />
-        <option name="APK_PATH" value="/Birthday/bin/Birthday.apk" />
+        <option name="APK_PATH" value="" />
         <option name="LIBRARY_PROJECT" value="false" />
         <option name="RUN_PROCESS_RESOURCES_MAVEN_TASK" value="true" />
         <option name="GENERATE_UNSIGNED_APK" value="false" />
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
     <output url="file://$MODULE_DIR$/Birthday/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/Birthday">
