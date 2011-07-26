@@ -120,17 +120,26 @@ public abstract class UpdateService extends Service {
         return now.get(Calendar.HOUR_OF_DAY) == hourToAlert;
     }
 
-
-    private void fireBirthdayAlert(Event c, Long when) {
+    public String formatMessage(Event e) {
         String notificationFormat = this.getString(R.string.notification_pattern);
-        String label = MessageFormat.format(getString(R.string.notification_alert), Utils.getEventLabel(this, c));
+        return MessageFormat.format(notificationFormat, e.getDisplayName(), Utils.getEventLabel(this, e));
+    }
+
+    public String formatLabel(Event e) {
+        String label = MessageFormat.format(getString(R.string.notification_alert), Utils.getEventLabel(this, e));
+        return Character.toUpperCase(label.charAt(0)) + label.substring(1);
+    }
+
+    void fireBirthdayAlert(Event c, Long when) {
+
+        String label = formatLabel(c);
         Notification n = new Notification(R.drawable.icon, label, when);
         n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;
         Intent i = new Intent(getApplicationContext(), Birthday.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, NOTIFY_CODE, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        n.setLatestEventInfo(this, getString(R.string.notification_alert),
-                MessageFormat.format(notificationFormat, c.getDisplayName(), Utils.getEventLabel(this, c)), pendingIntent);
+        n.setLatestEventInfo(this, label, formatMessage(c), pendingIntent);
+
         NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify("Birthday", (int)c.getId(), n);
     }
