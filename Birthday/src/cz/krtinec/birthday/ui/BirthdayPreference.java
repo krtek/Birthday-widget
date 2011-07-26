@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.View;
 import android.widget.Button;
+import cz.krtinec.birthday.Utils;
 
 public class BirthdayPreference extends PreferenceActivity {
 	int widgetId;
@@ -53,6 +54,7 @@ public class BirthdayPreference extends PreferenceActivity {
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
 					setResult(RESULT_OK, resultValue);
+                    Utils.startAlarm(BirthdayPreference.this);
 					finish();
 				}
 			});
@@ -60,7 +62,5 @@ public class BirthdayPreference extends PreferenceActivity {
 			//called from application
 			findViewById(R.id.save_button).setVisibility(Button.GONE);
 		}
-		
 	}
-
 }

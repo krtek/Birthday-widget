@@ -40,6 +40,7 @@
         <receiver android:name=".BirthdayWidget" android:label="@string/widget_name2x1">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="cz.krtinec.birthday.WIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x1"/>
         </receiver>
@@ -47,6 +48,7 @@
         <receiver android:label="@string/widget_name2x2" android:name=".widgets.BirthdayWidget2x2">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="cz.krtinec.birthday.WIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget2x2"/>
         </receiver>
@@ -54,6 +56,7 @@
         <receiver android:label="@string/widget_name4x1" android:name=".widgets.BirthdayWidget4x1">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="cz.krtinec.birthday.WIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1"/>
         </receiver>
@@ -65,11 +68,6 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-
-        <!-- Service to perform web API queries -->
-        <service android:name=".BirthdayWidget$UpdateService"/>
-        <service android:name=".widgets.UpdateService2x2"/>
-        <service android:name=".widgets.UpdateService4x1"/>
 
         <!-- AdMobActivity definition -->
         <activity android:name="com.google.ads.AdActivity"

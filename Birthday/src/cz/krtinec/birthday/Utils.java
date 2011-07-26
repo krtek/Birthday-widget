@@ -21,12 +21,16 @@ package cz.krtinec.birthday;
 
 import java.text.MessageFormat;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import cz.krtinec.birthday.dto.*;
 
 public class Utils {
+    public static final String WIDGET_UPDATE = "cz.krtinec.birthday.WIDGET_UPDATE";
 
 	public static String getCongrats(Context ctx, Event event) {
         String template = getTemplate(ctx, event);
@@ -77,5 +81,12 @@ public class Utils {
             }
         }
         return ctx.getString(R.string.birthday);
+    }
+
+    public static void startAlarm(Context ctx) {
+        Intent intent = new Intent(WIDGET_UPDATE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 1000, AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 }

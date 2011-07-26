@@ -23,11 +23,22 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import cz.krtinec.birthday.BirthdayWidget;
+import cz.krtinec.birthday.R;
 
-public class BirthdayWidget2x2 extends AppWidgetProvider {
-	 public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-		        int[] appWidgetIds) {
-	        // To prevent any ANR timeouts, we perform the update in a service
-	        context.startService(new Intent(context, UpdateService2x2.class));
-	 }
+public class BirthdayWidget2x2 extends BirthdayWidget {
+    @Override
+    protected int getListSize() {
+        return 4;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.widget2x2;
+    }
+
+    @Override
+    protected Class getWidgetClass() {
+        return BirthdayWidget2x2.class;
+    }
 }
