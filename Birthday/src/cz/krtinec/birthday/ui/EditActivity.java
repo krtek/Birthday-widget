@@ -35,6 +35,7 @@ import android.widget.*;
 import cz.krtinec.birthday.Birthday;
 import cz.krtinec.birthday.DateFormatter;
 import cz.krtinec.birthday.R;
+import cz.krtinec.birthday.Utils;
 import cz.krtinec.birthday.data.BirthdayProvider;
 
 import cz.krtinec.birthday.dto.DateIntegrity;
@@ -170,6 +171,8 @@ public class EditActivity extends Activity {
                 try {
                     showDialog(DIALOG_SAVING);
                     BirthdayProvider.getInstance().performUpdate(context, listAdapter.buildDiff());
+                    //Reload widget...
+                    Utils.startAlarm(getBaseContext());
                     removeDialog(DIALOG_SAVING);
                     Intent i = new Intent(getBaseContext(), Birthday.class);
                     startActivity(i);
