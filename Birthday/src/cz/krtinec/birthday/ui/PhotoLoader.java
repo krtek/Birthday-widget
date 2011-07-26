@@ -38,7 +38,7 @@ public class PhotoLoader implements Runnable {
     private final Handler handler;
     private final Context ctx;
     private Map<ImageView, Long> photosToLoad = new ConcurrentHashMap<ImageView, Long>();
-    private static Drawable DEFAULT_PHOTO;
+    private Drawable DEFAULT_PHOTO;
 
     private boolean shutdown = false;
     private boolean paused = false;
@@ -73,6 +73,10 @@ public class PhotoLoader implements Runnable {
 
     public void resume() {
         this.paused = false;
+    }
+
+    public void clear() {
+        this.cache.clear();
     }
 
     private void updateImage(final ImageView icon, final Drawable contactPhoto) {
