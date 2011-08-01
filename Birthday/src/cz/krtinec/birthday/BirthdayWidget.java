@@ -161,12 +161,12 @@ public class BirthdayWidget extends AppWidgetProvider {
         return now.get(Calendar.HOUR_OF_DAY) == hourToAlert;
     }
 
-    public String formatMessage(Context ctx, Event e) {
+    public static String formatMessage(Context ctx, Event e) {
         String notificationFormat = ctx.getString(R.string.notification_pattern);
         return MessageFormat.format(notificationFormat, e.getDisplayName(), Utils.getEventLabel(ctx, e));
     }
 
-    public String formatLabel(Context ctx, Event e) {
+    public static String formatLabel(Context ctx, Event e) {
         String label = MessageFormat.format(ctx.getString(R.string.notification_alert), Utils.getEventLabel(ctx, e));
         return Character.toUpperCase(label.charAt(0)) + label.substring(1);
     }
