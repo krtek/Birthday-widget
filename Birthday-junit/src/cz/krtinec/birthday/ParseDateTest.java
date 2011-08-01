@@ -50,6 +50,7 @@ public class ParseDateTest extends TestCase {
         assertEquals(DateIntegrity.WITHOUT_YEAR, BirthdayProvider.tryParseBDay("0000-10-18").integrity);
         assertEquals("1018", SHORT.print(BirthdayProvider.tryParseBDay("0000-10-18").date));
         assertEquals("1018", SHORT.print(BirthdayProvider.tryParseBDay("00001018").date));
+        assertEquals("19790322", LONG.print(BirthdayProvider.tryParseBDay("03/22/1979").date));
 		
 	}
 }

@@ -69,6 +69,7 @@ public class BirthdayProvider {
 		PATTERNS.add(new DatePattern("\\d{2}\\-\\d{1,2}\\-\\d{1,2}", "yy-MM-dd", DateIntegrity.FULL));
 		PATTERNS.add(new DatePattern("\\-\\-\\d{1,2}\\-\\d{1,2}", "--MM-dd", DateIntegrity.WITHOUT_YEAR));
 		PATTERNS.add(new DatePattern("\\d{8}", "yyyyMMdd", DateIntegrity.FULL));
+        PATTERNS.add(new DatePattern("\\d{2}/\\d{2}/\\d{4}", "MM/dd/yyyy", DateIntegrity.FULL));
     }
 	
 	private BirthdayProvider() {
