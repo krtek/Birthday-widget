@@ -17,56 +17,50 @@
  * Copyright (c) Lukas Marek, 2011.
  */
 
-package cz.krtinec.birthday.widgets;
+package cz.krtinec.birthday;
 
-import android.test.ServiceTestCase;
+import android.test.ActivityInstrumentationTestCase2;
 import cz.krtinec.birthday.dto.*;
-import cz.krtinec.birthday.widgets.UpdateService2x2;
-import junit.framework.TestCase;
 import org.joda.time.LocalDate;
 
-import java.util.Date;
-
 /**
- * <b>Note:<b/> This test works only with phone language set to English!
  * User: lukas.marek@gmail.com
- * Date: 26.07.11
- * Time: 21:36
+ * Date: 01.08.11
+ * Time: 18:11
  */
-public class UpdateServiceInstrumentationTest extends ServiceTestCase<UpdateService2x2> {
-
-    public UpdateServiceInstrumentationTest() {
-        super(UpdateService2x2.class);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        this.setupService();
+public class AlertTest extends ActivityInstrumentationTestCase2<Birthday> {
+    public AlertTest() {
+        super("cz.krtinec.birthday", Birthday.class);
     }
 
     public void testFormatText() {
-        UpdateService2x2 service = this.getService();
+        Birthday ctx = this.getActivity();
         Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
-        assertEquals("Hurry up, krtek has birthday!", service.formatMessage(e));
+        assertEquals("Hurry up, krtek has birthday!", NotificationSender.formatMessage(ctx, e));
         e = new AnniversaryEvent("krtek", 1l, new LocalDate(), "1", DateIntegrity.FULL, 1l);
-        assertEquals("Hurry up, krtek has anniversary!", service.formatMessage(e));
+        assertEquals("Hurry up, krtek has anniversary!", NotificationSender.formatMessage(ctx, e));
         e = new OtherEvent("krtek", 1l, new LocalDate(), "1", DateIntegrity.FULL, 1l);
-        assertEquals("Hurry up, krtek has birthday!", service.formatMessage(e));
+        assertEquals("Hurry up, krtek has birthday!", NotificationSender.formatMessage(ctx, e));
     }
 
     public void testFormatLabel() {
-        UpdateService2x2 service = this.getService();
+        Birthday ctx = this.getActivity();
         Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
-        assertEquals("Birthday alert!", service.formatLabel(e));
+        assertEquals("Birthday alert!", NotificationSender.formatLabel(ctx, e));
         e = new AnniversaryEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
-        assertEquals("Anniversary alert!", service.formatLabel(e));
+        assertEquals("Anniversary alert!", NotificationSender.formatLabel(ctx, e));
         e = new OtherEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
-        assertEquals("Birthday alert!", service.formatLabel(e));
+        assertEquals("Birthday alert!", NotificationSender.formatLabel(ctx, e));
     }
 
     public void testFireBirthdayAlert() {
-        UpdateService2x2 service = this.getService();
+        Birthday ctx = this.getActivity();
         Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
-        service.fireBirthdayAlert(e, new Date().getTime());
+        NotificationSender.fireBirthdayAlert(ctx, e, System.currentTimeMillis());
+    }
+
+    public void testNotificationSender() {
+        Birthday ctx = this.getActivity();
+        Utils.startNotificationAlarm(ctx, System.currentTimeMillis() + 5000);
     }
 }

@@ -19,18 +19,18 @@
 
 package cz.krtinec.birthday;
 
-import android.content.Context;
-import android.os.Handler;
-import android.widget.ImageView;
-import cz.krtinec.birthday.ui.PhotoLoader;
+import android.app.Service;
+import android.test.AndroidTestCase;
+import android.test.ServiceTestCase;
 import junit.framework.TestCase;
-
 
 /**
  * User: lukas.marek@cleverlance.com
- * Time: 17:15
+ * Date: 01.08.11
+ * Time: 18:43
  */
-public class PhotoLoaderTest extends TestCase {
-    public void testPhotoLoader() {
+public class PokusTest extends AndroidTestCase {
+    public void testCokoliv() {
+
     }
 }

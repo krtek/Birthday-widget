@@ -27,15 +27,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 import cz.krtinec.birthday.dto.*;
+import cz.krtinec.birthday.ui.BirthdayPreference;
+import org.joda.time.DateTime;
 
 public class Utils {
     public static final String WIDGET_UPDATE = "cz.krtinec.birthday.WIDGET_UPDATE";
 
-	public static String getCongrats(Context ctx, Event event) {
+    public static String getCongrats(Context ctx, Event event) {
         String template = getTemplate(ctx, event);
-		return MessageFormat.format(template, event.getDisplayName() , getEventLabel(ctx, event));
-	}
+        return MessageFormat.format(template, event.getDisplayName(), getEventLabel(ctx, event));
+    }
 
 
     private static String getTemplate(Context ctx, Event event) {
@@ -83,10 +87,50 @@ public class Utils {
         return ctx.getString(R.string.birthday);
     }
 
-    public static void startAlarm(Context ctx) {
+    public static void startWidgetUpdateAlarm(Context ctx) {
         Intent intent = new Intent(WIDGET_UPDATE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 1000, AlarmManager.INTERVAL_HOUR, pendingIntent);
+    }
+
+    public static void startNotificationAlarm(Context ctx, long time) {
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(
+                ctx, 0, new Intent(BirthdayApplication.BIRTHDAY_ALARM), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        am.setRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, alarmIntent);
+        Toast.makeText(ctx, R.string.notifications_enabled, 1000);
+        //am.set(AlarmManager.RTC_WAKEUP, time, alarmIntent);
+    }
+
+    public static void cancelNotificationAlarm(Context ctx) {
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(
+                ctx, 0, new Intent(BirthdayApplication.BIRTHDAY_ALARM), PendingIntent.FLAG_UPDATE_CURRENT);
+        am.cancel(alarmIntent);
+    }
+
+
+    public static long calculateNotifTime(Long nowMillis, int hourToNotify) {
+        DateTime now = new DateTime(nowMillis);
+        DateTime timeToNotify = new DateTime(nowMillis);
+        timeToNotify = timeToNotify.withHourOfDay(hourToNotify);
+        if (timeToNotify.isBefore(now)) {
+            timeToNotify = timeToNotify.plusDays(1);
+        }
+        return timeToNotify.getMillis();
+    }
+
+    public static void setOrCancelNotificationsAlarm(Context context, SharedPreferences prefs) {
+        if (prefs.getBoolean(BirthdayApplication.NOTIFICATIONS_ENABLED, true)) {
+            int hourToNotify = Integer.valueOf(prefs.getString(BirthdayApplication.NOTIFICATIONS_TIME, "8"));
+            long time = calculateNotifTime(System.currentTimeMillis(), hourToNotify);
+            startNotificationAlarm(context, time);
+            Log.i("Birthday", "Started pending alarm at :" + new DateTime(time));
+        } else {
+            cancelNotificationAlarm(context);
+            Log.i("Birthday", "Cancelled pending alarm.");
+        }
     }
 }

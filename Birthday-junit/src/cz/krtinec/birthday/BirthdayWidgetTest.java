@@ -34,25 +34,16 @@ public class BirthdayWidgetTest extends TestCase {
         birthDate = birthDate.minusYears(30);
         Event contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
 
-        assertTrue("Birthday is today", BirthdayWidget.hasBirthdayToday(contact));
+        assertTrue("Birthday is today", NotificationSender.hasBirthdayToday(contact));
 
         birthDate = birthDate.minusDays(1);
         contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
 
-        assertFalse("Birthday was yesterday", BirthdayWidget.hasBirthdayToday(contact));
+        assertFalse("Birthday was yesterday", NotificationSender.hasBirthdayToday(contact));
 
         birthDate = birthDate.plusDays(2);
         contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey",  DateIntegrity.FULL, 123L);
 
-        assertFalse("Birthday is tommorow", BirthdayWidget.hasBirthdayToday(contact));
+        assertFalse("Birthday is tommorow", NotificationSender.hasBirthdayToday(contact));
     }
-
-    public void testIsTimeToNotify() {
-        assertTrue(BirthdayWidget.isTimeToNotify(Calendar.getInstance(),
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY)));
-        assertFalse(BirthdayWidget.isTimeToNotify(Calendar.getInstance(),
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1));
-
-    }
-
 }

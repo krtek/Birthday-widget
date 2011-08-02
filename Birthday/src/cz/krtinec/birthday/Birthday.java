@@ -22,7 +22,6 @@ package cz.krtinec.birthday;
 import java.util.List;
 
 import android.app.*;
-import android.graphics.drawable.Drawable;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.*;
@@ -54,7 +53,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import org.joda.time.LocalDate;
 
 public class Birthday extends Activity {
     private static final String VERSION_KEY = "version";
@@ -95,7 +93,8 @@ public class Birthday extends Activity {
             int version = this.getPackageManager().getPackageInfo("cz.krtinec.birthday", 0).versionCode;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             if (version != prefs.getInt(VERSION_KEY, 1)) {
-                showDialog(DIALOG_HELP);
+                //showDialog(DIALOG_HELP);
+                Utils.setOrCancelNotificationsAlarm(this, prefs);
                 Editor editor = prefs.edit();
                 editor.putInt(VERSION_KEY, version);
                 editor.commit();
@@ -288,6 +287,7 @@ public class Birthday extends Activity {
                 .setView(message)
                 .create();
     }
+
 
     static class BirthdayAdapter extends AdapterParent<Event> implements AbsListView.OnScrollListener {
 

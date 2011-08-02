@@ -20,8 +20,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="cz.krtinec.birthday"
-          android:versionName="2.0.5" android:versionCode="23" android:installLocation="internalOnly">
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">
+          android:versionName="2.1.0" android:versionCode="24" android:installLocation="internalOnly">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false" android:name="BirthdayApplication">
         <!--<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">-->
         <activity android:name=".Birthday"
                   android:label="@string/app_name">
@@ -61,6 +61,21 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget4x1"/>
         </receiver>
 
+        <!-- BroadcastReceiver which sends notifications-->
+        <receiver android:name="NotificationSender">
+            <intent-filter>
+                <action android:name="cz.krtinec.birthday.BIRTHDAY_ALARM"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- BroadcastReceiver which starts notifications after phone restart -->
+        <receiver android:name="BootCompletedReceiver">
+            <intent-filter>
+            <action
+                android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
 
         <!-- Preferences -->
         <activity android:name=".ui.BirthdayPreference" android:label="@string/preferences_menu">

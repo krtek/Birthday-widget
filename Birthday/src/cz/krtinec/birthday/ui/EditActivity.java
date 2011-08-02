@@ -172,7 +172,7 @@ public class EditActivity extends Activity {
                     showDialog(DIALOG_SAVING);
                     BirthdayProvider.getInstance().performUpdate(context, listAdapter.buildDiff());
                     //Reload widget...
-                    Utils.startAlarm(getBaseContext());
+                    Utils.startWidgetUpdateAlarm(getBaseContext());
                     removeDialog(DIALOG_SAVING);
                     Intent i = new Intent(getBaseContext(), Birthday.class);
                     startActivity(i);

@@ -19,6 +19,9 @@
 
 package cz.krtinec.birthday.ui;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import cz.krtinec.birthday.BirthdayApplication;
 import cz.krtinec.birthday.DateFormatter;
 import cz.krtinec.birthday.R;
 import android.appwidget.AppWidgetManager;
@@ -29,38 +32,52 @@ import android.view.View;
 import android.widget.Button;
 import cz.krtinec.birthday.Utils;
 
-public class BirthdayPreference extends PreferenceActivity {
-	int widgetId;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);			
-		DateFormatter.reset();
-		addPreferencesFromResource(R.xml.preferences);
-		setResult(RESULT_CANCELED);
-		 Intent intent = getIntent();
-	        Bundle extras = intent.getExtras();
-	        if (extras != null) {
-	        	widgetId = extras.getInt(
-	                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-	        }
-		
-		setContentView(R.layout.prefs_layout);
-		if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-		
-			findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Intent resultValue = new Intent();
-					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-					setResult(RESULT_OK, resultValue);
-                    Utils.startAlarm(BirthdayPreference.this);
-					finish();
-				}
-			});
-		} else {
-			//called from application
-			findViewById(R.id.save_button).setVisibility(Button.GONE);
-		}
-	}
+public class BirthdayPreference extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+    int widgetId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        DateFormatter.reset();
+        addPreferencesFromResource(R.xml.preferences);
+        setResult(RESULT_CANCELED);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            widgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+
+        setContentView(R.layout.prefs_layout);
+        if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+
+            findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent resultValue = new Intent();
+                    resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+                    setResult(RESULT_OK, resultValue);
+                    finish();
+                }
+            });
+        } else {
+            //called from application
+            findViewById(R.id.save_button).setVisibility(Button.GONE);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String s) {
+        if (BirthdayApplication.NOTIFICATIONS_ENABLED.equals(s) ||
+                BirthdayApplication.NOTIFICATIONS_TIME.equals(s)) {
+            Utils.setOrCancelNotificationsAlarm(this, prefs);
+        } else {
+            Utils.cancelNotificationAlarm(this);
+        }
+    }
 }
+
+
