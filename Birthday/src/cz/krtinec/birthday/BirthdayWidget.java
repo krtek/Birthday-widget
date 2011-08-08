@@ -71,7 +71,11 @@ public class BirthdayWidget extends AppWidgetProvider {
             Log.d("UpdateService", "Service started...");
             AppWidgetManager manager = AppWidgetManager.getInstance(ctx);
             List<Event> list = BirthdayProvider.getInstance().upcomingBirthday(ctx);
-            list = list.subList(0, getListSize());
+            int max = getListSize();
+            if (max > list.size()) {
+                max = list.size();
+            }
+            list = list.subList(0, max);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
             RemoteViews views = new RemoteViews("cz.krtinec.birthday", getLayout());
