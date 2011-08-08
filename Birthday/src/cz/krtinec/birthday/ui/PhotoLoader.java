@@ -105,10 +105,8 @@ public class PhotoLoader implements Runnable {
                         InputStream photoStream;
                         if ((photoStream = BirthdayProvider.openPhoto(ctx, contactId)) != null) {
                             drawable = Drawable.createFromStream(photoStream, "src");
-                        } else {
-                            drawable = DEFAULT_PHOTO;
                         }
-                        cache.put(contactId, drawable);
+                        cache.put(contactId, drawable == null ? DEFAULT_PHOTO : drawable);
                         photosToLoad.remove(icon);
                         updateImage(icon, drawable);
                     }
