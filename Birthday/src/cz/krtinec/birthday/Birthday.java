@@ -23,6 +23,7 @@ import java.util.List;
 
 import android.app.*;
 import android.provider.ContactsContract;
+import android.text.AndroidCharacter;
 import android.util.Log;
 import android.widget.*;
 
@@ -373,10 +374,11 @@ public class Birthday extends Activity {
 
                 @Override
                 public void run() {
-                    ListView list = (ListView) activity.findViewById(R.id.list);
+                    ListView list = (ListView) activity.findViewById(android.R.id.list);
                     listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(activity);
                     final BirthdayAdapter adapter = new BirthdayAdapter(listOfContacts, activity, loader);
                     list.setAdapter(adapter);
+                    list.setEmptyView(activity.findViewById(android.R.id.empty));
                     list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -389,7 +391,7 @@ public class Birthday extends Activity {
                             activity.startActivity(intent);
                         }
                     });
-                    registerForContextMenu((ListView) findViewById(R.id.list));
+                    registerForContextMenu((ListView) findViewById(android.R.id.list));
                     dialog.cancel();
                     if (listOfContacts.isEmpty()) {
                         showDialog(DIALOG_EMPTY);
