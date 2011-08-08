@@ -20,7 +20,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="cz.krtinec.birthday"
-          android:versionName="2.1.0" android:versionCode="24" android:installLocation="internalOnly">
+          android:versionName="2.1.1" android:versionCode="25" android:installLocation="internalOnly">
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false" android:name="BirthdayApplication">
         <!--<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">-->
         <activity android:name=".Birthday"
