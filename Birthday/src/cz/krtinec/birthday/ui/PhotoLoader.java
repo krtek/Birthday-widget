@@ -26,7 +26,9 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import android.app.Activity;
 import android.util.Log;
+import cz.krtinec.birthday.BirthdayApplication;
 import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import android.content.Context;
@@ -36,19 +38,21 @@ import android.widget.ImageView;
 
 public class PhotoLoader implements Runnable {
     private final Handler handler;
-    private final Context ctx;
-    private Map<ImageView, Long> photosToLoad = new ConcurrentHashMap<ImageView, Long>();
+    private final Activity ctx;
+
     private Drawable DEFAULT_PHOTO;
 
     private boolean shutdown = false;
     private boolean paused = false;
 
-    private Map<Long, Drawable> cache = new ConcurrentHashMap<Long, Drawable>();
+    private Map<ImageView, Long> photosToLoad = new ConcurrentHashMap<ImageView, Long>();
+    private Map<Long,Drawable> cache;
 
-    public PhotoLoader(Handler handler, Context ctx) {
+    public PhotoLoader(Handler handler, Activity ctx) {
         this.handler = handler;
         this.ctx = ctx;
         DEFAULT_PHOTO = ctx.getResources().getDrawable(R.drawable.icon);
+        cache = ((BirthdayApplication) ctx.getApplication()).cache;
     }
 
     public void addPhotoToLoad(ImageView icon, long contactId) {
@@ -58,12 +62,12 @@ public class PhotoLoader implements Runnable {
             icon.setImageDrawable(d);
         } else {
             Log.v("PhotoLoader", "cache miss for: " + contactId);
+
             photosToLoad.put(icon, contactId);
         }
     }
 
     public void shutdown() {
-        this.cache.clear();
         this.shutdown = true;
     }
 
@@ -73,10 +77,6 @@ public class PhotoLoader implements Runnable {
 
     public void resume() {
         this.paused = false;
-    }
-
-    public void clear() {
-        this.cache.clear();
     }
 
     private void updateImage(final ImageView icon, final Drawable contactPhoto) {
@@ -110,7 +110,8 @@ public class PhotoLoader implements Runnable {
                                 Log.i("PhotoLoader", "Error loading photo.", e);
                             }
                         }
-                        cache.put(contactId, drawable == null ? DEFAULT_PHOTO : drawable);
+                        drawable = drawable == null ? DEFAULT_PHOTO : drawable;
+                        cache.put(contactId, drawable);
                         photosToLoad.remove(icon);
                         updateImage(icon, drawable);
                     }

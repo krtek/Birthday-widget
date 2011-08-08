@@ -20,6 +20,11 @@
 package cz.krtinec.birthday;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User: lukas.marek@cleverlance.com
@@ -31,4 +36,6 @@ public class BirthdayApplication extends Application {
 
     public static final String NOTIFICATIONS_ENABLED = "notifications.enabled";
     public static final String NOTIFICATIONS_TIME = "notifications.time";
+
+    public Map<Long, Drawable> cache = new ConcurrentHashMap<Long, Drawable>();
 }
