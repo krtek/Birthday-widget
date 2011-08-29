@@ -19,16 +19,11 @@ package cz.krtinec.birthday.ui;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.os.Handler.Callback;
-import android.provider.ContactsContract.Data;
-import android.provider.ContactsContract.Contacts.Photo;
 import android.util.Log;
 import android.widget.ImageView;
 import cz.krtinec.birthday.data.BirthdayProvider;
