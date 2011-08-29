@@ -31,9 +31,9 @@ import android.widget.BaseAdapter;
 public abstract class AdapterParent<T extends Event> extends BaseAdapter {
 	protected List<T> list;
 	protected Context ctx;
-	protected PhotoLoader loader;
+	protected StockPhotoLoader loader;
 	
-	public AdapterParent(List<T> list, Context ctx, PhotoLoader loader) {
+	public AdapterParent(List<T> list, Context ctx, StockPhotoLoader loader) {
 		this.list = list;
 		this.ctx = ctx;
 		this.loader = loader;
@@ -51,7 +51,7 @@ public abstract class AdapterParent<T extends Event> extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return list.get(position).getId();
+		return list.get(position).getContactId();
 	}
 	
 	public abstract View getView(int position, View convertView, ViewGroup parent);

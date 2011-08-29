@@ -23,16 +23,12 @@ import java.util.List;
 
 import android.app.*;
 import android.provider.ContactsContract;
-import android.text.AndroidCharacter;
 import android.util.Log;
 import android.widget.*;
 
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.*;
-import cz.krtinec.birthday.ui.AdapterParent;
-import cz.krtinec.birthday.ui.BirthdayPreference;
-import cz.krtinec.birthday.ui.EditActivity;
-import cz.krtinec.birthday.ui.PhotoLoader;
+import cz.krtinec.birthday.ui.*;
 
 import android.content.Context;
 import android.content.Intent;
@@ -73,7 +69,7 @@ public class Birthday extends Activity {
     private static final int DIALOG_LOADING = 13;
     private static final int DIALOG_EMPTY = 14;
     private Handler handler = new Handler();
-    private PhotoLoader loader;
+    private StockPhotoLoader loader;
 
 
     private Uri contactToEdit;
@@ -109,10 +105,7 @@ public class Birthday extends Activity {
     protected void onStart() {
         super.onStart();
         Log.d("Birthday", "onStart() called.");
-		loader = new PhotoLoader(handler, this);
-		Thread thread = new Thread(loader);
-		thread.setPriority(Thread.MIN_PRIORITY);
-		thread.start();
+		loader = new StockPhotoLoader(this, R.drawable.icon);
 
         /*
            * To enable tracing, android.permission.WRITE_EXTERNAL_STORAGE must be set to true!
@@ -130,7 +123,7 @@ public class Birthday extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        loader.shutdown();
+        loader.stop();
         Log.d("Birthday", "onStop() called.");
 //		Debug.stopMethodTracing();		
     }
@@ -141,6 +134,7 @@ public class Birthday extends Activity {
         Log.d("Birthday", "onResume() called.");
         showDialog(DIALOG_LOADING);
         new Thread(new StartupThread(this)).start();
+        loader.resume();
     }
 
 
@@ -153,7 +147,7 @@ public class Birthday extends Activity {
         MenuItem callItem = menu.add(R.string.context_menu_call).setEnabled(false);
         MenuItem smstItem = menu.add(R.string.context_menu_text).setEnabled(false);
         MenuItem emailItem = menu.add(R.string.context_menu_email).setEnabled(false);
-        String phone = BirthdayProvider.getPhoneNumber(this, item.getId());
+        String phone = BirthdayProvider.getPhoneNumber(this, item.getContactId());
         if (phone != null) {
             smstItem.setEnabled(true);
             Intent smsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phone));
@@ -163,7 +157,7 @@ public class Birthday extends Activity {
             Intent callIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + phone));
             callItem.setIntent(callIntent);
         }
-        String email = BirthdayProvider.getEmail(this, item.getId());
+        String email = BirthdayProvider.getEmail(this, item.getContactId());
         if (email != null) {
             emailItem.setEnabled(true);
             String subject = getString(R.string.congrats_subject);
@@ -292,7 +286,7 @@ public class Birthday extends Activity {
 
     static class BirthdayAdapter extends AdapterParent<Event> implements AbsListView.OnScrollListener {
 
-        public BirthdayAdapter(List<Event> list, Context ctx, PhotoLoader loader) {
+        public BirthdayAdapter(List<Event> list, Context ctx, StockPhotoLoader loader) {
             super(list, ctx, loader);
         }
 
@@ -309,7 +303,7 @@ public class Birthday extends Activity {
             ((TextView) v.findViewById(R.id.name)).setText(event.getDisplayName());
             ((TextView) v.findViewById(R.id.days)).setText(String.valueOf(event.getDaysToEvent()));
             ((ImageView) v.findViewById(R.id.bicon)).setImageResource(R.drawable.icon);
-            loader.addPhotoToLoad((ImageView) v.findViewById(R.id.bicon), event.getId());
+            loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), event.getContactId());
             if (event instanceof BirthdayEvent) {
                 BirthdayEvent bEvent = (BirthdayEvent) event;
                 ((TextView) v.findViewById(R.id.age)).setText(

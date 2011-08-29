@@ -37,5 +37,4 @@ public class BirthdayApplication extends Application {
     public static final String NOTIFICATIONS_ENABLED = "notifications.enabled";
     public static final String NOTIFICATIONS_TIME = "notifications.time";
 
-    public Map<Long, Drawable> cache = new ConcurrentHashMap<Long, Drawable>();
 }

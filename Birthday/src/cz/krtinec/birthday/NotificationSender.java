@@ -25,13 +25,10 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.Event;
 
 import java.text.MessageFormat;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -82,6 +79,6 @@ public class NotificationSender extends BroadcastReceiver {
         n.setLatestEventInfo(ctx, label, formatMessage(ctx, c), pendingIntent);
 
         NotificationManager manager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify("Birthday", (int)c.getId(), n);
+        manager.notify("Birthday", (int)c.getContactId(), n);
     }
 }

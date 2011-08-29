@@ -36,7 +36,7 @@ public abstract class Event implements Comparable<Event> {
 	protected final LocalDate today = new LocalDate();
 
 	protected String displayName;
-	protected long id;
+	protected long contactId;
 	protected String lookupKey;
     protected String eventDaySort;
 	public String pivot = SHORT_FORMAT.print(today);
@@ -50,10 +50,10 @@ public abstract class Event implements Comparable<Event> {
     private long rawContactId;
 
 
-    public Event(String displayName, long id, LocalDate eventDate, String lookupKey , DateIntegrity integrity, long rawContactId) {
+    public Event(String displayName, long contactId, LocalDate eventDate, String lookupKey , DateIntegrity integrity, long rawContactId) {
         this.integrity = integrity;
         this.displayName = displayName;
-		this.id = id;
+		this.contactId = contactId;
 		this.lookupKey = lookupKey;
         this.eventDate = eventDate;
 
@@ -87,8 +87,8 @@ public abstract class Event implements Comparable<Event> {
 		return displayName;
 	}
 	
-	public long getId() {
-		return id;
+	public long getContactId() {
+		return contactId;
 	}
 	
 	public DateIntegrity getIntegrity() {

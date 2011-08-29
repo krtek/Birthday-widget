@@ -119,7 +119,7 @@ public class BirthdayWidget extends AppWidgetProvider {
 
 
     protected void replaceIconWithPhoto(Context ctx, RemoteViews views, Event contact, int viewId) {
-        InputStream is = BirthdayProvider.openPhoto(ctx, contact.getId());
+        InputStream is = BirthdayProvider.openPhoto(ctx, contact.getContactId());
         if (is != null) {
             Bitmap bitmap = BitmapFactory.decodeStream(is);
             if (bitmap != null) {

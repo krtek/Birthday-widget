@@ -25,21 +25,20 @@ import java.util.List;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.EventDebug;
 import cz.krtinec.birthday.ui.AdapterParent;
-import cz.krtinec.birthday.ui.PhotoLoader;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import cz.krtinec.birthday.ui.StockPhotoLoader;
 
 public class BirthdayDebug extends Activity {
-    private PhotoLoader loader;
+    private StockPhotoLoader loader;
 
     /**
      * Called when the activity is first created.
@@ -54,23 +53,21 @@ public class BirthdayDebug extends Activity {
     protected void onResume() {
         super.onResume();
         ListView list = (ListView) findViewById(R.id.debug_list);
-        loader = new PhotoLoader(new Handler(), this);
-        Thread thread = new Thread(loader);
-        thread.setPriority(Thread.MIN_PRIORITY);
-        thread.start();
+        loader = new StockPhotoLoader(this, R.drawable.icon);
         List<EventDebug> listOfContacts = BirthdayProvider.getInstance().allBirthday(this);
         list.setAdapter(new BirthdayDebugAdapter(listOfContacts, this, loader));
+        loader.resume();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        loader.shutdown();
+        loader.stop();
 //		Debug.stopMethodTracing();		
     }
 
     static class BirthdayDebugAdapter extends AdapterParent<EventDebug> {
-        public BirthdayDebugAdapter(List<EventDebug> list, Context ctx, PhotoLoader loader) {
+        public BirthdayDebugAdapter(List<EventDebug> list, Context ctx, StockPhotoLoader loader) {
             super(list, ctx, loader);
         }
 
@@ -107,7 +104,7 @@ public class BirthdayDebug extends Activity {
             }
             final ImageView imageView = (ImageView) v.findViewById(R.id.bicon);
             imageView.setImageResource(R.drawable.icon);
-            loader.addPhotoToLoad((ImageView) v.findViewById(R.id.bicon), contact.getId());
+            loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), contact.getContactId());
 
 
             return v;
