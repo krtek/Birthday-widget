@@ -23,7 +23,7 @@
   <string name="notifications_time">Notifica alle</string>
   <string name="general">Generale</string>
   <string name="debug_menu">Modalità Debug</string>
-  <string name="debug_raw">Dati grezzi:{0}</string>
+  <string name="debug_raw">Dati grezzi: {0}</string>
   <string name="debug_parsed">Analizzato come: {0}</string>
   <string name="help_menu">Aiuto</string>
   <string name="help_string">\nDovessero verificarsi problemi, seleziona Menu -&gt; Modalità Debug\n\nO controlla le FAQ su www.krtinec.cz/Home/bdwidget\n\nContatto: lukas.marek@gmail.com\n\nE non dimenticare di seguirmi su twitter.com/BDWidget\n</string>
