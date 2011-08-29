@@ -136,9 +136,11 @@ public class BirthdayProvider {
         return events;
     }
 
-    public String getContactName(Context ctx, Uri contact) {
+
+    public String[] getContact(Context ctx, Uri contact) {
         Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
         String displayName = null;
+        String contactId = null;
         Long contactID;
         if (c != null && c.moveToFirst()) {
             int id = c.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID);
@@ -152,10 +154,11 @@ public class BirthdayProvider {
             c = ctx.getContentResolver().query(contactUri, null, null, null, null);
             if (c != null && c.moveToFirst()) {
                 displayName = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                contactId = c.getString(c.getColumnIndex(Contacts._ID));
             }
         }
         c.close();
-        return displayName;
+        return new String[] {displayName, contactId};
 
     }
 

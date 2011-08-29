@@ -69,6 +69,8 @@ public class EditActivity extends Activity {
     private static final String EVENTS_DELETED = "EVENTS_DELETED";
     private static final String RAW_CONTACT_ID = "RAW_CONTACT_ID";
 
+    private StockPhotoLoader photoLoader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,14 +80,17 @@ public class EditActivity extends Activity {
             new SpinnerItem(EventType.ANNIVERSARY, this.getString(R.string.anniversary)),
             new SpinnerItem(EventType.OTHER, this.getString(R.string.other))
         };
+        photoLoader = new StockPhotoLoader(this, R.drawable.icon);
 
         Intent i = getIntent();
         if (i != null) {
             Uri contact = i.getData();
             Log.i("EditActivity", "Going to edit " + contact);
-            String name = BirthdayProvider.getInstance().getContactName(this, contact);
+            String[] contactInfo = BirthdayProvider.getInstance().getContact(this, contact);
             TextView nameView = (TextView) findViewById(R.id.name);
-            nameView.setText(name);
+            nameView.setText(contactInfo[0]);
+            photoLoader.loadPhoto((ImageView) findViewById(R.id.bicon), Long.parseLong(contactInfo[1]));
+
             //empty intent
             setIntent(null);
             if (!contact.toString().contains("raw_contact")) {
@@ -108,6 +113,19 @@ public class EditActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        photoLoader.resume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        photoLoader.stop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        photoLoader.pause();
     }
 
     @Override
