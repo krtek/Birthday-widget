@@ -22,6 +22,8 @@ package cz.krtinec.birthday;
 import junit.framework.TestCase;
 import org.joda.time.DateTime;
 
+import java.text.MessageFormat;
+
 /**
  * User: lukas.marek@cleverlance.com
  * Date: 01.08.11
@@ -38,5 +40,10 @@ public class UtilsTest extends TestCase {
 
         notifyTime = new DateTime(Utils.calculateNotifTime(time.getMillis(), 9));
         assertEquals(1000 * 60 * 60, notifyTime.getMillis() - time.getMillis());
+    }
+
+    public void testMessageFormat() {
+        String message = MessageFormat.format("It\''s {0} o\''clock", new String [] {"gin"});
+        assertEquals("It\'s gin o\'clock", message);
     }
 }

@@ -34,8 +34,8 @@
   <string name="context_menu_text">SMS</string>
   <string name="context_menu_email">e-mail</string>
   <string name="congrats_subject">Congratulazioni</string>
-  <string name="congrats_pattern">Caro {0}, ti auguro un felicissimo {0}!</string>
-  <string name="notification_alert">C'è un {0}!</string>
+  <string name="congrats_pattern">Caro {0}, ti auguro un felicissimo {1}!</string>
+  <string name="notification_alert">C\'\'è un {0}!</string>
   <string name="notification_pattern">Affrettati, {0} festeggia un {1}!</string>
   <string name="anniversary">anniversario</string>
   <string name="birthday">compleanno</string>
