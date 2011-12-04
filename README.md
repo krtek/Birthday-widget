@@ -5,7 +5,7 @@
 
 ## Eclipse HOW-TO
 1. Clone the repository:
-	git clone git@github.com:krtek/Birthday-widget.git
+`git clone git@github.com:krtek/Birthday-widget.git`
 2. Open up Eclipse
 3. Right click in Navigator
 4. Select **Import...**
