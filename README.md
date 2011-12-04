@@ -24,4 +24,4 @@ JUnit tests.
 Android JUnit tests - these test must run within the device.
 
 ## More info
-See [homepage](http://www.krtinec.cz/Home/bdwidget).
+See [homepage](http://www.krtinec.cz/Home/bdwidget) or contact [me](mailto:lukas.marek@gmail.com).
