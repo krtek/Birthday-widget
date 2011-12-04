@@ -6,4 +6,7 @@
 	<lib name="joda-time-2.0.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/Birthday/lib/joda-time-2.0.jar!/"/>
 	</lib>
+	<lib name="GoogleAdMobAdsSdk-4.1.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Birthday/lib/GoogleAdMobAdsSdk-4.1.1.jar!/"/>
+	</lib>
 </component>
