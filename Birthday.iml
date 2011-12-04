@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
+<module classpath="eclipse" classpath-dir="$MODULE_DIR$/Birthday" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
@@ -21,25 +21,6 @@
         <option name="GENERATE_UNSIGNED_APK" value="false" />
       </configuration>
     </facet>
-  </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <content url="file://$MODULE_DIR$/Birthday">
-      <sourceFolder url="file://$MODULE_DIR$/Birthday/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Birthday/gen" isTestSource="false" />
-    </content>
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="Android-admob" level="application" />
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/Birthday/lib/joda-time-2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
 

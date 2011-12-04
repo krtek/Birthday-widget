@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>NarozeninyTest</name>
-	<comment></comment>
+	<name>BirthdayDeviceTest</name>
+	<comment>Birthday tests that should run in device.</comment>
 	<projects>
-		<project>Narozeniny</project>
+		<project>Birthday</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

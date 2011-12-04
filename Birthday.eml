@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true">
+	<output-test url="file://$MODULE_DIR$/out/test/Birthday"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$/Birthday"/>
+	<lib name="joda-time-2.0.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/Birthday/lib/joda-time-2.0.jar!/"/>
+	</lib>
+</component>

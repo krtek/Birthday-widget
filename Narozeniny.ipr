@@ -221,7 +221,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Birthday.iml" filepath="$PROJECT_DIR$/Birthday.iml" />
       <module fileurl="file://$PROJECT_DIR$/Birthday-device-test/Birthday-device-test.iml" filepath="$PROJECT_DIR$/Birthday-device-test/Birthday-device-test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Birthday-test/Birthday-device-test.iml" filepath="$PROJECT_DIR$/Birthday-test/Birthday-device-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/Birthday-junit/Birthday-junit.iml" filepath="$PROJECT_DIR$/Birthday-junit/Birthday-junit.iml" />
     </modules>
   </component>
