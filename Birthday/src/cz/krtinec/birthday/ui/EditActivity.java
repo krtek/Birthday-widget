@@ -450,7 +450,7 @@ public class EditActivity extends Activity {
                     diff.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).
                             withValue(ContactsContract.Data.RAW_CONTACT_ID, String.valueOf(e.rawContactId)).
                             withValue(ContactsContract.CommonDataKinds.Event.START_DATE, e.eventDate.toString()).
-                            withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.type.getCode()).
+                            withValue(ContactsContract.CommonDataKinds.Event.TYPE, e.type == null ? EventType.BIRTHDAY.getCode() : e.type.getCode()).
                             withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE).
                             build());
                 }
