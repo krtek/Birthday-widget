@@ -155,6 +155,10 @@ public class BirthdayProvider {
             if (c != null && c.moveToFirst()) {
                 displayName = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 contactId = c.getString(c.getColumnIndex(Contacts._ID));
+            } else {
+                Log.e("BirthdayProvider", "Cannot find contact with contactID: " + contactID);
+                displayName = "Invalid contact";
+                contactId = "0";
             }
         }
         c.close();
