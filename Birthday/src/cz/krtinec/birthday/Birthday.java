@@ -67,7 +67,6 @@ public class Birthday extends Activity {
     private static final int DIALOG_HELP = 11;
 
     private static final int DIALOG_LOADING = 13;
-    private static final int DIALOG_EMPTY = 14;
     private Handler handler = new Handler();
     private StockPhotoLoader loader;
 
@@ -249,16 +248,6 @@ public class Birthday extends Activity {
                         getString(R.string.loading), true);
                 return this.dialog;
             }
-            case (DIALOG_EMPTY): {
-                return new AlertDialog.Builder(this)
-                        .setTitle(R.string.help_title)
-                        .setCancelable(true)
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setPositiveButton(R.string.ok, null)
-                        .setMessage(R.string.no_data_found)
-                        .create();
-            }
-
         }
         return null;
     }
@@ -387,9 +376,6 @@ public class Birthday extends Activity {
                     });
                     registerForContextMenu((ListView) findViewById(android.R.id.list));
                     dialog.cancel();
-                    if (listOfContacts.isEmpty()) {
-                        showDialog(DIALOG_EMPTY);
-                    }
                 }
             });
         }
