@@ -22,18 +22,22 @@
 	<string-array name="long_format_values">
 		<item>d.M.yyyy</item>
 		<item>MMMM d, yyyy</item>
+        <item>YYYY/M/d</item>
 	</string-array>
 	<string-array name="short_format_values">
 		<item>d.M.</item>
 		<item>MMMM d</item>
+        <item>M/d</item>
 	</string-array>
 	<string-array name="format_texts_index">
 		<item>0</item>
 		<item>1</item>
+        <item>2</item>
 	</string-array>	
 	<string-array name="format_texts">
 		<item>21.12.1978</item>
 		<item>Dec 21, 1978</item>
+        <item>1978/12/21</item>
 	</string-array>
 	<string-array name="notification_time_values">
 		<item>7</item>
