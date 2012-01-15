@@ -92,7 +92,8 @@ public class EditableEvent implements Cloneable, Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(eventId);
         parcel.writeString(label);
-        parcel.writeInt(type.getCode());
+        //default to birthday
+        parcel.writeInt(type == null ? EventType.BIRTHDAY.getCode() : type.getCode());
         parcel.writeLong(eventDate == null ? -1 : eventDate.toDateMidnight().toDate().getTime() );
         parcel.writeString(integrity == null ? null : integrity.name());
         parcel.writeLong(rawContactId == null ? -1l : rawContactId);
