@@ -32,6 +32,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="6dip"
+                android:layout_weight="0.2"
                 />
 
         <LinearLayout
@@ -39,9 +40,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_column="1">
-            <TextView android:text="name" android:id="@+id/name" android:layout_width="180dip"
-                      android:layout_height="wrap_content" layout_weight="1"  android:textSize="20dip"
+                android:layout_column="1"
+                android:layout_weight="0.6">
+            <TextView android:text="name" android:id="@+id/name" android:layout_width="wrap_content"
+                      android:layout_height="wrap_content" android:textSize="20dip"
                       android:padding="5dip"/>
             <LinearLayout
                     android:layout_width="wrap_content"
@@ -60,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="right"
-                android:paddingRight="15dip">
+                android:paddingRight="15dip"
+                android:layout_weight="0.2">
             <TextView android:text="age" android:id="@+id/age" android:layout_width="wrap_content"
                       android:layout_height="wrap_content" android:textSize="20dip" android:padding="5dip"/>
             <TextView android:text="days" android:id="@+id/days" android:layout_width="wrap_content"
