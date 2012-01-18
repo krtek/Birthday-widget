@@ -68,7 +68,7 @@ public class BirthdayWidget extends AppWidgetProvider {
     public void onReceive(Context ctx, Intent intent) {
         super.onReceive(ctx, intent);
         if (Utils.WIDGET_UPDATE.equals(intent.getAction())) {
-            Log.d("UpdateService", "Service started...");
+            Log.d("Birthday", "Service started...");
             AppWidgetManager manager = AppWidgetManager.getInstance(ctx);
             List<Event> list = BirthdayProvider.getInstance().upcomingBirthday(ctx);
             int max = getListSize();

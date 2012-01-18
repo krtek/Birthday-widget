@@ -383,7 +383,7 @@ public class StockPhotoLoader implements Callback {
                          cacheBitmap(contactIdsAsArray[i], drawable);
                          mContactIds.remove(contactIdsAsArray[i]);
                     } catch (Throwable e) {
-                         Log.i("PhotoLoader", "Error loading photo.", e);
+                         Log.i("Birthday", "Error loading photo.", e);
                     }
                 }
             }

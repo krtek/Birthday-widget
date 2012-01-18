@@ -85,7 +85,7 @@ public class EditActivity extends Activity {
         Intent i = getIntent();
         if (i != null) {
             Uri contact = i.getData();
-            Log.i("EditActivity", "Going to edit " + contact);
+            Log.i("Birthday", "Going to edit " + contact);
             String[] contactInfo = BirthdayProvider.getInstance().getContact(this, contact);
             TextView nameView = (TextView) findViewById(R.id.name);
             nameView.setText(contactInfo[0]);
@@ -94,14 +94,14 @@ public class EditActivity extends Activity {
             //empty intent
             setIntent(null);
             if (!contact.toString().contains("raw_contact")) {
-                Log.d("EditActivity", "Must choose raw contact.");
+                Log.d("Birthday", "Must choose raw contact.");
                 Map<Account, Long> rawIds =
                     BirthdayProvider.getInstance().getRawContactIds(this, Long.parseLong(contact.getLastPathSegment()));
-                Log.i("EditActivity", rawIds.toString());
+                Log.i("Birthday", rawIds.toString());
                 accountMap = rawIds;
                 showDialog(DIALOG_CHOOSE_ACCOUNT);
             } else {
-                Log.d("EditActivity", "Get raw contact id for: " + contact);
+                Log.d("Birthday", "Get raw contact id for: " + contact);
                 rawContactId = Long.parseLong(contact.getLastPathSegment());
                 onRawContactIdSelected(rawContactId);
             }
@@ -148,7 +148,7 @@ public class EditActivity extends Activity {
                     savedInstanceState.getLong(RAW_CONTACT_ID));
             listAdapter = adapter;
             ListView listView = (ListView) findViewById(R.id.list);
-            Log.d("EditActivity", "Adapter: " + listView.getAdapter());
+            Log.d("Birthday", "Adapter: " + listView.getAdapter());
             listView.setAdapter(listAdapter);
         }
     }
@@ -195,10 +195,10 @@ public class EditActivity extends Activity {
                     Intent i = new Intent(getBaseContext(), Birthday.class);
                     startActivity(i);
                 } catch (RemoteException e) {
-                    Log.i("EditActivity", "Save failed!", e);
+                    Log.i("Birthday", "Save failed!", e);
                     showDialog(DIALOG_SAVE_FAILED);
                 } catch (OperationApplicationException e) {
-                    Log.i("EditActivity", "Save failed!", e);
+                    Log.i("Birthday", "Save failed!", e);
                     showDialog(DIALOG_SAVE_FAILED);
                 }
             }
@@ -229,7 +229,7 @@ public class EditActivity extends Activity {
                         setAdapter(new AccountAdapter<Account>(this, R.layout.simple_list_item_2, accounts), new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Log.d("EditActivity", "Selected " + accounts[i] + " account");
+                                Log.d("Birthday", "Selected " + accounts[i] + " account");
                                 onRawContactIdSelected(accountMap.get(accounts[i]));
                             }
                         }).create();
@@ -395,7 +395,7 @@ public class EditActivity extends Activity {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     SpinnerItem si = (SpinnerItem) adapterView.getItemAtPosition(i);
-                    Log.d("EditActivity", "Selected item: " + si);
+                    Log.d("Birthday", "Selected item: " + si);
                     evt.type = si.eventType;
                 }
 

@@ -29,7 +29,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.*;
 import android.os.RemoteException;
-import android.view.View;
 import cz.krtinec.birthday.dto.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -86,7 +85,7 @@ public class BirthdayProvider {
     }
 
     public List<EditableEvent> getEvents(Context ctx, long rawContactId) {
-        Log.i("Birthday provider", "Going to get events for " + rawContactId);
+        Log.i("Birthday", "Going to get events for " + rawContactId);
 
         String[] projection = new String[]{
                 ContactsContract.CommonDataKinds.Event._ID,
@@ -121,18 +120,18 @@ public class BirthdayProvider {
                 events.add(evt);
 
             } catch (ParseException e) {
-                Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+                Log.i("Birthday", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
             } catch (IllegalArgumentException e) {
-                Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+                Log.i("Birthday", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
             } catch (NullPointerException e) {
-                Log.i("BirthdayProvider", "Skipping contact id: " + c.getString(1) + " due to NPE.");
+                Log.i("Birthday", "Skipping contact id: " + c.getString(1) + " due to NPE.");
             }
         }
 
         if (c != null) {
             c.close();
         }
-        Log.i("Birthday provider", "Returning " + events);
+        Log.i("Birthday", "Returning " + events);
         return events;
     }
 
@@ -148,7 +147,7 @@ public class BirthdayProvider {
                 id = c.getColumnIndex(ContactsContract.Contacts._ID);
             }
             contactID = c.getLong(id);
-            Log.d("BirthdayProvider", "getContactName(), contactID: " + contactID);
+            Log.d("Birthday", "getContactName(), contactID: " + contactID);
             c.close();
             Uri contactUri = Uri.withAppendedPath(Contacts.CONTENT_URI, String.valueOf(contactID));
             c = ctx.getContentResolver().query(contactUri, null, null, null, null);
@@ -156,7 +155,7 @@ public class BirthdayProvider {
                 displayName = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 contactId = c.getString(c.getColumnIndex(Contacts._ID));
             } else {
-                Log.e("BirthdayProvider", "Cannot find contact with contactID: " + contactID);
+                Log.e("Birthday", "Cannot find contact with contactID: " + contactID);
                 displayName = "Invalid contact";
                 contactId = "0";
             }
@@ -168,7 +167,7 @@ public class BirthdayProvider {
 
 
     public List<Event> upcomingBirthday(Context ctx) {
-        Log.i("Birthday provider", "Going to get upcoming events");
+        Log.i("Birthday", "Going to get upcoming events");
         long start = System.currentTimeMillis();
         Uri dataUri = ContactsContract.Data.CONTENT_URI;
 
@@ -189,20 +188,20 @@ public class BirthdayProvider {
                 result.add(parseCursor(c));
 
             } catch (ParseException e) {
-                Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+                Log.i("Birthday", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
             } catch (IllegalArgumentException e) {
-                Log.i("BirthdayProvider", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
+                Log.i("Birthday", "Skipping " + c.getString(0) + " due to unparseable bday date (" + c.getString(2) + ")");
             } catch (NullPointerException e) {
-                Log.i("BirthdayProvider", "Skipping contact id: " + c.getString(1) + " due to NPE.");
+                Log.i("Birthday", "Skipping contact id: " + c.getString(1) + " due to NPE.");
             }
         }
         if (c != null) {
             c.close();
         }
-        Log.i("BirthdayProvider", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
+        Log.i("Birthday", "Loaded in " + (System.currentTimeMillis() - start) + " [ms]");
         start = System.currentTimeMillis();
         List<Event> result2 = new ArrayList<Event>(result);
-        Log.i("BirthdayProvider", "Converted in " + (System.currentTimeMillis() - start) + " [ms]");
+        Log.i("Birthday", "Converted in " + (System.currentTimeMillis() - start) + " [ms]");
         return result2;
     }
 
@@ -339,9 +338,9 @@ public class BirthdayProvider {
     }
 
     public ContentProviderResult[] performUpdate(Context ctx, ArrayList<ContentProviderOperation> ops) throws RemoteException, OperationApplicationException {
-        Log.i("BirthdayProvider", "Going to update events: " + ops);
+        Log.i("Birthday", "Going to update events: " + ops);
         ContentProviderResult[] result = ctx.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        Log.i("BirthdayProvider", "Update result: ");
+        Log.i("Birthday", "Update result: ");
         return result;
     }
 
@@ -356,10 +355,10 @@ public class BirthdayProvider {
                 new String[]{String.valueOf(contactId)}, null);
 
         Account[] accounts = AccountManager.get(ctx).getAccounts();
-        Log.i("BirtdayProvider", "Available accounts: " + accounts.length);
+        Log.i("Birthday", "Available accounts: " + accounts.length);
         Map<Account, Long> result = new HashMap<Account, Long>();
         while (cursor.moveToNext()) {
-            Log.d("BirtdayProvider",
+            Log.d("Birthday",
                     "RawId: " + cursor.getLong(0) + ", type: " + cursor.getString(1) + ", name: " + cursor.getString(2));
             result.put(findAccount(accounts, cursor.getString(1), cursor.getString(2)), cursor.getLong(0));
         }
@@ -374,17 +373,17 @@ public class BirthdayProvider {
      * @return Never returns null.
      */
     private Account findAccount(Account[] list, String type, String name) {
-        Log.d("BirtdayProvider", "Matching " + name + " and " + type);
+        Log.d("Birthday", "Matching " + name + " and " + type);
         if (name == null && type == null) {
             return ACCOUNT_PHONE;
         }
         for (Account a : list) {
-            Log.d("BirtdayProvider", "Account Name: " + a.name + " Account Type: " + a.type);
+            Log.d("Birthday", "Account Name: " + a.name + " Account Type: " + a.type);
             if (a.type.equals(type) && a.name.equals(name)) {
                 return a;
             }
         }
-        Log.d("BirthdayProvider", "Match not found");
+        Log.d("Birthday", "Match not found");
         return ACCOUNT_UNKNOWN;
     }
 
