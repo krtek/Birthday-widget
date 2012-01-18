@@ -97,7 +97,7 @@ public class Utils {
     public static void startNotificationAlarm(Context ctx, long time) {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(
-                ctx, 0, new Intent(BirthdayApplication.BIRTHDAY_ALARM), PendingIntent.FLAG_UPDATE_CURRENT);
+                ctx, 0, new Intent(BirthdayApplication.BIRTHDAY_ALARM), PendingIntent.FLAG_CANCEL_CURRENT);
 
         am.setRepeating(AlarmManager.RTC_WAKEUP, time, AlarmManager.INTERVAL_DAY, alarmIntent);
         Toast.makeText(ctx, R.string.notifications_enabled, 1000);
