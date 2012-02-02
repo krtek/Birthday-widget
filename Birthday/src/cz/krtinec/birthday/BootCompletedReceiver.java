@@ -26,9 +26,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
- * User: lukas.marek@cleverlance.com
- * Date: 01.08.11
- * Time: 20:00
+ * Starts when the device is rebooted.
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
     @Override
