@@ -76,7 +76,6 @@ public class BirthdayWidget extends AppWidgetProvider {
                 max = list.size();
             }
             list = list.subList(0, max);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
 
             RemoteViews views = new RemoteViews("cz.krtinec.birthday", getLayout());
             updateViews(ctx, views, list);
