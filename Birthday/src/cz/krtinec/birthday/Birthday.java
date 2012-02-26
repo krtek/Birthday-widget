@@ -290,7 +290,7 @@ public class Birthday extends Activity {
                 v = convertView;
             }
             ((TextView) v.findViewById(R.id.name)).setText(event.getDisplayName());
-            ((TextView) v.findViewById(R.id.days)).setText(String.valueOf(event.getDaysToEvent()));
+            ((TextView) v.findViewById(R.id.days)).setText("+" + String.valueOf(event.getDaysToEvent()));
             ((ImageView) v.findViewById(R.id.bicon)).setImageResource(R.drawable.icon);
             loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), event.getContactId());
             if (event instanceof BirthdayEvent) {

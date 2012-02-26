@@ -28,7 +28,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.RemoteViews;
 import cz.krtinec.birthday.data.BirthdayProvider;
@@ -89,28 +94,28 @@ public class BirthdayWidget extends AppWidgetProvider {
 
     public RemoteViews updateViews(Context ctx, RemoteViews views, List<Event> list) {
         if (list.size() > 0) {
-            Event contact = list.get(0);
-            views.setTextViewText(R.id.first_name, contact.getDisplayName());
-            views.setTextViewText(R.id.first_date, contact.getDisplayDate(ctx));
-            replaceIconWithPhoto(ctx, views, contact, R.id.first_icon);
+            Event event = list.get(0);
+            setContactName(views, event, R.id.first_name);
+            setContactDate(ctx, views, event, R.id.first_date);
+            replaceIconWithPhoto(ctx, views, event, R.id.first_icon);
         }
         if (list.size() > 1) {
-            Event contact = list.get(1);
-            views.setTextViewText(R.id.second_name, contact.getDisplayName());
-            views.setTextViewText(R.id.second_date, contact.getDisplayDate(ctx));
-            replaceIconWithPhoto(ctx, views, contact, R.id.second_icon);
+            Event event = list.get(1);
+            setContactName(views, event, R.id.second_name);
+            setContactDate(ctx, views, event, R.id.second_date);
+            replaceIconWithPhoto(ctx, views, event, R.id.second_icon);
         }
         if (list.size() > 2) {
-            Event contact = list.get(2);
-            views.setTextViewText(R.id.third_name, contact.getDisplayName());
-            views.setTextViewText(R.id.third_date, contact.getDisplayDate(ctx));
-            replaceIconWithPhoto(ctx, views, contact, R.id.third_icon);
+            Event event = list.get(2);
+            setContactName(views, event, R.id.third_name);
+            setContactDate(ctx, views, event, R.id.third_date);
+            replaceIconWithPhoto(ctx, views, event, R.id.third_icon);
         }
         if (list.size() > 3) {
-            Event contact = list.get(3);
-            views.setTextViewText(R.id.fourth_name, contact.getDisplayName());
-            views.setTextViewText(R.id.fourth_date, contact.getDisplayDate(ctx));
-            replaceIconWithPhoto(ctx, views, contact, R.id.fourth_icon);
+            Event event = list.get(3);
+            setContactName(views, event, R.id.first_name);
+            setContactDate(ctx, views, event, R.id.fourth_date);
+            replaceIconWithPhoto(ctx, views, event, R.id.fourth_icon);
         }
         return views;
     }
@@ -132,6 +137,28 @@ public class BirthdayWidget extends AppWidgetProvider {
             }
         } else {
             views.setImageViewResource(viewId, R.drawable.icon);
+        }
+    }
+
+    private void setContactName(RemoteViews views, Event event, int viewId) {
+        SpannableString caption = new SpannableString(event.getDisplayName());
+        addSpan(caption, event.getDaysToEvent());
+        views.setTextViewText(viewId, caption);
+    }
+
+    private void setContactDate(Context ctx, RemoteViews views, Event event, int viewId) {
+        SpannableString caption = new SpannableString(event.getDisplayDate(ctx) + " (+" + event.getDaysToEvent() + ")");
+        addSpan(caption, event.getDaysToEvent());
+        views.setTextViewText(viewId, caption);
+    }
+    
+    private void addSpan(SpannableString caption, int daysToEvent) {
+        if (daysToEvent < 6) {
+            caption.setSpan(new StyleSpan(Typeface.BOLD), 0, caption.length(), 0);
+        }
+
+        if (daysToEvent < 2) {
+            caption.setSpan(new ForegroundColorSpan(Color.RED), 0, caption.length(), 0);
         }
     }
 
