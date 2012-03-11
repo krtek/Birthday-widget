@@ -22,6 +22,7 @@ package cz.krtinec.birthday;
 import cz.krtinec.birthday.dto.BirthdayEvent;
 import cz.krtinec.birthday.dto.DateIntegrity;
 import cz.krtinec.birthday.dto.Event;
+import cz.krtinec.birthday.dto.Zodiac;
 import junit.framework.TestCase;
 import org.joda.time.LocalDate;
 
@@ -36,19 +37,19 @@ public class EventTest extends TestCase {
         LocalDate birthDate = new LocalDate();
         LocalDate today = new LocalDate();
         birthDate = birthDate.minusYears(30);
-        Event contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        Event contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
         assertEquals("Birthday is today - should be 0.", 0, contact.getDaysToEvent());
 
         birthDate = birthDate.minusDays(1);
-        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
         if (today.year().isLeap() || today.plusYears(1).year().isLeap()) {
-            assertEquals("Birthday was yesterday - should be 365.", 365, contact.getDaysToEvent());
+            assertEquals("Birthday was yesterday - should be 364.", 364, contact.getDaysToEvent());
         } else {
             assertEquals("Birthday was yesterday - should be 364.", 364, contact.getDaysToEvent());
         }
 
         birthDate = birthDate.plusDays(11);
-        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
         assertEquals("Birthday is in 10 days.", 10, contact.getDaysToEvent());
 
     }
@@ -58,11 +59,11 @@ public class EventTest extends TestCase {
         LocalDate today = new LocalDate();
         birthDate = birthDate.minusYears(30);
 
-        BirthdayEvent contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        BirthdayEvent contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
         assertEquals( new Integer(30), contact.getAge());
 
         birthDate.minusDays(1);
-        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
         assertEquals(new Integer(30), contact.getAge());
     }
 

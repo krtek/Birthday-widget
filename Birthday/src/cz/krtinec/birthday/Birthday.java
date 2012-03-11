@@ -23,6 +23,7 @@ import java.util.List;
 
 import android.app.*;
 import android.provider.ContactsContract;
+import android.text.AndroidCharacter;
 import android.util.Log;
 import android.widget.*;
 
@@ -299,21 +300,25 @@ public class Birthday extends Activity {
                         String.valueOf((bEvent.getAge() == null) ? "--" : bEvent.getAge()));
                 ((TextView) v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
                 ((TextView) v.findViewById(R.id.type)).setText(getCaption(R.string.birthday));
+                ((ImageView) v.findViewById(R.id.zodiac)).setImageResource(bEvent.getZodiac().getIconId());
             } else if (event instanceof AnniversaryEvent) {
                 AnniversaryEvent aEvent = (AnniversaryEvent) event;
                 ((TextView) v.findViewById(R.id.age)).setText(
                         String.valueOf((aEvent.getYearsFrom() == null) ? "--" : aEvent.getYearsFrom()));
                 ((TextView) v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
                 ((TextView) v.findViewById(R.id.type)).setText(getCaption(R.string.anniversary));
+                ((ImageView) v.findViewById(R.id.zodiac)).setImageResource(0);
             } else if (event instanceof CustomEvent) {
                 CustomEvent cEvent = (CustomEvent) event;
                 ((TextView) v.findViewById(R.id.age)).setText("--");
                 ((TextView) v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
                 ((TextView) v.findViewById(R.id.type)).setText(getCaption(cEvent.getLabel()));
+                ((ImageView) v.findViewById(R.id.zodiac)).setImageResource(0);
             } else if (event instanceof OtherEvent) {
                 ((TextView) v.findViewById(R.id.age)).setText("--");
                 ((TextView) v.findViewById(R.id.date)).setText(event.getDisplayDate(ctx));
                 ((TextView) v.findViewById(R.id.type)).setText(getCaption(R.string.other));
+                ((ImageView) v.findViewById(R.id.zodiac)).setImageResource(0);
             }
 
             return v;

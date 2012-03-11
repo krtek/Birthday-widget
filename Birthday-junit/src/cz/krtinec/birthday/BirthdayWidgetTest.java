@@ -22,6 +22,7 @@ package cz.krtinec.birthday;
 import cz.krtinec.birthday.dto.BirthdayEvent;
 import cz.krtinec.birthday.dto.Event;
 import cz.krtinec.birthday.dto.DateIntegrity;
+import cz.krtinec.birthday.dto.Zodiac;
 import junit.framework.TestCase;
 import org.joda.time.LocalDate;
 
@@ -32,17 +33,17 @@ public class BirthdayWidgetTest extends TestCase {
     public void testHasBirthdayToday() {
         LocalDate birthDate = new LocalDate();
         birthDate = birthDate.minusYears(30);
-        Event contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        Event contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
 
         assertTrue("Birthday is today", NotificationSender.hasBirthdayToday(contact));
 
         birthDate = birthDate.minusDays(1);
-        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L);
+        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey", DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
 
         assertFalse("Birthday was yesterday", NotificationSender.hasBirthdayToday(contact));
 
         birthDate = birthDate.plusDays(2);
-        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey",  DateIntegrity.FULL, 123L);
+        contact = new BirthdayEvent("Lukas Marek", 123L, birthDate, "lookupKey",  DateIntegrity.FULL, 123L, Zodiac.toZodiac(birthDate));
 
         assertFalse("Birthday is tommorow", NotificationSender.hasBirthdayToday(contact));
     }

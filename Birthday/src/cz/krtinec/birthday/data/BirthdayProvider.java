@@ -209,7 +209,7 @@ public class BirthdayProvider {
         ParseResult parseResult = tryParseBDay(c.getString(2));
         if (ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY == c.getInt(5)) {
             return new BirthdayEvent(c.getString(0), c.getLong(1), parseResult.date, c.getString(3),
-                    parseResult.integrity, c.getLong(8));
+                    parseResult.integrity, c.getLong(8), Zodiac.toZodiac(parseResult.date));
         } else if (ContactsContract.CommonDataKinds.Event.TYPE_ANNIVERSARY == c.getInt(5)) {
             return new AnniversaryEvent(c.getString(0), c.getLong(1), parseResult.date, c.getString(3),
                     parseResult.integrity, c.getLong(8));

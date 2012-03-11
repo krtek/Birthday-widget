@@ -136,4 +136,8 @@ public abstract class Event implements Comparable<Event> {
     public Long getRawContactId() {
         return rawContactId;
     }
+
+    public LocalDate getEventDate() {
+        return eventDate;
+    }
 }

@@ -26,9 +26,10 @@ import org.joda.time.LocalDate;
  */
 public class BirthdayEvent extends Event {
     private Integer age;
+    private Zodiac zodiac;
 
     public BirthdayEvent(String displayName, long id, LocalDate eventDate, String lookupKey,
-                          DateIntegrity integrity, long rawContactId) {
+                          DateIntegrity integrity, long rawContactId, Zodiac zodiac) {
         super(displayName, id, eventDate, lookupKey, integrity, rawContactId);
         if (DateIntegrity.FULL == this.integrity) {
              age = today.getYear() - eventDate.getYear();
@@ -36,9 +37,16 @@ public class BirthdayEvent extends Event {
          } else {
              age = null;
          }
+        this.zodiac = zodiac;
     }
 
     public Integer getAge() {
 		return age;
 	}
+
+    public Zodiac getZodiac() {
+        return zodiac;
+    }
 }
+
+
