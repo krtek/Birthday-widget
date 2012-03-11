@@ -113,7 +113,7 @@ public class BirthdayWidget extends AppWidgetProvider {
         }
         if (list.size() > 3) {
             Event event = list.get(3);
-            setContactName(views, event, R.id.first_name);
+            setContactName(views, event, R.id.fourth_name);
             setContactDate(ctx, views, event, R.id.fourth_date);
             replaceIconWithPhoto(ctx, views, event, R.id.fourth_icon);
         }
