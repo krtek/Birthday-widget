@@ -22,7 +22,7 @@
           package="cz.krtinec.birthday"
           android:versionName="2.2.1" android:versionCode="31" android:installLocation="internalOnly">
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false"
-                 android:name="BirthdayApplication">
+                 android:name="BirthdayApplication" android:theme="@style/BirthdayTheme">
         <!--<application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="false">-->
         <activity android:name=".Birthday"
                   android:label="@string/app_name">
