@@ -255,20 +255,6 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
-    <library name="joda-convert-1.2">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/Birthday/lib/joda-convert-1.2.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="joda-time-2.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/Birthday/lib/joda-time-2.0.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="Mockito">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/Birthday-junit/lib/mockito-all-1.9.0-rc1.jar!/" />
