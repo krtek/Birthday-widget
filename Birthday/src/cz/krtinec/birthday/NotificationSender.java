@@ -68,7 +68,7 @@ public class NotificationSender extends BroadcastReceiver {
         return Character.toUpperCase(label.charAt(0)) + label.substring(1);
     }
 
-    static void fireBirthdayAlert(Context ctx, Event c, Long when) {
+    protected static void fireBirthdayAlert(Context ctx, Event c, Long when) {
         String label = formatLabel(ctx, c);
         Notification n = new Notification(R.drawable.icon, label, when);
         n.flags = n.flags | Notification.FLAG_AUTO_CANCEL;

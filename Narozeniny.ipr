@@ -5,6 +5,10 @@
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/Birthday/gen" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/Birthday-device-test/gen" includeSubdirectories="true" />
+    </excludeFromCompile>
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -52,6 +56,9 @@
         </modules>
       </facet-type>
     </autodetection-disabled>
+  </component>
+  <component name="GradleSettings">
+    <option name="gradleHome" value="/opt/gradle-1.0-milestone-7" />
   </component>
   <component name="GradleUISettings2">
     <setting name="root" />
@@ -234,7 +241,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="Android 2.2 Platform" project-jdk-type="Android SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="Android 4.0.3 Platform" project-jdk-type="Android SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
@@ -248,6 +255,20 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
+    <library name="joda-convert-1.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/Birthday/lib/joda-convert-1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="joda-time-2.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/Birthday/lib/joda-time-2.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="Mockito">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/Birthday-junit/lib/mockito-all-1.9.0-rc1.jar!/" />

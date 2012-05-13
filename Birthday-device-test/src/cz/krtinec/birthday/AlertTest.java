@@ -35,7 +35,7 @@ public class AlertTest extends ActivityInstrumentationTestCase2<Birthday> {
 
     public void testFormatText() {
         Birthday ctx = this.getActivity();
-        Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
+        Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l, Zodiac.AQUARIUS);
         assertEquals("Hurry up, krtek has birthday!", NotificationSender.formatMessage(ctx, e));
         e = new AnniversaryEvent("krtek", 1l, new LocalDate(), "1", DateIntegrity.FULL, 1l);
         assertEquals("Hurry up, krtek has anniversary!", NotificationSender.formatMessage(ctx, e));
@@ -45,7 +45,7 @@ public class AlertTest extends ActivityInstrumentationTestCase2<Birthday> {
 
     public void testFormatLabel() {
         Birthday ctx = this.getActivity();
-        Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
+        Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l, Zodiac.AQUARIUS);
         assertEquals("Birthday alert!", NotificationSender.formatLabel(ctx, e));
         e = new AnniversaryEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
         assertEquals("Anniversary alert!", NotificationSender.formatLabel(ctx, e));
@@ -55,7 +55,7 @@ public class AlertTest extends ActivityInstrumentationTestCase2<Birthday> {
 
     public void testFireBirthdayAlert() {
         Birthday ctx = this.getActivity();
-        Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l);
+        Event e = new BirthdayEvent("krtek", 1l, new LocalDate(), "123", DateIntegrity.FULL, 1l, Zodiac.AQUARIUS);
         NotificationSender.fireBirthdayAlert(ctx, e, System.currentTimeMillis());
     }
 
