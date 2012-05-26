@@ -34,7 +34,8 @@
 		android:id="@+id/first_icon" 
 		android:src="@drawable/icon" 
 		android:layout_width="25dip" 
-		android:layout_height="25dip" 
+		android:layout_height="25dip"
+        android:visibility="invisible"
 	/>  
 <LinearLayout android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -70,7 +71,8 @@
 		android:id="@+id/second_icon" 
 		android:src="@drawable/icon" 
 		android:layout_width="25dip" 
-		android:layout_height="25dip" 
+		android:layout_height="25dip"
+        android:visibility="invisible"
 	/> 
 <LinearLayout android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -107,7 +109,8 @@
 		android:id="@+id/third_icon" 
 		android:src="@drawable/icon" 
 		android:layout_width="25dip" 
-		android:layout_height="25dip" 
+		android:layout_height="25dip"
+        android:visibility="invisible"
 	/> 
 <LinearLayout android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -143,7 +146,8 @@
 		android:id="@+id/fourth_icon" 
 		android:src="@drawable/icon" 
 		android:layout_width="25dip" 
-		android:layout_height="25dip" 
+		android:layout_height="25dip"
+        android:visibility="invisible"
 	/> 
 <LinearLayout android:orientation="vertical"
     android:layout_width="fill_parent"

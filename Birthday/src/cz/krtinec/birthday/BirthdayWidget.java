@@ -35,6 +35,7 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import cz.krtinec.birthday.data.BirthdayProvider;
 import cz.krtinec.birthday.dto.Event;
@@ -121,7 +122,6 @@ public class BirthdayWidget extends AppWidgetProvider {
     }
 
 
-
     protected void replaceIconWithPhoto(Context ctx, RemoteViews views, Event contact, int viewId) {
         InputStream is = BirthdayProvider.openPhoto(ctx, contact.getContactId());
         if (is != null) {
@@ -138,6 +138,7 @@ public class BirthdayWidget extends AppWidgetProvider {
         } else {
             views.setImageViewResource(viewId, R.drawable.icon);
         }
+        views.setViewVisibility(viewId, View.VISIBLE);
     }
 
     private void setContactName(RemoteViews views, Event event, int viewId) {
