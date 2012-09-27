@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GoogleAdMobAdsSdk-6.0.0"/>
-	<classpathentry exported="true" kind="lib" path="lib/joda-time-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/krtek/Dropbox/work/java/workspace/Narozeniny/Birthday/lib/joda-time-2.0.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
