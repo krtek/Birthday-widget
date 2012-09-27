@@ -1,0 +1,73 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        // To use a development snapshot version of the plugin, add the
+        // Sonatype Snapshots repository.
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-android-plugin:1.2.0'
+    }
+}
+
+apply plugin: 'android'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'joda-time:joda-time:2.1'
+    compile 'org.roboguice:roboguice:2.0'
+    compile 'com.google.code.findbugs:jsr305:1.3.9'
+    compile files('libs/GoogleAdMobAdsSdk-6.0.0.jar')
+}
+
+/*
+ * This file is part of Birthday Widget.
+ *
+ * Birthday Widget is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Birthday Widget is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Birthday Widget.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright (c) Lukas Marek, 2012.
+ */
+
+// Sets the package version
+version = "1.0.0"
+
+// Signing configuration, valid for all builds (1)
+androidSignAndAlign {
+    keyStore = "/Users/krtek/Dropbox/work/keystore"
+    keyAlias = "android-key"
+    keyStorePassword = androidPassword
+    keyAliasPassword = androidPassword
+}
+
+// Configure the filtering of resources with properties from the Gradle's project scope (2)
+processResources {
+    expand(project.properties)
+}
+
+// Configure a dedicated debug build (3)
+task configureDebug << {
+    jar.classifier = "debug"
+}
+
+// Configure a dedicated release build (4)
+task configureRelease << {
+    proguard.enabled = true
+}
