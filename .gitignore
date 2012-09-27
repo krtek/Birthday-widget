@@ -1,8 +1,12 @@
 bin/
 build/
-.bzr
-.bzrignore
 gen/
 .dropbox
+.gradle
+.classpath
+gradle.properties
+local.properties
 default.properties
-Narozeniny.iws
+*.iml
+*.iws
+*.ipr
