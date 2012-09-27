@@ -38,6 +38,7 @@ import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.Utils;
 import cz.krtinec.birthday.data.BirthdayProvider;
 
+import cz.krtinec.birthday.dto.ContactInfo;
 import cz.krtinec.birthday.dto.DateIntegrity;
 import cz.krtinec.birthday.dto.EditableEvent;
 
@@ -86,10 +87,10 @@ public class EditActivity extends Activity {
         if (i != null) {
             Uri contact = i.getData();
             Log.i("Birthday", "Going to edit " + contact);
-            String[] contactInfo = BirthdayProvider.getInstance().getContact(this, contact);
+            ContactInfo contactInfo = BirthdayProvider.getInstance().getContact(this, contact);
             TextView nameView = (TextView) findViewById(R.id.name);
-            nameView.setText(contactInfo[0]);
-            photoLoader.loadPhoto((ImageView) findViewById(R.id.bicon), Long.parseLong(contactInfo[1]));
+            nameView.setText(contactInfo.contactName);
+            photoLoader.loadPhoto((ImageView) findViewById(R.id.bicon), contactInfo.contactID);
 
             //empty intent
             setIntent(null);

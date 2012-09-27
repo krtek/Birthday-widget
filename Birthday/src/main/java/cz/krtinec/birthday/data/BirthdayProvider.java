@@ -136,11 +136,10 @@ public class BirthdayProvider {
     }
 
 
-    public String[] getContact(Context ctx, Uri contact) {
+    public ContactInfo getContact(Context ctx, Uri contact) {
         Cursor c = ctx.getContentResolver().query(contact, null, null, null, null);
         String displayName = null;
-        String contactId = null;
-        Long contactID;
+        Long contactID = 0L;
         if (c != null && c.moveToFirst()) {
             int id = c.getColumnIndex(ContactsContract.RawContacts.CONTACT_ID);
             if (id == -1) {
@@ -153,15 +152,15 @@ public class BirthdayProvider {
             c = ctx.getContentResolver().query(contactUri, null, null, null, null);
             if (c != null && c.moveToFirst()) {
                 displayName = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                contactId = c.getString(c.getColumnIndex(Contacts._ID));
+                contactID = c.getLong(c.getColumnIndex(Contacts._ID));
             } else {
                 Log.e("Birthday", "Cannot find contact with contactID: " + contactID);
                 displayName = "Invalid contact";
-                contactId = "0";
+                contactID = 0L;
             }
         }
         c.close();
-        return new String[] {displayName, contactId};
+        return new ContactInfo(displayName, contactID);
 
     }
 
@@ -399,4 +398,7 @@ public class BirthdayProvider {
             this.integrity = integrity;
         }
     }
+
 }
+
+
