@@ -15,6 +15,7 @@ buildscript {
 
 apply plugin: 'android'
 apply plugin: 'idea'
+apply plugin: 'eclipse'
 
 repositories {
     mavenCentral()
