@@ -51,8 +51,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 
-public class Birthday extends Activity {
+@ContentView(R.layout.main)
+public class Birthday extends RoboActivity {
     private static final String VERSION_KEY = "version";
     public static final String TEMPLATE_KEY = "template";
     public static final String TEMPLATE_KEY_ANNIVERSARY = "template.anniversary";
@@ -84,7 +88,7 @@ public class Birthday extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        //setContentView(R.layout.main);
 
         try {
             int version = this.getPackageManager().getPackageInfo("cz.krtinec.birthday", 0).versionCode;
@@ -133,7 +137,7 @@ public class Birthday extends Activity {
         super.onResume();
         Log.d("Birthday", "onResume() called.");
         showDialog(DIALOG_LOADING);
-        new Thread(new StartupThread(this)).start();
+        new Thread(new StartupThread()).start();
         loader.resume();
     }
 
@@ -349,12 +353,10 @@ public class Birthday extends Activity {
         }
     }
 
-    class StartupThread implements Runnable {
-        private Activity activity;
+    @InjectView(android.R.id.list) ListView listView;
+    @InjectView(android.R.id.empty) View emptyView;
 
-        public StartupThread(Activity activity) {
-            this.activity = activity;
-        }
+    class StartupThread implements Runnable {
 
         @Override
         public void run() {
@@ -362,12 +364,11 @@ public class Birthday extends Activity {
 
                 @Override
                 public void run() {
-                    ListView list = (ListView) activity.findViewById(android.R.id.list);
-                    listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(activity);
-                    final BirthdayAdapter adapter = new BirthdayAdapter(listOfContacts, activity, loader);
-                    list.setAdapter(adapter);
-                    list.setEmptyView(activity.findViewById(android.R.id.empty));
-                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    listOfContacts = BirthdayProvider.getInstance().upcomingBirthday(Birthday.this);
+                    final BirthdayAdapter adapter = new BirthdayAdapter(listOfContacts, Birthday.this, loader);
+                    listView.setAdapter(adapter);
+                    listView.setEmptyView(emptyView);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Event e = (Event) adapter.getItem(i);
@@ -376,10 +377,10 @@ public class Birthday extends Activity {
                                     String.valueOf(e.getRawContactId()));
                             intent.setData(uri);
                             intent.setClass(getBaseContext(), EditActivity.class);
-                            activity.startActivity(intent);
+                            startActivity(intent);
                         }
                     });
-                    registerForContextMenu((ListView) findViewById(android.R.id.list));
+                    registerForContextMenu(listView);
                     dialog.cancel();
                 }
             });
