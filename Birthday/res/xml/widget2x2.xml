@@ -19,9 +19,10 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="146dip"
-    android:minHeight="144dip"
+    android:minWidth="110dp"
+    android:minHeight="110dp"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/widget2x2"
-    android:configure="cz.krtinec.birthday.ui.BirthdayPreference" 
+    android:configure="cz.krtinec.birthday.ui.BirthdayPreference"
+    android:resizeMode="vertical"
     />
