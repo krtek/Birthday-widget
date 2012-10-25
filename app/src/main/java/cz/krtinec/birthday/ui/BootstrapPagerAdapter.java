@@ -1,5 +1,3 @@
-
-
 package cz.krtinec.birthday.ui;
 
 import android.content.res.Resources;
@@ -7,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-
 import cz.krtinec.birthday.R;
 
 /**
@@ -30,26 +27,24 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 1;
     }
 
     @Override
     public Fragment getItem(int position) {
         Bundle bundle = new Bundle();
-        switch (position) {
-        case 0:
-            NewsListFragment newsFragment = new NewsListFragment();
-            newsFragment.setArguments(bundle);
-            return newsFragment;
-        case 1:
-            UserListFragment userListFragment = new UserListFragment();
-            userListFragment.setArguments(bundle);
-            return userListFragment;
-        case 2:
-            CheckInsListFragment checkInsFragment = new CheckInsListFragment();
-            checkInsFragment.setArguments(bundle);
-            return checkInsFragment;
-        default:
+      switch (position) {
+          case 0:
+            EventListFragment eventListFragment = new EventListFragment();
+              eventListFragment.setArguments(bundle);
+            return eventListFragment;
+/*        case 1:
+            OrderDetailFragment orderDetailFragment = new OrderDetailFragment();
+            orderDetailFragment.setArguments(bundle);
+            return orderDetailFragment;
+
+ */
+            default:
             return null;
         }
     }
@@ -57,12 +52,11 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-        case 0:
-            return resources.getString(R.string.page_news);
-        case 1:
-            return resources.getString(R.string.page_users);
-        case 2:
-            return resources.getString(R.string.page_checkins);
+           case 0:
+            return resources.getString(R.string.birthday);
+/*        case 1:
+            return resources.getString(R.string.page_order);
+*/
         default:
             return null;
         }

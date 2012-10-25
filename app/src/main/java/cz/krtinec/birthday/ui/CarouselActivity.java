@@ -1,5 +1,3 @@
-
-
 package cz.krtinec.birthday.ui;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
