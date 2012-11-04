@@ -38,6 +38,7 @@ import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.Utils;
 import cz.krtinec.birthday.data.BirthdayService;
 
+import cz.krtinec.birthday.data.StockPhotoLoader;
 import cz.krtinec.birthday.dto.ContactInfo;
 import cz.krtinec.birthday.dto.DateIntegrity;
 import cz.krtinec.birthday.dto.EditableEvent;
@@ -84,7 +85,7 @@ public class EditActivity extends Activity {
             new SpinnerItem(EventType.ANNIVERSARY, this.getString(R.string.anniversary)),
             new SpinnerItem(EventType.OTHER, this.getString(R.string.other))
         };
-        photoLoader = new StockPhotoLoader(this, R.drawable.icon);
+        photoLoader = new StockPhotoLoader(service, this, R.drawable.icon);
 
         Intent i = getIntent();
         if (i != null) {

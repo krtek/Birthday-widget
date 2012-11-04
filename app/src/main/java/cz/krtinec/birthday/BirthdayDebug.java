@@ -37,7 +37,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import cz.krtinec.birthday.ui.StockPhotoLoader;
+import cz.krtinec.birthday.data.StockPhotoLoader;
 
 public class BirthdayDebug extends Activity {
     @Inject
@@ -58,7 +58,7 @@ public class BirthdayDebug extends Activity {
     protected void onResume() {
         super.onResume();
         ListView list = (ListView) findViewById(R.id.debug_list);
-        loader = new StockPhotoLoader(this, R.drawable.icon);
+        loader = new StockPhotoLoader(service, this, R.drawable.icon);
         List<EventDebug> listOfContacts = service.allBirthday();
         list.setAdapter(new BirthdayDebugAdapter(listOfContacts, this, loader));
         loader.resume();

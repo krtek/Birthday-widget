@@ -9,6 +9,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.Utils;
+import cz.krtinec.birthday.data.BirthdayService;
 import cz.krtinec.birthday.dto.BirthdayEvent;
 import cz.krtinec.birthday.dto.Event;
 
@@ -18,15 +19,18 @@ import cz.krtinec.birthday.dto.Event;
 public class EventListAdapter extends AlternatingColorListAdapter<Event> {
 
     private Context ctx;
+    private BirthdayService service;
 
-    public EventListAdapter(LayoutInflater inflater, List<Event> items, boolean selectable) {
+    public EventListAdapter(LayoutInflater inflater, List<Event> items, boolean selectable, BirthdayService service) {
         super(R.layout.event_list_item, inflater, items, selectable);
         ctx = inflater.getContext();
+        this.service = service;
     }
 
-    public EventListAdapter(LayoutInflater inflater, List<Event> items) {
+    public EventListAdapter(LayoutInflater inflater, List<Event> items, BirthdayService service) {
         super(R.layout.event_list_item, inflater, items);
         ctx = inflater.getContext();
+        this.service = service;
     }
 
     @Override
@@ -37,8 +41,7 @@ public class EventListAdapter extends AlternatingColorListAdapter<Event> {
     @Override
     protected void update(int position, Event item) {
         super.update(position, item);
-        //TODO Photo
-
+        service.loadPhoto(imageView(R.id.iv_icon), item.getContactId());
         setText(R.id.tv_name, item.getDisplayName());
         setText(R.id.tv_days, String.valueOf(item.getDaysToEvent()));
 

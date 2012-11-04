@@ -21,6 +21,7 @@ package cz.krtinec.birthday.ui;
 
 import java.util.List;
 
+import cz.krtinec.birthday.data.StockPhotoLoader;
 import cz.krtinec.birthday.dto.Event;
 import android.content.Context;
 import android.view.View;

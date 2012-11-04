@@ -29,6 +29,8 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.*;
 import android.os.RemoteException;
+import android.widget.ImageView;
+import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.dto.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -62,6 +64,8 @@ public class BirthdayService {
     private final Account ACCOUNT_PHONE;
     private final Account ACCOUNT_UNKNOWN;
 
+    private final StockPhotoLoader PHOTO_LOADER;
+
     private Context ctx;
 
     static {
@@ -80,6 +84,12 @@ public class BirthdayService {
         this.ctx = ctx;
         ACCOUNT_PHONE = new Account("Internal", "Phone");
         ACCOUNT_UNKNOWN = new Account("Unknown", "Phone");
+        PHOTO_LOADER = new StockPhotoLoader(this, ctx, R.drawable.gravatar_icon);
+    }
+
+
+    public void loadPhoto(ImageView imageView, long contactId) {
+        PHOTO_LOADER.loadPhoto(imageView, contactId);
     }
 
     public List<EditableEvent> getEvents(long rawContactId) {

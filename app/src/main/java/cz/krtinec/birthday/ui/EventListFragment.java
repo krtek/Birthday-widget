@@ -34,7 +34,7 @@ public class EventListFragment extends ItemListFragment<Event> {
 
     @Override
     protected SingleTypeAdapter<Event> createAdapter(List<Event> items) {
-        return new EventListAdapter(getActivity().getLayoutInflater(), items);
+        return new EventListAdapter(getActivity().getLayoutInflater(), items, service);
     }
 
     @Override

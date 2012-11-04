@@ -16,11 +16,14 @@
  * Modified by Lukas Marek (lukas.marek@gmail.com) for BirthdayWidget.
  */
 
-package cz.krtinec.birthday.ui;
+package cz.krtinec.birthday.data;
 
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -28,6 +31,7 @@ import android.os.Message;
 import android.os.Handler.Callback;
 import android.util.Log;
 import android.widget.ImageView;
+import cz.krtinec.birthday.core.ImageUtils;
 import cz.krtinec.birthday.data.BirthdayService;
 
 import java.io.InputStream;
@@ -45,7 +49,9 @@ import com.google.inject.Inject;
  * hash maps shared with the main thread.
  */
 public class StockPhotoLoader implements Callback {
-    @Inject private BirthdayService service;
+    BirthdayService service;
+    private static final float CORNER_RADIUS_IN_DIP = 3;
+    private final float cornerRadius;
 
 
     private static final String LOADER_THREAD_NAME = "ContactPhotoLoader";
@@ -64,11 +70,8 @@ public class StockPhotoLoader implements Callback {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    /**
-     * The resource ID of the image to be used when the photo is unavailable or being
-     * loaded.
-     */
-    private final int mDefaultResourceId;
+
+    private final Drawable defaultAvatar;
 
     /**
      * Maintains the state of a particular photo.
@@ -125,9 +128,16 @@ public class StockPhotoLoader implements Callback {
      * @param defaultResourceId the image resource ID to be used when there is
      *            no photo for a contact
      */
-    public StockPhotoLoader(Context context, int defaultResourceId) {
-        mDefaultResourceId = defaultResourceId;
+    public StockPhotoLoader(BirthdayService service, Context context, int defaultResourceId) {
+        this.service = service;
         mContext = context;
+        float density = context.getResources().getDisplayMetrics().density;
+        cornerRadius = CORNER_RADIUS_IN_DIP * density;
+        Bitmap avatar = BitmapFactory.decodeResource(mContext.getResources(), defaultResourceId);
+        avatar = ImageUtils.roundCorners(avatar, cornerRadius);
+        defaultAvatar = new BitmapDrawable(mContext.getResources(),avatar);
+
+
     }
 
     /**
@@ -138,7 +148,7 @@ public class StockPhotoLoader implements Callback {
     public void loadPhoto(ImageView view, long contactId) {
         if (contactId == 0) {
             // No photo is needed
-            view.setImageResource(mDefaultResourceId);
+            view.setImageDrawable(defaultAvatar);
             mPendingRequests.remove(view);
         } else {
             boolean loaded = loadCachedPhoto(view, contactId);
@@ -167,7 +177,7 @@ public class StockPhotoLoader implements Callback {
         } else if (holder.state == BitmapHolder.LOADED) {
             // Null bitmap reference means that database contains no bytes for the photo
             if (holder.bitmapRef == null) {
-                view.setImageResource(mDefaultResourceId);
+                view.setImageDrawable(defaultAvatar);
                 return true;
             }
 
@@ -183,7 +193,7 @@ public class StockPhotoLoader implements Callback {
         }
 
         // The bitmap has not been loaded - should display the placeholder image.
-        view.setImageResource(mDefaultResourceId);
+        view.setImageDrawable(defaultAvatar);
         holder.state = BitmapHolder.NEEDED;
         return false;
     }
@@ -379,11 +389,12 @@ public class StockPhotoLoader implements Callback {
             }
 
             InputStream photoStream;
-            Drawable drawable;
             for (int i = 0; i < count; i++) {
                 if ((photoStream = service.openPhoto(contactIdsAsArray[i])) != null) {
                     try {
-                         drawable = Drawable.createFromStream(photoStream, "src");
+                         Bitmap avatar = BitmapFactory.decodeStream(photoStream);
+                         avatar = ImageUtils.roundCorners(avatar, cornerRadius);
+                         Drawable drawable = new BitmapDrawable(mContext.getResources(),avatar);
                          cacheBitmap(contactIdsAsArray[i], drawable);
                          mContactIds.remove(contactIdsAsArray[i]);
                     } catch (Throwable e) {

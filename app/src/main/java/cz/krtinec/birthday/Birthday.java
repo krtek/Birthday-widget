@@ -29,6 +29,7 @@ import android.util.Log;
 import android.widget.*;
 
 import cz.krtinec.birthday.data.BirthdayService;
+import cz.krtinec.birthday.data.StockPhotoLoader;
 import cz.krtinec.birthday.dto.*;
 import cz.krtinec.birthday.ui.*;
 
@@ -112,7 +113,7 @@ public class Birthday extends RoboActivity {
     protected void onStart() {
         super.onStart();
         Log.d("Birthday", "onStart() called.");
-		loader = new StockPhotoLoader(this, R.drawable.icon);
+		loader = new StockPhotoLoader(service, this, R.drawable.icon);
 
         /*
            * To enable tracing, android.permission.WRITE_EXTERNAL_STORAGE must be set to true!
