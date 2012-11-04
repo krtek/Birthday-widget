@@ -39,11 +39,8 @@ import cz.krtinec.birthday.Utils;
 import cz.krtinec.birthday.data.BirthdayService;
 
 import cz.krtinec.birthday.data.StockPhotoLoader;
-import cz.krtinec.birthday.dto.ContactInfo;
-import cz.krtinec.birthday.dto.DateIntegrity;
-import cz.krtinec.birthday.dto.EditableEvent;
+import cz.krtinec.birthday.dto.*;
 
-import cz.krtinec.birthday.dto.EventType;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
@@ -94,7 +91,8 @@ public class EditActivity extends Activity {
             ContactInfo contactInfo = service.getContact(contact);
             TextView nameView = (TextView) findViewById(R.id.name);
             nameView.setText(contactInfo.contactName);
-            photoLoader.loadPhoto((ImageView) findViewById(R.id.bicon), contactInfo.contactID);
+            //TODO LOAD Photo!
+            //photoLoader.loadPhoto((ImageView) findViewById(R.id.bicon), contactInfo.contactID);
 
             //empty intent
             setIntent(null);

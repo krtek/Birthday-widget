@@ -301,7 +301,7 @@ public class Birthday extends RoboActivity {
             ((TextView) v.findViewById(R.id.name)).setText(event.getDisplayName());
             ((TextView) v.findViewById(R.id.days)).setText("+" + String.valueOf(event.getDaysToEvent()));
             ((ImageView) v.findViewById(R.id.bicon)).setImageResource(R.drawable.icon);
-            loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), event.getContactId());
+            loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), Zodiac.toZodiac(event.getEventDate()).getIconId(), event.getContactId());
             if (event instanceof BirthdayEvent) {
                 BirthdayEvent bEvent = (BirthdayEvent) event;
                 ((TextView) v.findViewById(R.id.age)).setText(

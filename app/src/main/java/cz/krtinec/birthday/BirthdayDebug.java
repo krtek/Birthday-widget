@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 
 import cz.krtinec.birthday.data.BirthdayService;
 import cz.krtinec.birthday.dto.EventDebug;
+import cz.krtinec.birthday.dto.Zodiac;
 import cz.krtinec.birthday.ui.AdapterParent;
 
 import android.app.Activity;
@@ -109,7 +110,7 @@ public class BirthdayDebug extends Activity {
             }
             final ImageView imageView = (ImageView) v.findViewById(R.id.bicon);
             imageView.setImageResource(R.drawable.icon);
-            loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), contact.getContactId());
+            loader.loadPhoto((ImageView) v.findViewById(R.id.bicon), Zodiac.toZodiac(contact.getEventDate()).getIconId(), contact.getContactId());
 
 
             return v;

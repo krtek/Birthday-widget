@@ -1,23 +1,18 @@
 package cz.krtinec.birthday.core;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Arrays;
+
+import android.graphics.*;
+import android.util.Log;
+import android.widget.ImageView;
 
 import static android.graphics.Bitmap.Config.ARGB_8888;
 import static android.graphics.Color.WHITE;
 import static android.graphics.PorterDuff.Mode.DST_IN;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
-import android.util.Log;
-import android.widget.ImageView;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 
 /**
  * Image utilities
@@ -25,6 +20,14 @@ import java.io.RandomAccessFile;
 public class ImageUtils {
 
     private static final String TAG = "ImageUtils";
+
+    private static final int ZODIAC_SIZE = 30;
+
+    private static final int[] ZODIAC_BACKGROUND = new int[ZODIAC_SIZE * ZODIAC_SIZE];
+
+    static {
+        Arrays.fill(ZODIAC_BACKGROUND, WHITE);
+    }
 
     /**
      * Get a bitmap from the image path
@@ -193,6 +196,29 @@ public class ImageUtils {
         clipped.recycle();
 
         return rounded;
+    }
+
+    public static Bitmap mergeImages(final Bitmap source, final Bitmap overlay) {
+        int width = source.getWidth();
+        int height = source.getHeight();
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(WHITE);
+        paint.setAlpha(200);
+
+
+        Bitmap combined = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(combined);
+        canvas.drawBitmap(source, 0, 0, null);
+        canvas.drawBitmap(Bitmap.createBitmap(ZODIAC_BACKGROUND, ZODIAC_SIZE, ZODIAC_SIZE, Bitmap.Config.ARGB_8888),
+                width - (ZODIAC_SIZE + 2), height - (ZODIAC_SIZE + 2), paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(overlay, ZODIAC_SIZE - 4, ZODIAC_SIZE - 4, false),
+                width - ZODIAC_SIZE, height - ZODIAC_SIZE, null);
+
+        source.recycle();
+        overlay.recycle();
+
+        return combined;
     }
 }
 

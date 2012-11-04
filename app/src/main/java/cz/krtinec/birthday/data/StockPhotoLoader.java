@@ -31,13 +31,16 @@ import android.os.Message;
 import android.os.Handler.Callback;
 import android.util.Log;
 import android.widget.ImageView;
+import cz.krtinec.birthday.R;
 import cz.krtinec.birthday.core.ImageUtils;
 import cz.krtinec.birthday.data.BirthdayService;
 
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.inject.Inject;
@@ -51,6 +54,7 @@ import com.google.inject.Inject;
 public class StockPhotoLoader implements Callback {
     BirthdayService service;
     private static final float CORNER_RADIUS_IN_DIP = 3;
+
     private final float cornerRadius;
 
 
@@ -72,6 +76,10 @@ public class StockPhotoLoader implements Callback {
 
 
     private final Drawable defaultAvatar;
+
+    private final int mDefaultAvatarId;
+
+    private Map<Long, Integer> zodiacs = new HashMap<Long, Integer>();
 
     /**
      * Maintains the state of a particular photo.
@@ -135,6 +143,7 @@ public class StockPhotoLoader implements Callback {
         cornerRadius = CORNER_RADIUS_IN_DIP * density;
         Bitmap avatar = BitmapFactory.decodeResource(mContext.getResources(), defaultResourceId);
         avatar = ImageUtils.roundCorners(avatar, cornerRadius);
+        mDefaultAvatarId = defaultResourceId;
         defaultAvatar = new BitmapDrawable(mContext.getResources(),avatar);
 
 
@@ -145,12 +154,13 @@ public class StockPhotoLoader implements Callback {
      * it is displayed immediately.  Otherwise a request is sent to load the photo
      * from the database.
      */
-    public void loadPhoto(ImageView view, long contactId) {
+    public void loadPhoto(ImageView view, int zodiac, long contactId) {
         if (contactId == 0) {
             // No photo is needed
             view.setImageDrawable(defaultAvatar);
             mPendingRequests.remove(view);
         } else {
+            zodiacs.put(contactId, zodiac);
             boolean loaded = loadCachedPhoto(view, contactId);
             if (loaded) {
                 mPendingRequests.remove(view);
@@ -389,18 +399,23 @@ public class StockPhotoLoader implements Callback {
             }
 
             InputStream photoStream;
+            Bitmap avatar = null;
             for (int i = 0; i < count; i++) {
                 if ((photoStream = service.openPhoto(contactIdsAsArray[i])) != null) {
                     try {
-                         Bitmap avatar = BitmapFactory.decodeStream(photoStream);
-                         avatar = ImageUtils.roundCorners(avatar, cornerRadius);
-                         Drawable drawable = new BitmapDrawable(mContext.getResources(),avatar);
-                         cacheBitmap(contactIdsAsArray[i], drawable);
-                         mContactIds.remove(contactIdsAsArray[i]);
+                         avatar = BitmapFactory.decodeStream(photoStream);
                     } catch (Throwable e) {
                          Log.i("Birthday", "Error loading photo.", e);
                     }
+                } else {
+                    avatar = BitmapFactory.decodeResource(mContext.getResources(), mDefaultAvatarId);
                 }
+                avatar = ImageUtils.roundCorners(avatar, cornerRadius);
+                Bitmap zodiac = BitmapFactory.decodeResource(mContext.getResources(), zodiacs.get(contactIdsAsArray[i]));
+                avatar = ImageUtils.mergeImages(avatar, zodiac);
+                Drawable drawable = new BitmapDrawable(mContext.getResources(),avatar);
+                cacheBitmap(contactIdsAsArray[i], drawable);
+                mContactIds.remove(contactIdsAsArray[i]);
             }
 
             // Remaining photos were not found in the database - mark the cache accordingly.

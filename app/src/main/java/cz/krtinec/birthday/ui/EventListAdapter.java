@@ -12,6 +12,7 @@ import cz.krtinec.birthday.Utils;
 import cz.krtinec.birthday.data.BirthdayService;
 import cz.krtinec.birthday.dto.BirthdayEvent;
 import cz.krtinec.birthday.dto.Event;
+import cz.krtinec.birthday.dto.Zodiac;
 
 
 /**
@@ -41,7 +42,7 @@ public class EventListAdapter extends AlternatingColorListAdapter<Event> {
     @Override
     protected void update(int position, Event item) {
         super.update(position, item);
-        service.loadPhoto(imageView(R.id.iv_icon), item.getContactId());
+        service.loadPhoto(imageView(R.id.iv_icon), Zodiac.toZodiac(item.getEventDate()).getIconId(), item.getContactId());
         setText(R.id.tv_name, item.getDisplayName());
         setText(R.id.tv_days, String.valueOf(item.getDaysToEvent()));
 

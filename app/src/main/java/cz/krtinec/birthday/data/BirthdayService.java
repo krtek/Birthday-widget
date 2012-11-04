@@ -88,8 +88,8 @@ public class BirthdayService {
     }
 
 
-    public void loadPhoto(ImageView imageView, long contactId) {
-        PHOTO_LOADER.loadPhoto(imageView, contactId);
+    public void loadPhoto(ImageView imageView, int zodiac, long contactId) {
+        PHOTO_LOADER.loadPhoto(imageView, zodiac, contactId);
     }
 
     public List<EditableEvent> getEvents(long rawContactId) {
