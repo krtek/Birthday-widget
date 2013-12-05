@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ This file is part of Birthday Widget.
+  ~
+  ~ Birthday Widget is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Birthday Widget is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Birthday Widget.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Copyright (c) Lukas Marek, 2011.
+  -->
+
+<RelativeLayout
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:app="http://schemas.android.com/apk/res/cz.krtinec.birthday"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
+
+    <TextView android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dip"
+            android:padding="5dip"
+            android:textStyle="bold"
+            />
+
+    <ImageView
+		android:id="@+id/bicon"
+		android:src="@drawable/icon"
+		android:layout_width="80dip"
+		android:layout_height="100dip"
+        android:layout_marginRight="6dip"
+        android:layout_below="@id/name"
+	/>
+
+       <ImageView android:id="@+id/edit_button_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bicon"
+            android:layout_alignParentRight="true"
+            style="@style/PlusButton"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bicon"
+            android:padding="10dip"
+            android:textStyle="bold"
+            android:textSize="20dip"
+            android:layout_toLeftOf="@id/edit_button_add"
+            android:layout_alignParentLeft="true"
+            android:text="@string/add_bday_menu"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        style="@android:style/ButtonBar">
+
+        <Button
+            android:id="@+id/btn_done"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/btn_discard"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/discard" />
+        </LinearLayout>
+
+
+    <ListView android:id="@+id/list"
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent"
+              android:layout_below="@id/edit_button_add"
+              android:layout_above="@id/menu"
+            />
+
+
+</RelativeLayout><!-- From: file:/Users/krtek/Dropbox/work/java/workspace/Narozeniny/app/src/main/res/layout/edit.xml -->

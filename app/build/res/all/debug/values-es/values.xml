@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/krtek/Dropbox/work/java/workspace/Narozeniny/app/src/main/res/values-es/arrays.xml -->
+    <eat-comment />
+
+    <string-array name="format_texts">
+        <item>21.12.1978</item>
+        <item>Dic 21, 1978</item>
+        <item>1978/12/21</item>
+    </string-array>
+    <string-array name="long_format_values">
+        <item>d.M.yyyy</item>
+        <item>d. MMMM yyyy</item>
+        <item>YYYY/M/d</item>
+    </string-array>
+    <string-array name="notification_time_texts">
+        <item>7AM - 8AM</item>
+        <item>8AM - 9AM</item>
+        <item>9AM - 10AM</item>
+    </string-array>
+    <string-array name="notification_time_values">
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+    <string-array name="short_format_values">
+        <item>d.M.</item>
+        <item>d. MMMM</item>
+        <item>M/d</item>
+    </string-array>
+    <!-- From: file:/Users/krtek/Dropbox/work/java/workspace/Narozeniny/app/src/main/res/values-es/strings.xml -->
+    <eat-comment />
+
+    <string name="add_bday_menu">Agregar evento</string>
+    <string name="anniversary">aniversario</string>
+    <string name="anniversary_template_title">Felicitaciones de aniversario</string>
+    <string name="app_name">Cumpleaños</string>
+    <string name="birthday">cumpleaños</string>
+    <string name="choose_account">Seleccionar cuenta</string>
+    <string name="congrats_pattern">Estimado/a {0}, te deseo un muy feliz {1}!</string>
+    <string name="congrats_subject">Felicitaciones</string>
+    <string name="context_menu_call">Llamada</string>
+    <string name="context_menu_email">correo electrónico</string>
+    <string name="context_menu_header">Felicitar por</string>
+    <string name="context_menu_text">SMS</string>
+    <string name="crash_toast_text">Ooops. Cumpleaños ha fallado, estamos trabajando duro para solucionar esto!</string>
+    <string name="custom_template_title">Felicitaciones personalizadas</string>
+    <string name="date_format_summary">Definir visualización de formato de fecha</string>
+    <string name="date_format_title">Formato de fecha</string>
+    <string name="debug_menu">Vista de depuración</string>
+    <string name="debug_parsed">Analiza como: {0}</string>
+    <string name="debug_raw">Datos primarios: {0}</string>
+    <string name="description_minus_button">Eliminar</string>
+    <string name="description_plus_button">Añadir</string>
+    <string name="discard">Cancelar cambios</string>
+    <string name="edit">Editar</string>
+    <string name="empty"></string>
+    <string name="error">Error</string>
+    <string name="event_type">Tipo de evento</string>
+    <string name="general">General</string>
+    <string name="greetings">Felicitaciones</string>
+    <string name="help_menu">Ayuda</string>
+    <string name="help_string">\NEn caso de algún problema utilizar el menú -> Modo de depuración\n\nO verificación de preguntas frecuentes en www.krtinec.cz/Home/bdwidget\n\nPóngase en contacto con: lukas.marek@gmail.com\n\nY no olvide seguirme en twitter.com/BDWidget\n</string>
+    <string name="help_title">Ayuda de cumpleaños</string>
+    <string name="loading">Cargar los cumpleaños de los contactos</string>
+    <string name="no_data_found">No hay cumpleaños en sus contactos. \n MENÚ Presione y establecer algunos.</string>
+    <string name="no_name_found">No se han encontrado cumpleaños.</string>
+    <string name="notification_alert">{0} alerta!</string>
+    <string name="notification_pattern">Date prisa, {0} tiene {1}!</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="notifications_enabled">Activado</string>
+    <string name="notifications_time">Notificación a las</string>
+    <string name="ok">Aceptar</string>
+    <string name="other">otros</string>
+    <string name="other_template_title">Otras felicitaciones</string>
+    <string name="preferences_menu">Preferencias</string>
+    <string name="save">Guardar</string>
+    <string name="save_error">Se produjo un error al guardar. Lo sentimos.</string>
+    <string name="template_summary">Editar su plantilla predefinida. {0} se sustituye por el nombre del contacto, {1} por el título del evento.</string>
+    <string name="template_title">Saludos de cumpleaños</string>
+    <string name="wait_dialog">Por favor espere...</string>
+    <string name="widget_name">Widget de cumpleaños</string>
+    <string name="widget_name2x1">Widget de cumpleaños 2x1</string>
+    <string name="widget_name2x2">Widget de cumpleaños 2x2</string>
+    <string name="widget_name4x1">Widget de cumpleaños 4x1</string>
+
+</resources>

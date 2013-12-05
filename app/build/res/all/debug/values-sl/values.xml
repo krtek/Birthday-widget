@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/krtek/Dropbox/work/java/workspace/Narozeniny/app/src/main/res/values-sl/arrays.xml -->
+    <eat-comment />
+
+    <string-array name="format_texts">
+        <item>21. 12. 1978</item>
+        <item>Dec 21, 1978</item>
+        <item>1978/12/21</item>
+    </string-array>
+    <string-array name="long_format_values">
+        <item>d.M.yyyy</item>
+        <item>d. MMMM yyyy</item>
+        <item>YYYY/M/d</item>
+    </string-array>
+    <string-array name="notification_time_texts">
+        <item>7:00 - 8:00</item>
+        <item>8:00 - 9:00</item>
+        <item>9:00 - 10:00</item>
+    </string-array>
+    <string-array name="notification_time_values">
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+    <string-array name="short_format_values">
+        <item>d.M.</item>
+        <item>d. MMMM</item>
+        <item>M/d</item>
+    </string-array>
+    <!-- From: file:/Users/krtek/Dropbox/work/java/workspace/Narozeniny/app/src/main/res/values-sl/strings.xml -->
+    <eat-comment />
+
+    <string name="add_bday_menu">Dodaj dogodek</string>
+    <string name="anniversary">obletnica</string>
+    <string name="anniversary_template_title">Voščilo ob obletnici</string>
+    <string name="app_name">Rojstni dnevi</string>
+    <string name="birthday">rojstni dan</string>
+    <string name="birthday_template_title">Voščilo</string>
+    <string name="congrats_pattern">{0}, želim ti vse najboljše za {1}!</string>
+    <string name="congrats_subject">Voščilo</string>
+    <string name="context_menu_call">s klicem</string>
+    <string name="context_menu_email">z e-pošto</string>
+    <string name="context_menu_header">Vošči</string>
+    <string name="context_menu_text">s sporočilom</string>
+    <string name="crash_toast_text">Ups. Datumi so se sesuli. Trudimo se, da bi napako odpravili!</string>
+    <string name="custom_template_title">Voščilo po meri</string>
+    <string name="date_format_summary">Nastavitev oblike datuma</string>
+    <string name="date_format_title">Oblika datuma</string>
+    <string name="debug_menu">Osnovni pogled</string>
+    <string name="debug_parsed">>Prikazano kot: {0}</string>
+    <string name="debug_raw">Podatki: {0}</string>
+    <string name="description_minus_button">Odstrani</string>
+    <string name="description_plus_button">Dodaj</string>
+    <string name="discard">Prekliči spremembe</string>
+    <string name="edit">Uredi</string>
+    <string name="empty">&lt;string name="empty"/></string>
+    <string name="error">Napaka</string>
+    <string name="general">Splošne</string>
+    <string name="greetings">Voščilo</string>
+    <string name="help_menu">Pomoč</string>
+    <string name="help_string">\nV primeru težav pojdi v Menu -&amp;gt; Osnovni pogled\n\nali preveri FAQ na www.krtinec.cz/Home/bdwidget\n\nKontakt: lukas.marek@gmail.com\n\nIn ne pozabi slediti spremembam na twitter.com/BDWidget\n</string>
+    <string name="help_title">Pomoč</string>
+    <string name="loading">Vnašanje datumov iz imenika</string>
+    <string name="no_data_found">V imeniku ni datumov rojstnih dni.\nNastavi jih preko Google Contacts.</string>
+    <string name="no_name_found">Ni vpisanih datumov rojstnih dni.</string>
+    <string name="notification_alert">{0} opozorilo!</string>
+    <string name="notification_pattern">Pohiti, {0} ima {1}!</string>
+    <string name="notifications">Obvestila</string>
+    <string name="notifications_enabled">Omogočeno</string>
+    <string name="notifications_time">Obvestilo ob</string>
+    <string name="ok">V redu</string>
+    <string name="other">drugo</string>
+    <string name="other_template_title">Drugo voščilo</string>
+    <string name="preferences_menu">Nastavitve</string>
+    <string name="save">Shrani</string>
+    <string name="save_error">Med shranjevanjem je prišlo do napake. Oprosti.</string>
+    <string name="template_summary">Uredi voščilo. {0} bo zamenjan z imenom iz imenika, {1} z naslovom dogodka.</string>
+    <string name="wait_dialog">Prosim, počakaj ...</string>
+    <string name="widget_name">Rojstni dnevi</string>
+    <string name="widget_name2x1">Rojstni dnevi 2x1</string>
+    <string name="widget_name2x2">Rojstni dnevi 2x2</string>
+    <string name="widget_name4x1">Rojstni dnevi 4x1</string>
+
+</resources>
