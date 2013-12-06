@@ -52,7 +52,7 @@ import java.util.Map;
 /**
  * Allows edit particular event.
  */
-public class EditActivity extends Activity {
+public class EditActivity extends TracedActivity {
     private static final int DIALOG_EDIT_DATE = 12;
     private static final int DIALOG_SAVE_FAILED = 13;
     private static final int DIALOG_SAVING = 14;

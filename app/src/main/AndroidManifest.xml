@@ -84,6 +84,11 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
+
+        <activity
+                android:name="com.flurry.android.FlurryFullscreenTakeoverActivity"
+                android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>

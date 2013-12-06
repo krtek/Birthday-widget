@@ -36,8 +36,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import cz.krtinec.birthday.ui.StockPhotoLoader;
+import cz.krtinec.birthday.ui.TracedActivity;
 
-public class BirthdayDebug extends Activity {
+public class BirthdayDebug extends TracedActivity {
     private StockPhotoLoader loader;
 
     /**

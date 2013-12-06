@@ -23,7 +23,6 @@ import java.util.List;
 
 import android.app.*;
 import android.provider.ContactsContract;
-import android.text.AndroidCharacter;
 import android.util.Log;
 import android.widget.*;
 
@@ -51,12 +50,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.main)
-public class Birthday extends RoboActivity {
+public class Birthday extends BannerActivity {
     private static final String VERSION_KEY = "version";
     public static final String TEMPLATE_KEY = "template";
     public static final String TEMPLATE_KEY_ANNIVERSARY = "template.anniversary";
@@ -77,7 +75,6 @@ public class Birthday extends RoboActivity {
 
 
     private Uri contactToEdit;
-
 
     private ProgressDialog dialog;
     private List<Event> listOfContacts;
@@ -110,12 +107,12 @@ public class Birthday extends RoboActivity {
         super.onStart();
         Log.d("Birthday", "onStart() called.");
 		loader = new StockPhotoLoader(this, R.drawable.icon);
-
         /*
            * To enable tracing, android.permission.WRITE_EXTERNAL_STORAGE must be set to true!
            */
 //		Debug.startMethodTracing("birthday");
     }
+
 
     @Override
     protected void onPause() {
@@ -129,7 +126,7 @@ public class Birthday extends RoboActivity {
         super.onStop();
         loader.stop();
         Log.d("Birthday", "onStop() called.");
-//		Debug.stopMethodTracing();		
+//		Debug.stopMethodTracing();
     }
 
     @Override
@@ -276,7 +273,6 @@ public class Birthday extends RoboActivity {
                 .setView(message)
                 .create();
     }
-
 
     static class BirthdayAdapter extends AdapterParent<Event> implements AbsListView.OnScrollListener {
 
