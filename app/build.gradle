@@ -1,14 +1,19 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:0.6.3'
+        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
     }
 }
 
 apply plugin: 'android'
+apply plugin: 'android-test'
 
 android {
     compileSdkVersion 19
@@ -32,4 +37,7 @@ repositories {
 dependencies {
     compile 'joda-time:joda-time:2.3'
     compile 'org.roboguice:roboguice:2.0'
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.robolectric:robolectric:2.1.+'
+    testCompile 'com.squareup:fest-android:1.0.+'
 }
