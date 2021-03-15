@@ -19,7 +19,7 @@
 Main application.
 ### Birtday-junit
 JUnit tests.
-**Note:** One of the tests is now failing because of depencies. I will try to fix this as possible.
+**Note:** One of the tests is now failing because of decencies. I will try to fix this as possible.
 ### BirthdayDeviceTests
 Android JUnit tests - these test must run within the device.
 
